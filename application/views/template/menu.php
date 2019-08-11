@@ -1,0 +1,2 @@
+<a href="<?= base_url(''); ?>" class="btn btn-primary text-left"> <i class="fa fa-tachometer" aria-hidden="true"></i> Página Inicial</a>
+<a href="<?= base_url('produtos'); ?>" class="btn btn-primary text-left">  <i class="fa fa-archive"></i> Gerenciar Produtos</a>

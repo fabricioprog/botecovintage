@@ -1,0 +1,29 @@
+body, html {
+    height: 100%;
+}
+
+.flex-grow {
+    flex: 1 0 auto;
+}
+
+.bmd-layout-canvas {
+  flex-grow: 1;
+}
+
+body * {
+    font-family:'Arial'!important;
+    }
+
+body i,span {
+    font-family:'FontAwesome'!important;
+}
+
+.main-content{
+    padding-top:20px;
+    padding-bottom: 20px;
+}
+
+.btn-main-menu a{    
+    text-align: left !important;
+}
+
