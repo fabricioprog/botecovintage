@@ -33,31 +33,20 @@
         </div>
     </div>
 </div>
-<form hidden>
-    <div class="form-group">
-        <label  for="categoria" class="bmd-label-floating">Categoria</label>
-        <input type="text" class="form-control" id="categoria">
-        <span class="bmd-help">Digite aqui o Nome da Categoria</span>
-    </div>
-    <div class="form-group">
-        <label for="descricao" class="bmd-label-floating">Descrição</label>
-        <textarea class="form-control" id="descricao" rows="3"></textarea>
-    </div>
-</form>
-
-
+<?= $this->load->view('modal/add_categoria.php','',true); ?>
 <script src="assets/js/piexif.js"></script>
 <script>
 $(document).ready(function() {
-    $("#myModal").find("#modalTitulo").text("Adicionar Nova Categoria");
-    $form = $("form").clone();
+    var add_cat = $("form").html();
+    var form2 = $("#teste").clone();
 
-    $("*").on('click', '#btnAdd', function(e) {        
-        $("#myModal").find("#modalCorpo").html($form);        
-        $("#myModal").modal();
+    
+    $(document).on('click', '#btnAdd', function(e) {                                        
+        abrir_modal("Adicionar Nova Categoria",add_cat);
         return false;
     });
-    
+
+
 
 });
 </script>
