@@ -1,52 +1,84 @@
-<p class="h4 text-primary">
-    <i class="fa fa-archive"></i> Gerenciar Produtos
-    <a href="" id="btnAdd"><span class="pull-right"> <i class="fa fa-plus" aria-hidden="true"></i> Nova
-            Categoria</span></a>
-</p>
+<div class="row">
+    <div class="col-md-12">
+        <p class="h4 text-primary">
+            <i class="fa fa-archive"></i> Gerenciar Produtos
+            <a href="" id="btnAdd"><span class="pull-right"> <i class="fa fa-plus" aria-hidden="true"></i> Nova
+                    Categoria</span></a>
+        </p>
+    </div>
+</div>
 <div class="card">
     <div class="card-body">
         <div class="row">
+            <?php foreach($categorias as $cat){  ?>
             <div class="col-md-4">
-                <a href="<?= base_url("produtos?categoria=1") ?>" >
+                <a href="<?= base_url("produtos?categoria=".$cat->ci_categoria) ?>">
                     <div class="card btn btn-primary text-left">
-                        <img class="card-img-top img-fluid rounded mx-auto d-block" src="assets/img/bebidas.png"
+                        <img class="card-img-top img-fluid rounded mx-auto d-block" src="<?= $cat->imagem ?>"
                             alt="Card image cap" style="padding:10px 10px 0px 10px;width:300px">
                         <div class="card-body">
-                            <h5 class="card-title">Bebidas</h5>
-                            <p class="card-text">Categoria para bebidas alcolicas</p>
+                            <h5 class="card-title"><?= $cat->nm_categoria ?></h5>
+                            <p class="card-text"><?= $cat->ds_categoria ?></p>
                         </div>
                     </div>
                 </a>
             </div>
-            <div class="col-md-4">
-                <a href="">
-                    <div class="card btn btn-primary text-left">
-                        <img class="card-img-top img-fluid rounded mx-auto d-block" src="assets/img/refrigerentes.jpg"
-                            alt="Card image cap" style="padding:10px 10px 0px 10px;width:300px">
-                        <div class="card-body">
-                            <h5 class="card-title">Refrrigerantes</h5>
-                            <p class="card-text">Categoria para bebidas alcolicas</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
+            <?php } ?>
         </div>
     </div>
 </div>
-<?= $this->load->view('modal/add_categoria.php','',true); ?>
+<?= $this->load->view('modal/add_categoria.php',array("id"=>'md_categoria'),true); ?>
 <script src="assets/js/piexif.js"></script>
 <script>
 $(document).ready(function() {
-    var add_cat = $("form").html();
-    var form2 = $("#teste").clone();
-
-    
-    $(document).on('click', '#btnAdd', function(e) {                                        
-        abrir_modal("Adicionar Nova Categoria",add_cat);
+    var add_cat = $('#md_categoria');
+    $(document).on('click', '#btnAdd', function(e) {
+        abrir_modal('form1', "Adicionar Nova Categoria", add_cat);
         return false;
     });
 
 
+    $("#myModal").on('change', 'input[type="file"]', function(e) {
+        $form = $("#myModal").find('form')[0];
+        var data = new FormData($form);
+        $.ajax({
+            type: "POST",
+            url: "produtos/get_imagem_convertida",
+            data: data,
+            dataType: "text",
+            processData: false,
+            contentType: false,
+            error: function(res) {
+                console.log("erro");
+                console.log(res);
+            },
+            success: function(data) {
+                $("#img").attr("src", data);
+                $("#myModal").find("#preview_img").removeAttr('hidden');
+            },
+        });
 
+    })
+
+
+    $("#myModal").on('click', '#btn_confirmar', function() {
+        $form = $("#myModal").find('form')[0];
+        var data = new FormData($form);
+        $.ajax({
+            type: "POST",
+            url: "produtos/add_categoria",
+            data: data,
+            dataType: "html",
+            processData: false,
+            contentType: false,
+            error: function(res) {
+                console.log("erro");
+                console.log(res);
+            },
+            success: function(data) {
+                location.reload()
+            },
+        });
+    });
 });
 </script>

@@ -45,6 +45,7 @@
   </main>
 </div>
 </div>
+<script src="assets/js/base.js"></script>  
 <script src="assets/js/template.js"></script>  
 </body>
 </html>
@@ -66,7 +67,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-        <button type="button" class="btn btn-primary">Salvar</button>
+        <button id="btn_confirmar" type="button" class="btn btn-primary">Salvar</button>
       </div>
     </div>
   </div>
