@@ -11,6 +11,8 @@
   <script src="assets/js/jquery.min.js"></script>  
   <script src="assets/js/popper.min.js"></script>
   <script src="assets/js/bootstrap-material-design.min.js"></script>
+  <script src="assets/js/jquery.mask.min.js"></script>
+  
 
 
   <script>$(document).ready(function() { $('body').bootstrapMaterialDesign(); });</script>	

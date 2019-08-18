@@ -8,6 +8,12 @@ class My_Controller extends CI_Controller {
         $this->load->helper('log');        
     }
 
+    public function converter_dinheiro_to_number($input){
+        $input = str_replace(".","",$input);
+        $input = str_replace(",",".",$input);
+        return (float) $input;        
+    }
+
     public function addJS(){}
 
     public function addCSS(){}

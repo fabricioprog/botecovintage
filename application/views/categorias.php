@@ -2,8 +2,9 @@
     <div class="col-md-12">
         <p class="h4 text-primary">
             <i class="fa fa-archive"></i> Gerenciar Produtos
-            <a href="" id="btnAdd"><span class="pull-right"> <i class="fa fa-plus" aria-hidden="true"></i> Nova
-                    Categoria</span></a>
+            <button id="btnAdd" type="button" class="btn btn-md btn-outline-success pull-right">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+            </button>
         </p>
     </div>
 </div>
@@ -15,7 +16,7 @@
                 <a href="<?= base_url("produtos?categoria=".$cat->ci_categoria) ?>">
                     <div class="card btn btn-primary text-left">
                         <img class="card-img-top img-fluid rounded mx-auto d-block" src="<?= $cat->imagem ?>"
-                            alt="Card image cap" style="padding:10px 10px 0px 10px;width:300px">
+                            alt="Card image cap" style="padding:10px 10px 0px 10px">
                         <div class="card-body">
                             <h5 class="card-title"><?= $cat->nm_categoria ?></h5>
                             <p class="card-text"><?= $cat->ds_categoria ?></p>
@@ -28,7 +29,6 @@
     </div>
 </div>
 <?= $this->load->view('modal/add_categoria.php',array("id"=>'md_categoria'),true); ?>
-<script src="assets/js/piexif.js"></script>
 <script>
 $(document).ready(function() {
     var add_cat = $('#md_categoria');
