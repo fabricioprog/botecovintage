@@ -31,9 +31,9 @@
 <?= $this->load->view('modal/add_categoria.php',array("id"=>'md_categoria'),true); ?>
 <script>
 $(document).ready(function() {
-    var add_cat = $('#md_categoria');
+    var add_cat = $('#md_categoria').html();
     $(document).on('click', '#btnAdd', function(e) {
-        abrir_modal('form1', "Adicionar Nova Categoria", add_cat);
+        abrir_modal("Adicionar Nova Categoria", add_cat);
         return false;
     });
 

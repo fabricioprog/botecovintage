@@ -24,7 +24,7 @@
             </div>
             <div class='col-7 align-self-center'>
                 <button id="btn-excluir" type="button" class="btn btn-raised btn-danger pull-right "
-                    style='padding-top:10px'><i class="fa fa-trash fa-2x"></i></button>
+                    style='padding-top:10px' hidden><i class="fa fa-trash fa-2x"></i></button>
             </div>
             <div class='col-12'>
                 <div class="form-group">
@@ -54,6 +54,7 @@ function aplicar_js() {
 }
 
 function limpar_campos() {
+    $('#btn-excluir').hide();
     $("#MyModal").find("#modalCorpo").html("");
 }
 
@@ -64,12 +65,28 @@ function preencher_campos(id, nome, descricao, valor, imagem) {
     $form.find('textarea[name="descricao"]').html(descricao).trigger("change");
     $form.find('input[name="valor_venda"]').val(valor).trigger("change");
     $form.find("#img").attr("src", imagem);
+    $('#modalCorpo').find('#btn-excluir').removeAttr('hidden');
     $form.find("#preview_img").removeAttr('hidden');
     aplicar_js();
 }
 
-$(document).on('click','#btn-excluir',function() {    
-    console.log("excluir");
+$(document).on('click', '#btn-excluir', function() {
+    let id = $('#modalCorpo').find('input[name="id"]').val();
+    if (id) {
+        $.ajax({
+            type: "GET",
+            url: "produtos/rm_produto/" + id,            
+            error: function(res) {
+                console.log(res);
+            },
+            success: function(data) {
+                location.reload();
+            },
+        });
+    } else {
+        console.log("produto não encontrado");
+    }
+
 });
 
 $md_form.find('input[name="id"]').change(function() {

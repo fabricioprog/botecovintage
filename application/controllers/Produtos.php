@@ -44,6 +44,11 @@ class Produtos extends MY_Controller
         $this->produto_model->add_produto($p->produto, $p->descricao, 0, $imagem, $tp_imagem, $p->categoria, $p->valor_venda);
     }
 
+
+    public function rm_produto($id){
+        $this->produto_model->remover_produto($id);
+    }
+
     public function update_produto()
     {
         $p = $this->get_produto_form();
