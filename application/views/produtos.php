@@ -44,6 +44,36 @@
 <?= $this->load->view('modal/add_produto.php',array("id"=>'md_produto',"cd_categoria"=>$cd_categoria),true); ?>
 
 <script>
+
+function resizeImage(base64Str) {
+    var img = new Image();
+    img.src = base64Str;
+    var canvas = document.createElement('canvas');
+    var MAX_WIDTH = 100;
+    var MAX_HEIGHT = 100;
+    var width = img.width;
+    var height = img.height;
+
+    if (width > height) {
+        if (width > MAX_WIDTH) {
+            height *= MAX_WIDTH / width;
+            width = MAX_WIDTH;
+        }
+    } else {
+        if (height > MAX_HEIGHT) {
+            width *= MAX_HEIGHT / height;
+            height = MAX_HEIGHT;
+        }
+    }
+    canvas.width = width;
+    canvas.height = height;
+    var ctx = canvas.getContext('2d');
+    ctx.drawImage(img, 0, 0, width, height);
+    return canvas.toDataURL();
+}
+
+
+
 $(document).ready(function() {
     var add_prod = $('#md_produto').html();
 
@@ -75,7 +105,7 @@ $(document).ready(function() {
                 console.log("erro");
             },
             success: function(data) {
-                $("#myModal").find("#img").attr("src", data);                
+                $("#myModal").find("#img").attr("src", data);
                 $("#myModal").find("#preview_img").removeAttr('hidden');
             },
         });
@@ -108,7 +138,7 @@ $(document).ready(function() {
             error: function(res) {
                 console.log(res);
             },
-            success: function(data) {                
+            success: function(data) {
                 location.reload();
             },
         });
