@@ -10,8 +10,14 @@ class Mesas extends MY_Controller
         
     }
 
-    public function index()
-    {
+    public function index(){        
         $this->template->load('template', 'mesas');
     }
+
+    public function mesa($id){
+        $data['mesa_id'] = $id;        
+        $this->template->load('template', 'mesa',$data);
+
+    }
+
 }
