@@ -1,4 +1,7 @@
 <style>
+a:hover{
+    text-decoration:none;
+}
 .livre {
     background-color: rgba(205, 254, 218, 1);    
 }
@@ -38,48 +41,18 @@
 </div>
 <div class="card">
     <div class="card-body">
-        <div class="row">
-            <div class="col-md-3">
-                <div data-id="" class="card btn text-left prod livre">
-                    <div class="card-body text-center">
-                        <h6 class="card-title">Mesa 1 </h6>
-                        <p class="card-text">Livre</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div data-id="" class="card btn text-left prod ocupado">
-                    <div class="card-body text-center">
-                        <h6 class="card-title">Mesa 2  </h6>
-                        <p class="card-text">ocupada</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div data-id="" class="card btn text-left prod reservado">
-                    <div class="card-body text-center">
-                        <h6 class="card-title">Mesa 3 </h6>
-                        <p class="card-text">Reservada</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div data-id="" class="card btn text-left prod bloqueado">
-                    <div class="card-body text-center">
-                        <h6 class="card-title">Mesa 4 </h6>
-                        <p class="card-text">Bloqueada</p>
-                    </div>
-                </div>
-            </div>
-            <?php $mesas = array(5,6,7,8,9,10,11,12,13,14,15,16);
+        <div class="row">            
+            <?php $mesas = array(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16);            
             foreach($mesas as $mesa){  ?>
             <div class="col-md-3">
-                <div data-id="" class="card btn text-left prod livre">
-                    <div class="card-body text-center">
+            <a href="<?= base_url("mesas/mesa/$mesa") ?>" >
+                <div class="card btn text-left prod livre">
+                    <div class="card-body text-center" data-id="<?=$mesa?>">
                         <h6 class="card-title">Mesa <?= $mesa ?></h6>
                         <p class="card-text">Livre</p>
                     </div>
                 </div>
+                </a>
             </div>
             <?php } ?>
         </div>
