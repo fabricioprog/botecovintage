@@ -18,12 +18,12 @@
   <script>$(document).ready(function() { $('body').bootstrapMaterialDesign(); });</script>	
 </head>
 <body>  
-    <div class="bmd-layout-container bmd-drawer-f-l bmd-drawer-in">
+    <div class="bmd-layout-container bmd-drawer-f-l bmd-drawer">
   <header class="bmd-layout-header">
     <div class="navbar navbar-light bg-faded">
       <button id="btn-main-menu" class="navbar-toggler"  type="button" data-toggle="drawer" data-target="#dw-s1">
         <span class="sr-only">Toggle drawer</span>
-        <i class="fa fa-angle-left"></i>                
+        <i class="fa fa-bars"></i>                
       </button>
       <ul class="nav navbar-nav">
         <li class="nav-item"> Boteco Vintage </li>
