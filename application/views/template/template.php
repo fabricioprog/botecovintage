@@ -4,14 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Boteco Vintage</title>    
-  <link rel="stylesheet" href="assets/font-awesome/css/font-awesome.min.css" type="text/css">
-  <link rel="stylesheet" href="assets/css/bootstrap-material-design.min.css">
-  <link rel="stylesheet" href="assets/css/template.css">  
+  <link rel="stylesheet" href="<?=base_url('')?>assets/font-awesome/css/font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href="<?=base_url('')?>assets/css/bootstrap-material-design.min.css">
+  <link rel="stylesheet" href="<?=base_url('')?>assets/css/template.css">  
 
-  <script src="assets/js/jquery.min.js"></script>  
-  <script src="assets/js/popper.min.js"></script>
-  <script src="assets/js/bootstrap-material-design.min.js"></script>
-  <script src="assets/js/jquery.mask.min.js"></script>
+  <script src="<?=base_url('')?>assets/js/jquery.min.js"></script>  
+  <script src="<?=base_url('')?>assets/js/popper.min.js"></script>
+  <script src="<?=base_url('')?>assets/js/bootstrap-material-design.min.js"></script>
+  <script src="<?=base_url('')?>assets/js/jquery.mask.min.js"></script>
   
 
 
@@ -47,8 +47,8 @@
   </main>
 </div>
 </div>
-<script src="assets/js/base.js"></script>  
-<script src="assets/js/template.js"></script>  
+<script src="<?=base_url('')?>assets/js/base.js"></script>  
+<script src="<?=base_url('')?>assets/js/template.js"></script>  
 </body>
 </html>
 

@@ -46,11 +46,22 @@ a:hover{
 <div class="card">
     <div class="card-body">
         <div class="row">            
-            <?php $mesas = array(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16);            
-            foreach($mesas as $mesa){  ?>
+            <?php 
+            $mesas = array(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16);
+            foreach($mesas as $mesa){  
+                $status = "livre";
+                if(isset($mesas_indexadas[$mesa])){                    
+                    switch ($mesas_indexadas[$mesa]){
+                        case 2: $status = "ocupado";break;
+                        case 3: $status = "reservado";break;
+                        case 4: $status = "bloqueado";break;
+                    }
+                }
+            
+            ?>
             <div class="col-md-3">
             <a href="<?= base_url("mesas/mesa/$mesa") ?>" >
-                <div class="card btn text-left prod livre">
+                <div class="card btn text-left prod <?= $status ?>">
                     <div class="card-body text-center" data-id="<?=$mesa?>">
                         <h6 class="card-title">Mesa <?= $mesa ?></h6>
                         <p class="card-text">Livre</p>
