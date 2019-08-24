@@ -6,7 +6,7 @@ class Produto_model extends CI_Model{
 	}
 
     public function get_produtos_by_categoria($cd_categoria){
-        $sql = "SELECT * FROM tb_produto where cd_categoria = ? and fl_deletado = false order by nm_produt ";
+        $sql = "SELECT * , valor_venda::money lbl_valor_venda FROM tb_produto where cd_categoria = ? and fl_deletado = false order by nm_produto ";
         return $this->db->query($sql,array($cd_categoria))->result();
     }
 

@@ -11,7 +11,7 @@ class Conta_model extends CI_Model{
         return $this->db->query($sql)->result();        
     }
 
-    public function get_conta_aberta_by_mesa($cd_mesa){
+    public function get_conta_aberta_by_mesa($cd_mesa){        
         $sql ="select 
                     ci_conta, cd_mesa, cd_status, 
                     TO_CHAR(dt_inicio, 'DD/MM/YYYY HH:mm:SS') dt_inicio, 

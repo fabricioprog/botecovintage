@@ -3,10 +3,18 @@
     display: none;
 }
 
-#pnProdutos {}
+tbody tr {
+    cursor: pointer;
+}
+
+#tbProdutos,
+#tbConta {
+    min-height: 400px;
+}
 
 .pnConta {
-    margin-top: 20px;    
+    min-height: 400px;
+    margin-top: 20px;
 }
 
 #btnAdd,
@@ -71,7 +79,7 @@
                 </div>
 
                 <div class="col-md-12" id="pnProdutos">
-                    <table id="tbProdutos">
+                    <table id="tbProdutos" class="row-border hover">
                         <thead>
                             <tr>
                                 <th>Foto</th>
@@ -80,21 +88,6 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Teste 1</td>
-                                <td>Teste 2</td>
-                                <td>Teste 3</td>
-                            </tr>
-                            <tr>
-                                <td>Teste 1</td>
-                                <td>Teste 2</td>
-                                <td>Teste 3</td>
-                            </tr>
-                            <tr>
-                                <td>Teste 1</td>
-                                <td>Teste 2</td>
-                                <td>Teste 3</td>
-                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -107,27 +100,19 @@
                 <div class="row">
                     <div class="col-12">
                         <table id="tbConta">
-                            <thead>
-                                <tr>
-                                    <th>Produto</th>
-                                    <th>qtd</th>
-                                    <th>Unt</th>
-                                    <th>Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Prod X</td>
-                                    <td> 10 </td>
-                                    <td> RS 1,00 </td>
-                                    <td> RS 10,00 </td>
-                                </tr>
-                            </tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+</div>
+
+<div id="buscador_custom">
+    <div class="form-group">
+        <label for="buscar" class="bmd-label-floating">pesquisar</label>
+        <input type="text" class="form-control" name="buscar">
+        <span class="bmd-help">pesquise um produto</span>
     </div>
 </div>
 
@@ -146,34 +131,24 @@
 $(document).ready(function() {
     jQuery.datetimepicker.setLocale('pt-BR');
 
-    $('#tbProdutos').DataTable({
-        "bPaginate": false,
+    var dataTableConfig = {
         "bLengthChange": false,
         "bFilter": true,
         "bInfo": false,
         "bAutoWidth": false,
         "language": {
             url: '<?= base_url('')?>assets/json/dataTablesBR.json'
-        },
-    });
+        }
+    }
 
-    $('#tbConta').DataTable({
-        "ordering": false,
-        "searching": false,
-        "bPaginate": false,
-        "bLengthChange": false,
-        "bFilter": true,
-        "bInfo": false,
-        "bAutoWidth": false,
-        "language": {
-            url: '<?= base_url('')?>assets/json/dataTablesBR.json'
-        },
-    });
 
-    //$('#data').datetimepicker();
+    var tb_produtos = montar_produtos(dataTableConfig);
+
+    var tb_pedidos = montar_conta(dataTableConfig);
+
+
 
     $(".btn-categoria").click(function() {
-        console.log("click");
         $('#pnCategorias').fadeOut('200', function() {
             $('#pnProdutos').fadeIn('200');
         });
@@ -183,6 +158,30 @@ $(document).ready(function() {
         $('.cards').fadeOut('200', function() {
             $("#card-reservar").fadeIn();
         });
+    });
+
+
+    $("#tbProdutos tbody").on('click', 'tr', function() {
+        console.log($(this).data('id'));
+    });
+
+
+    
+
+    var categoria = 5;
+    $.ajax({
+        type: "GET",
+        url: "<?=base_url('')?>produtos/get_produtos_by_categoria/" + categoria,
+        dataType: "json",
+        error: function(res) {
+            console.log("erro");
+            console.log(res);
+        },
+        success: function(data) {
+            tb_produtos.clear();
+            tb_produtos.rows.add(data);
+            tb_produtos.draw();
+        },
     });
 
     /*function montar_tabela(data) {
@@ -225,6 +224,53 @@ $(document).ready(function() {
         ], "fnDrawCallback": function () {
         }
     });*/
+
+    function montar_conta(dataTableConfig) {
+        conta.searching = false;
+        return $('#tbConta').DataTable(conta);
+    }
+
+    function montar_produtos(dataTableConfig) {
+        let produtos = dataTableConfig;
+        produtos.aoColumns = [{
+                "data": 'ci_produto'
+            },
+            {
+                "data": 'nm_produto'
+            },
+            {
+                "data": 'lbl_valor_venda'
+            },
+        ]
+        produtos.order = [
+            [1, "asc"]
+        ];
+        produtos.pageLength = 5;
+
+
+        produtos.columnDefs = [{
+                "sWidth": "10%",
+                "aTargets": [0]
+            },
+            {
+                "sWidth": "70%",
+                "aTargets": [1]
+            },
+            {
+                "sWidth": "20%",
+                "aTargets": [2]
+            },
+        ];
+
+        produtos.fnRowCallback = function(nRow, aData, iDisplayIndex) {
+            $(nRow).attr("data-id", aData.ci_produto);
+            $('td:eq(0)', nRow).html("<img src='" + aData.img_produto +
+                "' width='50px' height='10px' class='img-fluid' /> ");
+            return nRow;
+        };
+        return $("#tbProdutos").DataTable(produtos);
+
+    }
 
 });
 </script>

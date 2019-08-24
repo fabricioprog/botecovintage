@@ -72,10 +72,18 @@ class Produtos extends MY_Controller
     }
 
     public function get_produto($id)
-    {
+    {   
         $prod = $this->produto_model->get_produto($id);
         echo json_encode($prod);
     }
+
+    public function get_produtos_by_categoria($id){
+        $produtos = $this->produto_model->get_produtos_by_categoria($id);
+        echo json_encode($produtos);
+
+    }
+
+    
 
     public function get_imagem_convertida($input_file = false)
     {
