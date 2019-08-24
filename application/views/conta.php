@@ -1,5 +1,9 @@
 <style>
-#pnCategorias {
+#pnCategorias {    
+}
+
+
+#pnProdutos{
     display: none;
 }
 
@@ -7,8 +11,7 @@ tbody tr {
     cursor: pointer;
 }
 
-#tbProdutos,
-#tbConta {
+#tbProdutos {
     min-height: 400px;
 }
 
@@ -52,7 +55,7 @@ tbody tr {
                             <i class="fa fa-check" aria-hidden="true"></i>
                             Fechar Conta
                         </button>
-
+                        <input id="cd_conta" type="hidden" value="<?= $conta_mesa_info->ci_conta;?>" />
                     </div>
                 </div>
             </div>
@@ -60,13 +63,13 @@ tbody tr {
     </div>
 </div>
 <div class="row">
-    <div class="col-md-8 pnConta">
+    <div class="col-md-7 pnConta">
         <div class="card">
             <div class="card-body">
                 <div class="row" id="pnCategorias">
                     <?php foreach($categorias as $cat){  ?>
                     <div class="col-md-4">
-                        <div class="card btn btn-primary text-left btn-categoria">
+                        <div data-id="<?= $cat->ci_categoria ?>" class="card btn btn-primary text-left btn-categoria">
                             <img class="card-img-top img-fluid rounded mx-auto d-block" src="<?= $cat->imagem ?>"
                                 alt="Card image cap" style="padding:10px 10px 0px 10px">
                             <div class="card-body">
@@ -94,12 +97,20 @@ tbody tr {
             </div>
         </div>
     </div>
-    <div class="col-md-4 pnConta">
+    <div class="col-md-5 pnConta">
         <div class="card">
             <div class="card-body">
                 <div class="row">
                     <div class="col-12">
-                        <table id="tbConta">
+                        <table id="tbConta" class="row-border hover">
+                        <thead>
+                            <tr>
+                                <th>Produto</th>
+                                <th>qtd.</th>
+                                <th>unidade</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
                         </table>
                     </div>
                 </div>
@@ -131,6 +142,8 @@ tbody tr {
 $(document).ready(function() {
     jQuery.datetimepicker.setLocale('pt-BR');
 
+    var conta = $("#cd_conta").val();
+
     var dataTableConfig = {
         "bLengthChange": false,
         "bFilter": true,
@@ -141,15 +154,15 @@ $(document).ready(function() {
         }
     }
 
-
     var tb_produtos = montar_produtos(dataTableConfig);
-
     var tb_pedidos = montar_conta(dataTableConfig);
-
-
+    att_conta(conta);
+    
 
     $(".btn-categoria").click(function() {
-        $('#pnCategorias').fadeOut('200', function() {
+        let id = $(this).data('id');
+        att_produtos(id);
+        $('#pnCategorias').fadeOut('200', function() {            
             $('#pnProdutos').fadeIn('200');
         });
     });
@@ -162,76 +175,107 @@ $(document).ready(function() {
 
 
     $("#tbProdutos tbody").on('click', 'tr', function() {
-        console.log($(this).data('id'));
-    });
-
-
-    
-
-    var categoria = 5;
-    $.ajax({
-        type: "GET",
-        url: "<?=base_url('')?>produtos/get_produtos_by_categoria/" + categoria,
-        dataType: "json",
-        error: function(res) {
-            console.log("erro");
-            console.log(res);
-        },
-        success: function(data) {
-            tb_produtos.clear();
-            tb_produtos.rows.add(data);
-            tb_produtos.draw();
-        },
-    });
-
-    /*function montar_tabela(data) {
-    faltas = data;
-    $tabela = $("#tbfj").DataTable();
-    $tabela.destroy();
-    $tabela = $("#tbfj").DataTable({
-        "pageLength": 100,
-        "order": [[1, "asc"]],
-        bAutoWidth: false,
-        "language": {url: 'assets/js/dataTablesBR.json'},
-        "data": data,
-        "columns": [
-            {"data": "cd_aluno"},
-            {"data": "nm_aluno"},
-            {   
-                "render": function ( data, type, row ) {                    
-                return row.ds_ofertaitem + "|" + row.ds_turma;
-            }
+        var pedido = {};
+        pedido.cd_produto = $(this).data('id');
+        pedido.cd_conta = $("#cd_conta").val();
+        $.ajax({
+            type: "POST",
+            url: "<?=base_url('')?>Conta/add_produto/",
+            data: pedido,
+            dataType: "json",
+            error: function(res) {
+                console.log("erro");
+                console.log(res);
             },
+            success: function(pedidos) {                
+                tb_pedidos.clear();
+                tb_pedidos.rows.add(pedidos);
+                tb_pedidos.draw();                                
+            },
+        });
 
-            {"data": "dt_inicio"},
-            {"data": "dt_fim"},
-            {"data": "nm_motivo"}
-        ],
-        "fnRowCallback": function (nRow, aData, iDisplayIndex) {            
-            $(nRow).attr("data-falta", aData.ci_falta_justificada);            
-            $('td:eq(0)', nRow).html("<img src='http://registrofotografico.seduc.ce.gov.br/wsdiretorturma/api/registroFotografico/image/nonCheck/" + aData.cd_aluno + "' width='50px' height='50px' class='img img-rounded img-responsive' /> ");
-            return nRow;
-        },
-        columnDefs: [
-            { type: 'date-uk', targets: 3 },
-            { type: 'date-uk', targets: 4 },
-            {"sWidth": "10%", "aTargets": [0]},
-            {"sWidth": "30%", "aTargets": [1]},
-            {"sWidth": "30%", "aTargets": [2]},
-            {"sWidth": "10%", "aTargets": [3]},
-            {"sWidth": "10%", "aTargets": [4]},
-            {"sWidth": "10%", "aTargets": [5]},
-        ], "fnDrawCallback": function () {
-        }
-    });*/
+    });
 
-    function montar_conta(dataTableConfig) {
+
+    function att_produtos(categoria) {
+        $.ajax({
+            type: "GET",
+            url: "<?=base_url('')?>produtos/get_produtos_by_categoria/" + categoria,
+            dataType: "json",
+            error: function(res) {
+                console.log("erro");
+                console.log(res);
+            },
+            success: function(data) {
+                tb_produtos.clear();
+                tb_produtos.rows.add(data);
+                tb_produtos.draw();
+            },
+        });
+
+    }
+
+    function att_conta(conta) {
+        $.ajax({
+            type: "GET",
+            url: "<?=base_url('')?>conta/get_pedidos_conta/" + conta,
+            dataType: "json",
+            error: function(res) {
+                console.log("erro");
+                console.log(res);
+            },
+            success: function(pedidos) {
+                console.log(pedidos);
+                tb_pedidos.clear();
+                tb_pedidos.rows.add(pedidos);
+                tb_pedidos.draw();
+            },
+        });
+
+
+    }
+
+    function montar_conta(dataTableConfig) {        
+        var conta = JSON.parse(JSON.stringify(dataTableConfig));
         conta.searching = false;
+
+        conta.aoColumns = [{
+                "data": 'nm_produto'
+            },
+            {
+                "data": 'quantidade'
+            },
+            {
+                "data": 'lbl_valor_venda'
+            },
+            {
+                "data": 'lbl_total'
+            },
+        ]
+        conta.columnDefs = [{
+                "sWidth": "50%",
+                "aTargets": [0]
+            },
+            {
+                "sWidth": "10%",
+                "aTargets": [1]
+            },
+            {
+                "sWidth": "20%",
+                "aTargets": [2]
+            },
+            {
+                "sWidth": "20%",
+                "aTargets": [3]
+            },
+        ];
+
+        
         return $('#tbConta').DataTable(conta);
     }
 
     function montar_produtos(dataTableConfig) {
-        let produtos = dataTableConfig;
+        var produtos = JSON.parse(JSON.stringify(dataTableConfig));
         produtos.aoColumns = [{
                 "data": 'ci_produto'
             },
@@ -268,6 +312,7 @@ $(document).ready(function() {
                 "' width='50px' height='10px' class='img-fluid' /> ");
             return nRow;
         };
+        
         return $("#tbProdutos").DataTable(produtos);
 
     }

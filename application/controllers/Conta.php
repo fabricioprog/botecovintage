@@ -14,6 +14,7 @@ class Conta extends MY_Controller
         parent::__construct();
         $this->load->helper('url');
         $this->load->model('conta_model');
+        $this->load->model('pedido_model');
         $this->load->model('categoria_model');
 
     }
@@ -29,6 +30,35 @@ class Conta extends MY_Controller
         $data['categorias'] = $this->categoria_model->get_categorias();        
         $data['conta_mesa_info'] = $this->conta_model->get_conta_aberta_by_mesa($id);
         $this->template->load('template', 'conta', $data);
+    }
+
+    public function get_pedidos_conta($cd_conta,$ajax=true){
+        $res = $this->pedido_model->get_pedidos($cd_conta);
+        if($ajax){
+            echo json_encode($res);
+        }
+        return $res;
+    }
+    
+
+
+    public function add_produto($ajax = true){
+        $inputs =  $this->input->post();
+        
+        $prod = $this->pedido_model->get_produto_conta($inputs['cd_conta'],$inputs['cd_produto']);
+        
+        if(empty($prod)){            
+            $this->pedido_model->add_pedido($inputs['cd_conta'],$inputs['cd_produto']);
+        }else{
+            $prod->quantidade++;
+            $this->pedido_model->update_pedido($prod->cd_conta,$prod->cd_produto,$prod->quantidade);
+            
+        }
+        $res = $this->get_pedidos_conta($inputs['cd_conta'],false);
+       if($ajax){
+           echo json_encode($res);
+       }     
+        return $res;
     }
 
     
