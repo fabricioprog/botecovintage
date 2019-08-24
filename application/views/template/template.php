@@ -32,7 +32,7 @@
         <i class="fa fa-bars"></i>                
       </button>
       <ul class="nav navbar-nav">
-        <li class="nav-item">  </li>
+        <li class="nav-item"> Boteco Vintage  </li>
       </ul>
     </div>
   </header>

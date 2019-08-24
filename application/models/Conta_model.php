@@ -11,6 +11,17 @@ class Conta_model extends CI_Model{
         return $this->db->query($sql)->result();        
     }
 
+    public function get_conta_aberta_by_mesa($cd_mesa){
+        $sql ="select 
+                    ci_conta, cd_mesa, cd_status, 
+                    TO_CHAR(dt_inicio, 'DD/MM/YYYY HH:mm:SS') dt_inicio, 
+                    TO_CHAR(dt_fim, 'DD/MM/YYYY HH:mm:SS') dt_fim, nr_total 
+                    from tb_conta 
+                    where cd_status = 2 and dt_inicio is not null and dt_fim is null and cd_mesa = ? 
+                    order by dt_inicio";
+        return $this->db->query($sql,array($cd_mesa))->row(); 
+    }
+
     public function add_conta($cd_mesa,$cd_status,$dt_abrir){        
         $sql = "INSERT INTO tb_conta values (default,?,?,?,null,0)";        
         $this->db->query($sql,array($cd_mesa,$cd_status,$dt_abrir));

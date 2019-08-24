@@ -14,17 +14,20 @@ class Conta extends MY_Controller
         parent::__construct();
         $this->load->helper('url');
         $this->load->model('conta_model');
+        $this->load->model('categoria_model');
 
     }
 
     public function index()
-    {
-        $this->template->load('template', 'conta');
+    {        
+        $this->template->load('template', 'conta',$data);
     }
 
     public function mesa($id)
     {
         $data['mesa_id'] = $id;
+        $data['categorias'] = $this->categoria_model->get_categorias();
+        $data['conta_mesa_info'] = $this->conta_model->get_conta_aberta_by_mesa($id);
         $this->template->load('template', 'conta', $data);
     }
 
