@@ -1,9 +1,11 @@
 <style>
-#pnCategorias {    
+#pnCategorias {}
+
+.tb-body {
+    padding: 10px 0px 10px 0px;
 }
 
-
-#pnProdutos{
+#pnProdutos {
     display: none;
 }
 
@@ -11,13 +13,25 @@ tbody tr {
     cursor: pointer;
 }
 
-#tbProdutos {
-    min-height: 400px;
+#tbProdutos,
+#tbConta {
+    width: 100%;
+    max-height: 411px;
 }
 
-.pnConta {
-    min-height: 400px;
-    margin-top: 20px;
+.pnConta,
+.pnCategoria {
+    margin-top: 10px;
+}
+
+
+.btn-categoria {
+    min-height: 180px;
+}
+
+
+.btn-categoria img {
+    max-height: 140px;
 }
 
 #btnAdd,
@@ -53,8 +67,17 @@ tbody tr {
                     <div class="col-md-6 align-self-center">
                         <button type="button" class="btn btn-raised btn-success pull-right">
                             <i class="fa fa-check" aria-hidden="true"></i>
+                            Encerrar
+                        </button>
+                        <button type="button" class="btn btn-raised btn-info pull-right" style='margin-right:10px'>
+                            <i class="fa fa-file" aria-hidden="true"></i>
                             Fechar Conta
                         </button>
+                        <button type="button" class="btn btn-raised btn-info pull-right" style='margin-right:10px'>
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                            Cover
+                        </button>
+
                         <input id="cd_conta" type="hidden" value="<?= $conta_mesa_info->ci_conta;?>" />
                     </div>
                 </div>
@@ -63,26 +86,25 @@ tbody tr {
     </div>
 </div>
 <div class="row">
-    <div class="col-md-7 pnConta">
+    <div class="col-md-7 pnCategoria">
         <div class="card">
             <div class="card-body">
                 <div class="row" id="pnCategorias">
                     <?php foreach($categorias as $cat){  ?>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div data-id="<?= $cat->ci_categoria ?>" class="card btn btn-primary text-left btn-categoria">
                             <img class="card-img-top img-fluid rounded mx-auto d-block" src="<?= $cat->imagem ?>"
                                 alt="Card image cap" style="padding:10px 10px 0px 10px">
                             <div class="card-body">
-                                <h5 class="card-title"><?= $cat->nm_categoria ?></h5>
-                                <p class="card-text"><?= $cat->ds_categoria ?></p>
+                                <strong class="card-title"><?= $cat->nm_categoria ?></strong>
                             </div>
                         </div>
                     </div>
                     <?php } ?>
                 </div>
-
-                <div class="col-md-12" id="pnProdutos">
-                    <table id="tbProdutos" class="row-border hover">
+                <div class="col-12" id="pnProdutos">
+                    <table id="tbProdutos" class="row-border hover table dt-responsive no-footer" cellspacing="0"
+                        style="width:100%;">
                         <thead>
                             <tr>
                                 <th>Foto</th>
@@ -102,15 +124,15 @@ tbody tr {
             <div class="card-body">
                 <div class="row">
                     <div class="col-12">
-                        <table id="tbConta" class="row-border hover">
-                        <thead>
-                            <tr>
-                                <th>Produto</th>
-                                <th>qtd.</th>
-                                <th>unidade</th>
-                                <th>Total</th>
-                            </tr>
-                        </thead>
+                        <table id="tbConta" class="row-border hover table dt-responsive no-footer">
+                            <thead>
+                                <tr>
+                                    <th>Produto</th>
+                                    <th>qtd.</th>
+                                    <th>unidade</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
                         </table>
                     </div>
                 </div>
@@ -119,13 +141,18 @@ tbody tr {
     </div>
 </div>
 
-<div id="buscador_custom">
+<div class="header_produtos" hidden>
     <div class="form-group">
-        <label for="buscar" class="bmd-label-floating">pesquisar</label>
-        <input type="text" class="form-control" name="buscar">
-        <span class="bmd-help">pesquise um produto</span>
+        <button type="button" class="btn btn-block btn-categorias btn-raised btn-info">
+            <i class="fa fa-reply" aria-hidden="true"></i>
+            Categorias
+        </button>
     </div>
 </div>
+
+
+
+
 
 <!--
                         <div class="form-group">
@@ -142,29 +169,50 @@ tbody tr {
 $(document).ready(function() {
     jQuery.datetimepicker.setLocale('pt-BR');
 
+
     var conta = $("#cd_conta").val();
 
     var dataTableConfig = {
+        "scrollCollapse": true,
+        "paging": false,
+        "pageLength": 1000,
         "bLengthChange": false,
         "bFilter": true,
         "bInfo": false,
-        "bAutoWidth": false,
         "language": {
-            url: '<?= base_url('')?>assets/json/dataTablesBR.json'
+            "url": "<?=base_url('')?>assets/json/dataTablesBR.json",
         }
     }
 
+    att_produtos(5);
+
     var tb_produtos = montar_produtos(dataTableConfig);
     var tb_pedidos = montar_conta(dataTableConfig);
+
+
+
+
     att_conta(conta);
-    
+
 
     $(".btn-categoria").click(function() {
         let id = $(this).data('id');
-        att_produtos(id);
-        $('#pnCategorias').fadeOut('200', function() {            
-            $('#pnProdutos').fadeIn('200');
+        $('#pnCategorias').fadeOut('10', function() {
+            $('#pnProdutos').fadeIn('10');
         });
+        att_produtos(id);
+
+    });
+
+
+    $(document).on("click", ".btn-categorias", function() {
+        $('#pnProdutos').fadeOut('10', function() {
+            $('#pnCategorias').fadeIn('10', function() {
+                tb_produtos.clear();
+                tb_produtos.draw();
+            });
+        });
+
     });
 
     $("#btn-reservar").click(function() {
@@ -187,15 +235,14 @@ $(document).ready(function() {
                 console.log("erro");
                 console.log(res);
             },
-            success: function(pedidos) {                
+            success: function(pedidos) {
                 tb_pedidos.clear();
                 tb_pedidos.rows.add(pedidos);
-                tb_pedidos.draw();                                
+                tb_pedidos.draw();
             },
         });
 
     });
-
 
     function att_produtos(categoria) {
         $.ajax({
@@ -207,10 +254,12 @@ $(document).ready(function() {
                 console.log(res);
             },
             success: function(data) {
-                tb_produtos.clear();
+                tb_produtos.clear().draw();
                 tb_produtos.rows.add(data);
-                tb_produtos.draw();
+                tb_produtos.columns.adjust().draw();
             },
+        }).done(function() {
+            tb_produtos.columns.adjust().draw();
         });
 
     }
@@ -225,7 +274,6 @@ $(document).ready(function() {
                 console.log(res);
             },
             success: function(pedidos) {
-                console.log(pedidos);
                 tb_pedidos.clear();
                 tb_pedidos.rows.add(pedidos);
                 tb_pedidos.draw();
@@ -235,87 +283,103 @@ $(document).ready(function() {
 
     }
 
-    function montar_conta(dataTableConfig) {        
-        var conta = JSON.parse(JSON.stringify(dataTableConfig));
-        conta.searching = false;
+    function montar_conta(dataTableConfig) {
+        var generico = JSON.parse(JSON.stringify(dataTableConfig));
+        var conta = {
+            "scrollY": "380px",
+            "searching": false,
+            "aoColumns": [{
+                    "data": 'nm_produto'
+                },
+                {
+                    "data": 'quantidade'
+                },
+                {
+                    "data": 'lbl_valor_venda'
+                },
+                {
+                    "data": 'lbl_total'
+                },
+            ],
+            "columnDefs": [{
+                    "sWidth": "50%",
+                    "aTargets": [0]
+                },
+                {
+                    "sWidth": "5%",
+                    "aTargets": [1]
+                },
+                {
+                    "sWidth": "20%",
+                    "aTargets": [2]
+                },
+                {
+                    "sWidth": "25%",
+                    "aTargets": [3]
+                },
+            ],
 
-        conta.aoColumns = [{
-                "data": 'nm_produto'
-            },
-            {
-                "data": 'quantidade'
-            },
-            {
-                "data": 'lbl_valor_venda'
-            },
-            {
-                "data": 'lbl_total'
-            },
-        ]
-        conta.columnDefs = [{
-                "sWidth": "50%",
-                "aTargets": [0]
-            },
-            {
-                "sWidth": "10%",
-                "aTargets": [1]
-            },
-            {
-                "sWidth": "20%",
-                "aTargets": [2]
-            },
-            {
-                "sWidth": "20%",
-                "aTargets": [3]
-            },
-        ];
-
-        
-        return $('#tbConta').DataTable(conta);
+        }
+        let merge = Object.assign(generico, conta);
+        return $('#tbConta').DataTable(merge);
     }
+
+
 
     function montar_produtos(dataTableConfig) {
-        var produtos = JSON.parse(JSON.stringify(dataTableConfig));
-        produtos.aoColumns = [{
-                "data": 'ci_produto'
+        var generico = JSON.parse(JSON.stringify(dataTableConfig));
+        var produtos = {
+            dom: "<'row'<'btn-voltar col-md-4 col-xs-12'><'col-md-8'f>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+            "scrollY": 350,
+            "order": [
+                [1, "asc"]
+            ],
+            "aoColumns": [{
+                    "data": 'ci_produto'
+                },
+                {
+                    "data": 'nm_produto'
+                },
+                {
+                    "data": 'lbl_valor_venda'
+                }
+            ],
+            "columnDefs": [{
+                    "sWidth": "10%",
+                    "aTargets": [0]
+                },
+                {
+                    "sWidth": "70%",
+                    "aTargets": [1]
+                },
+                {
+                    "sWidth": "20%",
+                    "aTargets": [2]
+                },
+            ],
+            "fnRowCallback": function(nRow, aData, iDisplayIndex) {
+                $(nRow).attr("data-id", aData.ci_produto);
+                $('td:eq(0)', nRow).html("<img src='" + aData.img_produto +
+                    "' width='50px' height='10px' class='img-fluid' /> ");
+                return nRow;
             },
-            {
-                "data": 'nm_produto'
-            },
-            {
-                "data": 'lbl_valor_venda'
-            },
-        ]
-        produtos.order = [
-            [1, "asc"]
-        ];
-        produtos.pageLength = 5;
+            "fnInitComplete": function(e) {
+                $btn_voltar = $('.header_produtos').clone();
+                $btn_voltar.removeAttr('hidden');
+                $("#pnProdutos").find(".btn-voltar").html($btn_voltar.html());
+                $($btn_voltar).bootstrapMaterialDesign();
+            }
 
+        }
+        let merge = Object.assign(generico, produtos);
 
-        produtos.columnDefs = [{
-                "sWidth": "10%",
-                "aTargets": [0]
-            },
-            {
-                "sWidth": "70%",
-                "aTargets": [1]
-            },
-            {
-                "sWidth": "20%",
-                "aTargets": [2]
-            },
-        ];
-
-        produtos.fnRowCallback = function(nRow, aData, iDisplayIndex) {
-            $(nRow).attr("data-id", aData.ci_produto);
-            $('td:eq(0)', nRow).html("<img src='" + aData.img_produto +
-                "' width='50px' height='10px' class='img-fluid' /> ");
-            return nRow;
-        };
-        
-        return $("#tbProdutos").DataTable(produtos);
+        return $("#tbProdutos").DataTable(merge);
 
     }
+
+
 
 });
 </script>

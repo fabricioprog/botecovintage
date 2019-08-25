@@ -24,11 +24,11 @@ class Conta extends MY_Controller
         $this->template->load('template', 'conta',$data);
     }
 
-    public function mesa($id)
+    public function gerenciar($cd_conta)
     {   
-        $data['mesa_id'] = $id;
-        $data['categorias'] = $this->categoria_model->get_categorias();        
-        $data['conta_mesa_info'] = $this->conta_model->get_conta_aberta_by_mesa($id);
+        $data['conta_mesa_info'] = $this->conta_model->get_conta_aberta_by_mesa($cd_conta);
+        $data['mesa_id'] = $data['conta_mesa_info']->cd_mesa;
+        $data['categorias'] = $this->categoria_model->get_categorias();                
         $this->template->load('template', 'conta', $data);
     }
 
@@ -66,9 +66,8 @@ class Conta extends MY_Controller
     public function add_conta($id_mesa)
     {
         $date = new DateTime();        
-        $this->conta_model->add_conta($id_mesa, self::OCUPADO, $date->format('Y-m-d H:i:s'));
-        //TODO: Redirecionar para página de mesas ocupada com Categorias e produtos
-        redirect(base_url('mesas'));
+        $conta = $this->conta_model->add_conta($id_mesa, self::OCUPADO, $date->format('Y-m-d H:i:s'))->ci_conta;                
+        redirect(base_url('conta/gerenciar/').$conta);
     }
 
 }
