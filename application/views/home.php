@@ -6,7 +6,7 @@
 $(document).ready(function() {
 
     $('button').click(function(){
-        anima_confirma();
+        anima_confirma('primary',500,"Tudo certo! a jalklkf  s dfjsa d dadjaldalkd ldsd sa daldkjsdklsa ldlkfj fkl!");
     });
     
 });

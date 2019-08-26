@@ -2,13 +2,17 @@ $modalTitulo = $("#myModal").find("#modalTitulo");
 
 
 
-function anima_confirma() {
+function anima_confirma(tp_alert, delay, msg) {
     $alert = $('#alert');
-    $alert.finish()
-    $alert.css('top', 0).css('opacity', 0);
-    $alert.animate({ top: '40px', opacity: '1', }, 300)
-        .delay(2000)
-        .animate({ opacity: '0' }, 400);
+    $alert.find('.alert').removeClass().addClass('alert alert-' + tp_alert);
+    $alert.find('#alert-msg').text(msg);
+    $alert.css('display', 'none').finish();
+    $alert.css('top', -100).css('opacity', 0).css('display', 'block');
+    $alert.animate({ top: '10px', opacity: '1', }, 300)
+        .delay(delay)
+        .animate({ opacity: '0', top: -100 }, 1000)
+        .animate({ top: -500 }, 1)
+
 }
 
 

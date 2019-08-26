@@ -29,12 +29,6 @@
 </head>
 
 <body>
-    <div id="alert">
-        <div class="alert alert-success" role="alert">
-            This is a success alert with <a href="#" class="alert-link">an example link</a>. Give it a click if
-            you like.
-        </div>
-    </div>
     <div class="bmd-layout-container bmd-drawer-f-l bmd-drawer">
         <header class="bmd-layout-header">
             <div class="navbar navbar-light bg-faded">
@@ -44,7 +38,7 @@
                     <i class="fa fa-bars"></i>
                 </button>
                 <ul class="nav navbar-nav">
-                    <li class="nav-item">  </li>
+                    <li class="nav-item"> </li>
                 </ul>
             </div>
         </header>
@@ -69,7 +63,11 @@
     <script src="<?=base_url('')?>assets/js/template.js"></script>
 </body>
 </html>
-
+<div id="alert">
+    <div class="alert alert-success" role="alert">
+        <strong id="alert-msg"></strong>
+    </div>
+</div>
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
