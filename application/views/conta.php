@@ -9,6 +9,11 @@
     display: none;
 }
 
+.dataTables_scrollHeadInner,
+.dataTables_scrollHeadInner table {
+    width: 100% !important;
+}
+
 tbody tr {
     cursor: pointer;
 }
@@ -254,12 +259,10 @@ $(document).ready(function() {
                 console.log(res);
             },
             success: function(data) {
-                tb_produtos.clear().draw();
+                tb_produtos.clear();
                 tb_produtos.rows.add(data);
-                tb_produtos.columns.adjust().draw();
+                tb_produtos.draw();
             },
-        }).done(function() {
-            tb_produtos.columns.adjust().draw();
         });
 
     }
