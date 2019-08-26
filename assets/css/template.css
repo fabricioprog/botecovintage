@@ -37,7 +37,16 @@ fieldset {
     margin-bottom: 10px;
 }
 
-a:hover{
+#alert {
+    position: absolute;
+    top: 0px;
+    right: 5%;
+    margin-left: 5%;
+    opacity: 0;
+    z-index: 999;
+}
+
+a:hover {
     text-decoration: none;
 }
 
