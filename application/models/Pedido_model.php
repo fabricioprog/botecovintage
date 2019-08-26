@@ -7,9 +7,12 @@ class Pedido_model extends CI_Model
         parent::__construct();
     }
 
-    public function get_pedidos($cd_conta)
+    
+    public function get_pedidos($cd_conta, $somatorio = false)
     {
-        $sql = "select  prod.ci_produto,prod.nm_produto,
+        //Categoria que não se cobra 10%
+        $categoria_servico = 13;
+        $sql = "select  prod.ci_produto,prod.nm_produto, prod.cd_categoria,
         ped.quantidade,
         prod.valor_venda,
         (ped.quantidade * prod.valor_venda) as total,
@@ -18,6 +21,15 @@ class Pedido_model extends CI_Model
         from tb_pedido ped        
         inner join tb_produto prod on ped.cd_produto = prod.ci_produto
         where cd_conta = ?";
+        if($somatorio){
+            $sql = "select  coalesce(sum(total),0)::money soma,		
+            coalesce(round((sum(case when cd_categoria <> $categoria_servico then total else 0 end) *0.1),2),0)::money dez_porcento ,		
+            (coalesce(sum(total),0) + 
+             coalesce(round((sum(case when cd_categoria <> $categoria_servico then total else 0 end) *0.1),2),0))::money total
+            from ( $sql ) conta ";
+            return $this->db->query($sql, array($cd_conta))->row();
+        }
+        
         return $this->db->query($sql, array($cd_conta))->result();
     }
 

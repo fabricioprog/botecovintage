@@ -140,6 +140,13 @@ tbody tr {
                             </thead>
                         </table>
                     </div>
+                    <div class='col-12'>
+                        <span>
+                            <strong id="conta_soma"></strong> + 
+                            <strong id="conta_dez_porcento"></strong> = 
+                            <strong id="conta_total"></strong>
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -154,21 +161,6 @@ tbody tr {
         </button>
     </div>
 </div>
-
-
-
-
-
-<!--
-                        <div class="form-group">
-                            
-                            <label for="produto" class="bmd-label-floating">
-                                <i class="fa fa-calendar" aria-hidden="true"></i>
-                                Inínio
-                            </label>
-                            <input id="data" autocomplete="off" type="text" class="form-control" name="produto">
-                            <span class="bmd-help">diga a data</span>
-                        </div> -->
 
 <script>
 $(document).ready(function() {
@@ -242,8 +234,13 @@ $(document).ready(function() {
             },
             success: function(pedidos) {
                 tb_pedidos.clear();
-                tb_pedidos.rows.add(pedidos);
+                tb_pedidos.rows.add(pedidos.lista);
                 tb_pedidos.draw();
+                let somatorio = pedidos.somatorio;
+                $("#conta_soma").html(somatorio.soma);
+                $("#conta_dez_porcento").html(somatorio.dez_porcento);
+                $("#conta_total").html(somatorio.total);
+                anima_confirma('success', 1000, "Pedido Adicionado com Sucesso!!!");
             },
         });
 
@@ -276,10 +273,15 @@ $(document).ready(function() {
                 console.log("erro");
                 console.log(res);
             },
-            success: function(pedidos) {
+            success: function(pedidos) {                
                 tb_pedidos.clear();
-                tb_pedidos.rows.add(pedidos);
+                tb_pedidos.rows.add(pedidos.lista);
                 tb_pedidos.draw();
+                let somatorio = pedidos.somatorio;
+                $("#conta_soma").html(somatorio.soma);
+                $("#conta_dez_porcento").html(somatorio.dez_porcento);
+                $("#conta_total").html(somatorio.total);
+                
             },
         });
 

@@ -33,11 +33,13 @@ class Conta extends MY_Controller
     }
 
     public function get_pedidos_conta($cd_conta,$ajax=true){
-        $res = $this->pedido_model->get_pedidos($cd_conta);
+        $conta = new stdClass();
+        $conta->lista  = $this->pedido_model->get_pedidos($cd_conta);
+        $conta->somatorio = $this->pedido_model->get_pedidos($cd_conta,true);
         if($ajax){
-            echo json_encode($res);
+            echo json_encode($conta);
         }
-        return $res;
+        return $conta;
     }
     
 
