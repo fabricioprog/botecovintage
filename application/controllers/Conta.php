@@ -21,7 +21,7 @@ class Conta extends MY_Controller
 
     public function index()
     {           
-        $this->template->load('template', 'conta',$data);
+        $this->template->load('template', 'conta');
     }
 
     public function gerenciar($cd_conta)

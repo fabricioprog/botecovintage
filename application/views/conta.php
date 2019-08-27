@@ -70,7 +70,7 @@ tbody tr {
                         <label> <strong> Início : </strong> <?= $conta_mesa_info->dt_inicio ?></label><br>
                     </div>
                     <div class="col-md-6 align-self-center">
-                        <button type="button" class="btn btn-raised btn-success pull-right">
+                        <button id="btn-encerrar-conta" type="button" class="btn btn-raised btn-success pull-right">
                             <i class="fa fa-check" aria-hidden="true"></i>
                             Encerrar
                         </button>
@@ -78,11 +78,6 @@ tbody tr {
                             <i class="fa fa-file" aria-hidden="true"></i>
                             Fechar Conta
                         </button>
-                        <button type="button" class="btn btn-raised btn-info pull-right" style='margin-right:10px'>
-                            <i class="fa fa-plus" aria-hidden="true"></i>
-                            Cover
-                        </button>
-
                         <input id="cd_conta" type="hidden" value="<?= $conta_mesa_info->ci_conta;?>" />
                     </div>
                 </div>
@@ -96,7 +91,7 @@ tbody tr {
             <div class="card-body">
                 <div class="row" id="pnCategorias">
                     <?php foreach($categorias as $cat){  ?>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div data-id="<?= $cat->ci_categoria ?>" class="card btn btn-primary text-left btn-categoria">
                             <img class="card-img-top img-fluid rounded mx-auto d-block" src="<?= $cat->imagem ?>"
                                 alt="Card image cap" style="padding:10px 10px 0px 10px">
@@ -140,18 +135,32 @@ tbody tr {
                             </thead>
                         </table>
                     </div>
+                </div>
+                <div class="row" style='margin-top:10px'>
                     <div class='col-12'>
-                        <span>
-                            <strong id="conta_soma"></strong> + 
-                            <strong id="conta_dez_porcento"></strong> = 
-                            <strong id="conta_total"></strong>
-                        </span>
+                        <table class="table table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th><strong>Conta</strong></th>
+                                    <th><strong>10%</strong></th>
+                                    <th><strong>Total</strong></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td scope="row"><strong id="conta_soma"></strong></td>
+                                    <td><strong id="conta_dez_porcento"></strong></td>
+                                    <td><strong id="conta_total"></strong></td>
+                                </tr>
+                            </tbody>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<?= $this->load->view('modal/encerrar_conta.php',array("id"=>'md_encerrar_conta'),true); ?>
 
 <div class="header_produtos" hidden>
     <div class="form-group">
@@ -218,6 +227,10 @@ $(document).ready(function() {
         });
     });
 
+    $("#btn-encerrar-conta").click(function() {
+        abrir_modal('Encerrar Conta', '');
+    });
+
 
     $("#tbProdutos tbody").on('click', 'tr', function() {
         var pedido = {};
@@ -273,7 +286,7 @@ $(document).ready(function() {
                 console.log("erro");
                 console.log(res);
             },
-            success: function(pedidos) {                
+            success: function(pedidos) {
                 tb_pedidos.clear();
                 tb_pedidos.rows.add(pedidos.lista);
                 tb_pedidos.draw();
@@ -281,7 +294,6 @@ $(document).ready(function() {
                 $("#conta_soma").html(somatorio.soma);
                 $("#conta_dez_porcento").html(somatorio.dez_porcento);
                 $("#conta_total").html(somatorio.total);
-                
             },
         });
 
@@ -291,7 +303,7 @@ $(document).ready(function() {
     function montar_conta(dataTableConfig) {
         var generico = JSON.parse(JSON.stringify(dataTableConfig));
         var conta = {
-            "scrollY": "380px",
+            "scrollY": "310px",
             "searching": false,
             "aoColumns": [{
                     "data": 'nm_produto'
