@@ -78,8 +78,7 @@ $(document).ready(function() {
     var add_prod = $('#md_produto').html();
 
     $(document).on('click', '#btnAdd', function(e) {
-        $('form[name="md_produto"] input[name="id"]').val("").trigger('change');
-        console.log($('form[name="md_produto"]'));
+        $('form[name="md_produto"] input[name="id"]').val("").trigger('change');        
         abrir_modal("Adicionar Produto", add_prod);
         aplicar_js();
         return false;

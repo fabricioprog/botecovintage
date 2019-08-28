@@ -153,14 +153,13 @@ tbody tr {
                                     <td><strong id="conta_total"></strong></td>
                                 </tr>
                             </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<?= $this->load->view('modal/encerrar_conta.php',array("id"=>'md_encerrar_conta'),true); ?>
 
 <div class="header_produtos" hidden>
     <div class="form-group">
@@ -170,6 +169,8 @@ tbody tr {
         </button>
     </div>
 </div>
+
+<?= $this->load->view('modal/encerrar_conta.php',array("id"=>'md_encerrar_conta'),true); ?>
 
 <script>
 $(document).ready(function() {
@@ -211,6 +212,9 @@ $(document).ready(function() {
     });
 
 
+    $()
+
+
     $(document).on("click", ".btn-categorias", function() {
         $('#pnProdutos').fadeOut('10', function() {
             $('#pnCategorias').fadeIn('10', function() {
@@ -228,7 +232,7 @@ $(document).ready(function() {
     });
 
     $("#btn-encerrar-conta").click(function() {
-        abrir_modal('Encerrar Conta', '');
+        abrir_modal('Encerrar Conta', $("#md_encerrar_conta"));
     });
 
 

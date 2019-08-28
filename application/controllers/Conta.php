@@ -63,7 +63,11 @@ class Conta extends MY_Controller
         return $res;
     }
 
+    public function fechar_conta(){}
     
+    public function encerrar_conta(){}
+
+    public function remover_conta(){}        
 
     public function add_conta($id_mesa)
     {
