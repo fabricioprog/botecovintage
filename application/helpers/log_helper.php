@@ -25,6 +25,7 @@ if ( ! function_exists('alert')) {
 	}
 }
 
+
 if ( ! function_exists('send_alert')) {
 	function send_alert( $message , $timer = null , $type='danger' , $icon='exclamation-triangle'){
 		$data = new stdClass();

@@ -8,5 +8,10 @@ class Home extends MY_Controller {
 		$this->template->load('template', 'home');
 	}
 
+	public function direciona(){
+		send_alert("ola",4000,'danger');
+		redirect(base_url(''));
+	}
+
 
 }
