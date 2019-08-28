@@ -63,11 +63,16 @@ class Conta extends MY_Controller
         return $res;
     }
 
+    //Imprimir Boleto de pagamento
     public function fechar_conta(){}
     
-    public function encerrar_conta(){}
+    public function encerrar_conta($cd_conta){        
+        $conta = $this->pedido_model->get_pedidos($cd_conta,true);
+        $this->conta_model->encerrar_conta($cd_conta,$conta->valor_total);
+        //TODO: Criar uma confirmação para o usuário
+        redirect(base_url('mesas'));
+    }
 
-    public function remover_conta(){}        
 
     public function add_conta($id_mesa)
     {

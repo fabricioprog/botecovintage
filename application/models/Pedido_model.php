@@ -23,7 +23,9 @@ class Pedido_model extends CI_Model
         where cd_conta = ?";
         if($somatorio){
             $sql = "select  coalesce(sum(total),0)::money soma,		
-            coalesce(round((sum(case when cd_categoria <> $categoria_servico then total else 0 end) *0.1),2),0)::money dez_porcento ,		
+            coalesce(round((sum(case when cd_categoria <> $categoria_servico then total else 0 end) *0.1),2),0)::money dez_porcento ,
+            (coalesce(sum(total),0) + 
+             coalesce(round((sum(case when cd_categoria <> $categoria_servico then total else 0 end) *0.1),2),0)) valor_total,		
             (coalesce(sum(total),0) + 
              coalesce(round((sum(case when cd_categoria <> $categoria_servico then total else 0 end) *0.1),2),0))::money total
             from ( $sql ) conta ";

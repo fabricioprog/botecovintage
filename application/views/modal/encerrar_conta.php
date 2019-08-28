@@ -7,5 +7,5 @@
             <option value='2'>Credito</option>
             <option value='3'>Dinheiro</option>            
         </select>
-    </div>
+    </div>    
 </div>

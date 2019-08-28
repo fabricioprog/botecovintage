@@ -47,11 +47,7 @@ tbody tr {
 <div class="row">
     <div class="col-md-12">
         <p class="h4 text-primary">
-            <i class="fa fa-th-large"></i> Mesa <?= $mesa_id ?>
-            <button id="btnFinalizar" type="button" class="btn btn-md btn-outline-success  btn-rounded pull-right">
-                <i class="fa fa-check" aria-hidden="true"></i>
-                </span>
-            </button>
+            <i class="fa fa-th-large"></i> Mesa <?= $mesa_id ?>            
             <a href="<?= base_url('mesas') ?>" id="btnVoltar"><span class="pull-right">
                     <button type="button" class="btn btn-md btn-outline-success pull-right">
                         <i class="fa fa-share fa-flip-horizontal" aria-hidden="true"></i></span>
@@ -176,6 +172,8 @@ tbody tr {
 $(document).ready(function() {
     jQuery.datetimepicker.setLocale('pt-BR');
 
+    $modal = $("#myModal");
+
 
     var conta = $("#cd_conta").val();
 
@@ -233,6 +231,11 @@ $(document).ready(function() {
 
     $("#btn-encerrar-conta").click(function() {
         abrir_modal('Encerrar Conta', $("#md_encerrar_conta"));
+    });
+
+    $modal.on('click','#btn_confirmar',function(){
+        let cd_conta = $("#cd_conta").val();
+        window.location = '<?= base_url ('conta/encerrar_conta/')?>'+cd_conta;        
     });
 
 
