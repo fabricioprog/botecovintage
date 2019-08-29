@@ -31,15 +31,9 @@ a:hover{
     <div class="col-md-12">
         <p class="h4 text-primary">
             <i class="fa fa-th-large"></i> Gerencias Mesas
-            <button id="btnAdd" type="button" class="btn btn-md btn-outline-success  btn-rounded pull-right">
-                <i class="fa fa-plus" aria-hidden="true"></i>
-                </span>
-            </button>
-            <a href="<?= base_url('produtos') ?>" id="btnVoltar"><span class="pull-right">
-                    <button type="button" class="btn btn-md btn-outline-success pull-right">
-                        <i class="fa fa-share fa-flip-horizontal" aria-hidden="true"></i></span>
-                </button>
-            </a>
+            <button id="btnFecharDia" type="button" class="btn btn-md btn-outline-success  btn-rounded pull-right">                
+                Relatório
+            </button>            
         </p>
     </div>
 </div>
@@ -51,12 +45,13 @@ a:hover{
             foreach($mesas as $mesa){  
                 $status = "livre";                
                 $url = base_url("mesas/gerenciar/").$mesa;
+                $lbl_mesa = "Livre";
                 if(isset($mesas_indexadas[$mesa])){
                     $url = base_url("conta/gerenciar/").$mesas_indexadas[$mesa]->codigo;
                     switch ($mesas_indexadas[$mesa]->status){
-                        case 2: $status = "ocupado";  break;
-                        case 3: $status = "reservado";break;
-                        case 4: $status = "bloqueado";break;
+                        case 2: $status = "ocupado"; $lbl_mesa = "Ocupada";  break;
+                        case 3: $status = "reservado"; $lbl_mesa = "Reservada"; ;break;
+                        case 4: $status = "bloqueado"; $lbl_mesa = "Bloqueada"; ;break;
                     }
                 }
             
@@ -66,7 +61,7 @@ a:hover{
                 <div class="card btn text-left prod <?= $status ?>">
                     <div class="card-body text-center" data-id="<?=$mesa?>">
                         <h6 class="card-title">Mesa <?= $mesa ?></h6>
-                        <p class="card-text">Livre</p>
+                        <p class="card-text"><?=$lbl_mesa?></p>
                     </div>
                 </div>
                 </a>

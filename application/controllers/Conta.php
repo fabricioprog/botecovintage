@@ -100,4 +100,8 @@ class Conta extends MY_Controller
         
     }
 
+    public function get_conta_periodo(){
+        
+    }
+
 }
