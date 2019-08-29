@@ -1,6 +1,6 @@
 <?php 
 function trace($obj){
-    return "<pre> ".print_r($obj,false)." </pre>";
+    return "<pre> ".print_r($obj)." </pre>";
 }
 
 function get_dinheiro($num,$rs=false){    

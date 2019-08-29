@@ -116,7 +116,7 @@ tbody tr {
         </div>
     </div>
     <div class="col-md-5 pnConta">
-        <div class="card">
+        <div class="card">  
             <div class="card-body">
                 <div class="row">
                     <div class="col-12">

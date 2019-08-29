@@ -28,8 +28,17 @@ class Conta extends MY_Controller
     {   
         $data['conta_mesa_info'] = $this->conta_model->get_conta_aberta_by_mesa($cd_conta);
         $data['mesa_id'] = $data['conta_mesa_info']->cd_mesa;
-        $data['categorias'] = $this->categoria_model->get_categorias();                
-        $this->template->load('template', 'conta', $data);
+        if(!empty($data['conta_mesa_info']) && $data['conta_mesa_info']->cd_status == self::OCUPADO){                    
+            $data['categorias'] = $this->categoria_model->get_categorias();
+            $this->template->load('template', 'conta', $data);
+        }elseif( !empty($data['conta_mesa_info']) && $data['conta_mesa_info']->cd_status == self::RESERVADO) {
+            $data['ci_conta'] = $data['conta_mesa_info']->ci_conta;            
+            $this->template->load('template', 'mesa',$data);            
+        }else{
+            $this->template->load('template', 'mesas');            
+            //TODO: alerta de conta inválida
+        }                
+        
     }
 
     public function get_pedidos_conta($cd_conta,$ajax=true){
@@ -79,6 +88,16 @@ class Conta extends MY_Controller
         $date = new DateTime();        
         $conta = $this->conta_model->add_conta($id_mesa, self::OCUPADO, $date->format('Y-m-d H:i:s'))->ci_conta;                
         redirect(base_url('conta/gerenciar/').$conta);
+    }
+    public function ocupar_conta($cd_conta){
+        if($this->conta_model->get_conta_aberta_by_mesa($cd_conta)->cd_status == self::RESERVADO){
+            $date = new DateTime();        
+            $this->conta_model->atualizar_status_conta($cd_conta,self::OCUPADO,$date->format('Y-m-d H:i:s'));            
+            redirect(base_url('conta/gerenciar/').$cd_conta);
+        }else{
+            //TODO: Mostrar erro para usuário informando que a conta não está reservada para ser ocupada
+        }
+        
     }
 
 }

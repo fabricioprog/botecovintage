@@ -54,81 +54,35 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-4">
-                        <a href="<?=base_url('conta/add_conta/').$mesa_id ?>">
+                        <?php $url_abrir_conta = isset($ci_conta) ? "conta/ocupar_conta/$ci_conta" : "conta/add_conta/$mesa_id"; ?>
+                        <a href="<?=base_url($url_abrir_conta) ?>">
                             <button type="button" id="btn-ocupar" class="btn btn-md btn-block ocupado">
                                 <i class="fa fa-sign-in fa-lg"></i> Abrir
                             </button>
                         </a>
                     </div>
+                    <?php if(!isset($ci_conta)){ ?>
                     <div class="col-md-4">
-                        <button type="button" id="btn-reservar" class="btn btn-md btn-block reservado">
-                            <i class="fa fa-clock-o fa-lg"></i> Reservar
-                        </button>
+                        <a href="<?= base_url('mesas/add_reserva/').$mesa_id ?>">
+                            <button type="button" id="btn-reservar" class="btn btn-md btn-block reservado">
+                                <i class="fa fa-clock-o fa-lg"></i> Reservar
+                            </button>
+                        </a>
                     </div>
+                    <?php }else{ ?>
                     <div class="col-md-4">
-                        <button type="button" id="btn-bloquear" class="btn btn-md btn-block bloqueado">
-                            <i class="fa fa-times-circle-o fa-lg"></i> Bloquear
-                        </button>
+                        <a href="<?= base_url('mesas/remover_reserva/').$ci_conta ?>">
+                            <button type="button" id="btn-bloquear" class="btn btn-md btn-block bloqueado">
+                                <i class="fa fa-times-circle-o fa-lg"></i> Remover Reserva
+                            </button>
+                        </a>
                     </div>
+                    <?php } ?>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<form action="<?=base_url('mesas/add_reserva') ?>" method="POST">
-<input type="hidden" name="cd_mesa" value="<?=$mesa_id?>">
-    <div class="row pnForm">
-        <div class="col-md-12">
-            <div class="card cards" id="card-reservar">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <p class="g4 h4 text-primary">
-                                <i class="fa fa-clock-o fa-lg"></i> Reservar Mesa
-                            </p>
-                        </div>
-                        <div class='col-md-9'>
-                            <div class="form-group">
-                                <label for="cliente" class="bmd-label-floating">Nome do Cliente</label>
-                                <input type="text" class="form-control" name="nm_cliente">
-                                <span class="bmd-help">Digite o nome do Cliente</span>
-                            </div>
-                        </div>
-                        <div class='col-md-3'>
-                            <div class="form-group">
-                                <label for="cliente" class="bmd-label-floating">Mesas</label>
-                                <input type="text" class="form-control" name="qtd_mesas">
-                                <span class="bmd-help">Quantidade de mesas reservadas</span>
-                            </div>
-                        </div>
-                        <div class='col-md-4'>
-                            <div class="form-group">
-                                <label for="contato_1" class="bmd-label-floating">Contato 1</label>
-                                <input type="text" class="form-control" name="contato_1">
-                                <span class="bmd-help">DIgite aqui um telefone pra contato</span>
-                            </div>
-                        </div>
-                        <div class='col-4'>
-                            <div class="form-group">
-                                <label for="contato_2" class="bmd-label-floating">Contato 2</label>
-                                <input type="text" class="form-control" name="contato_2">
-                                <span class="bmd-help">DIgite aqui um telefone pra contato</span>
-                            </div>
-                        </div>
-                        <div class='col-4'>
-                            <div class="form-group align-bottom">
-                                <button type="submit" id="btn-bloquear" class="btn  btn-block btn-adjust livre">
-                                    Reservar Agora </span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-</form>
 <script>
 $(document).ready(function() {
     $("#btn-reservar").click(function() {
