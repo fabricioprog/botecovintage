@@ -1,7 +1,8 @@
 <style>
-a:hover{
-    text-decoration:none;
+a:hover {
+    text-decoration: none;
 }
+
 .livre {
     background-color: rgba(205, 254, 218, 1);
 }
@@ -18,8 +19,8 @@ a:hover{
     background-color: rgba(254, 205, 205, 1)
 }
 
-a:hover{
-    text-decoration:none;
+a:hover {
+    text-decoration: none;
 }
 
 #btnAdd,
@@ -31,15 +32,17 @@ a:hover{
     <div class="col-md-12">
         <p class="h4 text-primary">
             <i class="fa fa-th-large"></i> Gerencias Mesas
-            <button id="btnFecharDia" type="button" class="btn btn-md btn-outline-success  btn-rounded pull-right">                
-                Relatório
-            </button>            
+            <a href="<?= base_url('conta/relatorio'); ?>">
+                <button id="btnFecharDia" type="button" class="btn btn-md btn-outline-success  btn-rounded pull-right">
+                    Relatório
+                </button>
+            </a>
         </p>
     </div>
 </div>
 <div class="card">
     <div class="card-body">
-        <div class="row">            
+        <div class="row">
             <?php 
             $mesas = array(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,);
             foreach($mesas as $mesa){  
@@ -57,13 +60,13 @@ a:hover{
             
             ?>
             <div class="col-md-3">
-            <a href="<?= $url ?>" >
-                <div class="card btn text-left prod <?= $status ?>">
-                    <div class="card-body text-center" data-id="<?=$mesa?>">
-                        <h6 class="card-title">Mesa <?= $mesa ?></h6>
-                        <p class="card-text"><?=$lbl_mesa?></p>
+                <a href="<?= $url ?>">
+                    <div class="card btn text-left prod <?= $status ?>">
+                        <div class="card-body text-center" data-id="<?=$mesa?>">
+                            <h6 class="card-title">Mesa <?= $mesa ?></h6>
+                            <p class="card-text"><?=$lbl_mesa?></p>
+                        </div>
                     </div>
-                </div>
                 </a>
             </div>
             <?php } ?>

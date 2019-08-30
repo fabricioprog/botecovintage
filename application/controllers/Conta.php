@@ -100,6 +100,13 @@ class Conta extends MY_Controller
         
     }
 
+    public function relatorio(){
+        $inputs   = $this->input->post();
+        //TODO: Definir rotina para contabilizar todos os pedidos de acordo com intervalo
+        $this->template->load('template', 'relatorio_contas');    
+
+    }
+
     public function get_conta_periodo(){
         
     }
