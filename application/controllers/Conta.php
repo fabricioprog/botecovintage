@@ -101,9 +101,17 @@ class Conta extends MY_Controller
     }
 
     public function relatorio(){
-        $inputs   = $this->input->post();
+        $inputs   = $this->input->post(); 
+        $data = array();       
+        if(!empty($inputs)){
+            $data['relatorio_detalhado'] = $this->conta_model->get_contas_periodo(1,1);
+            $data['relatorio_geral'] = $this->conta_model->get_contas_periodo(1,1,true);            
+        }
+
         //TODO: Definir rotina para contabilizar todos os pedidos de acordo com intervalo
-        $this->template->load('template', 'relatorio_contas');    
+        $this->template->load('template', 'relatorio_contas',$data);    
+        
+        
 
     }
 

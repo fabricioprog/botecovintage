@@ -4,7 +4,7 @@
 }
 
 .pn-rel-total {
-    min-height: 190px;
+    min-height: 230px;
 }
 </style>
 <div class="row">
@@ -41,7 +41,7 @@
                             </div>
                         </div>
                         <div class="col-md-12 align-self-center">
-                            <button type="button" class="btn btn-raised btn-block  btn-success">GErar</button>
+                            <button type="submit" class="btn btn-raised btn-block  btn-success">GErar</button>
                         </div>
                     </div>
                 </form>
@@ -54,11 +54,14 @@
                 <div class="row">
                     <div class="col-md-6">
                         <p> <strong> Faturamento Total </strong> R$ 00,00 </p>
-                        <p> <strong> Cover: </strong> R$ 00,00 </p>
+                        <p> <strong> Em Débito </strong> R$ 00,00 </p>
+                        <p> <strong> Em Dinheiro </strong> R$ 00,00 </p>
                         <p> <strong> Contas Encerradas: </strong> 123123 </p>
-                        <p> <strong> Permanencia Média </strong> 00:00 </p>
+                        <p class='text-success'> <strong> Contas Abertas: </strong> 0 </p>
                     </div>
                     <div class="col-md-6">
+                        <p> <strong> Cover: </strong> R$ 00,00 </p>
+                        <p> <strong> Permanencia Média : </strong> 00:00 </p>
                         <p> <strong> Mais Vendido : <br> </strong> Produto X </p>
                         <p> <strong> Menos Vendido : <br> </strong> Produto Y</p>
                     </div>
@@ -67,6 +70,7 @@
         </div>
     </div>
 </div>
+<?php if(isset($relatorio_detalhado)){ ?>
 <div class="row pn-relatorio">
     <div class="col-md-12">
         <div class="card">
@@ -74,43 +78,28 @@
                 <table class='table table-striped'>
                     <thead>
                         <tr>
-                            <th width="60%">Produto</th>
-                            <th width="10%" >qtd</th>
-                            <th width="15%" >unt</th>                            
-                            <th width="15%" >Total</th>
+                            <th width="50%">Produto</th>
+                            <th width="10%">Qtd</th>                            
+                            <th width="15%">Unidade</th>                            
+                            <th width="15%">Total </th>
                         </tr>
                     </thead>
                     <tbody>
+                        <?php foreach($relatorio_detalhado as $prod){ ?>
                         <tr>
-                            <td>1</td>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
+                            <td><?= $prod->nm_produto ?></td>
+                            <td><?= $prod->quantidade ?></td>
+                            <td><?= $prod->lbl_valor_venda ?></td>                            
+                            <td><?= $prod->lbl_total ?></td>
                         </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Jacob</td>
-                            <td>tdornton</td>
-                            <td>@fat</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
-                        </tr>
+                        <?php } ?>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
+<?php } ?>
 
 
 

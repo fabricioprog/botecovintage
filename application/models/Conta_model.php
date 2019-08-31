@@ -50,23 +50,27 @@ class Conta_model extends CI_Model
         }
     }
 //TODO: Adicionar intervalo de tempo para pesquisa
-    public function get_conta_periodo($dt_inicio,$dt_fim,$total = false){
-        $sql = "select 
+    public function get_contas_periodo($dt_inicio,$dt_fim,$total = false){
+        $sql = "select                 
                 prod.ci_produto,
                 prod.nm_produto,
                 prod.valor_venda,		
+                prod.valor_venda:: money lbl_valor_venda,                                
                 sum(ped.quantidade) quantidade, 
                 sum(prod.valor_venda*ped.quantidade)  total,
+                sum(prod.valor_venda*ped.quantidade)::money  lbl_total,
                 sum( case when prod.cd_categoria <> 13 then (prod.valor_venda*ped.quantidade)*0.1 else 0 end  ) dez_porcento,
-                (sum(prod.valor_venda*ped.quantidade)+ sum( case when prod.cd_categoria <> 13 then (prod.valor_venda*ped.quantidade)*0.1 else 0 end  ) ) com_dez_porcento
+                sum( case when prod.cd_categoria <> 13 then (prod.valor_venda*ped.quantidade)*0.1 else 0 end  )::money lbl_dez_porcento,
+                (sum(prod.valor_venda*ped.quantidade)+ sum( case when prod.cd_categoria <> 13 then (prod.valor_venda*ped.quantidade)*0.1 else 0 end  ) ) com_dez_porcento,
+                (sum(prod.valor_venda*ped.quantidade)+ sum( case when prod.cd_categoria <> 13 then (prod.valor_venda*ped.quantidade)*0.1 else 0 end  ) )::money lbl_com_dez_porcento
                 from tb_pedido ped
         inner join tb_produto prod on prod.ci_produto = ped.cd_produto
         inner join tb_conta c on ped.cd_conta = c.ci_conta
         where c.cd_status = 5 /* adiciona intervalo de tempo */
-        group by 1,2;";
+        group by 1,2 ";
         
         if($total){
-            $sql = "select sum(total) total ,sum(com_dez_porcento) com_dez_porcento from ($sql) conta ";
+            $sql = "select sum(total)::money total ,sum(com_dez_porcento)::money com_dez_porcento from ($sql) conta ";
         }
         
         return $this->db->query($sql)->result();

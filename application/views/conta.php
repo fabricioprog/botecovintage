@@ -1,9 +1,8 @@
 <style>
-#pnCategorias {}
-
 .tb-body {
     padding: 10px 0px 10px 0px;
 }
+
 
 #pnProdutos {
     display: none;
@@ -18,15 +17,12 @@ tbody tr {
     cursor: pointer;
 }
 
-#tbProdutos,
-#tbConta {
+#tbProdutos {
     width: 100%;
-    max-height: 411px;
 }
 
-.pnConta,
-.pnCategoria {
-    margin-top: 10px;
+#tbConta {
+    width: 100%;
 }
 
 
@@ -56,35 +52,39 @@ tbody tr {
             </a>
         </p>
     </div>
+
 </div>
+
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-7">
         <div class="card">
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
                         <label> <strong> Código : </strong> <?= $conta_mesa_info->ci_conta ?></label><br>
                         <label> <strong> Início : </strong> <?= $conta_mesa_info->dt_inicio ?></label><br>
+                        <div class="checkbox">
+                            <label style="color:black">
+                                <input name="fl_dez_porcento" type="checkbox" checked> 10%
+                            </label>
+                        </div>
                     </div>
-                    <div class="col-md-6 align-self-center">
-                        <button id="btn-encerrar-conta" type="button" class="btn btn-raised btn-success pull-right">
-                            <i class="fa fa-check" aria-hidden="true"></i>
-                            Encerrar
-                        </button>
-                        <button type="button" class="btn btn-raised btn-info pull-right" style='margin-right:10px'>
+                    <div class="col-md-6">
+                        <button type="button" class="btn btn-raised btn-info btn-block pull-right">
                             <i class="fa fa-file" aria-hidden="true"></i>
                             Fechar Conta
+                        </button>
+                        <button id="btn-encerrar-conta" type="button"
+                            class="btn btn-raised btn-block btn-success pull-right">
+                            <i class="fa fa-check" aria-hidden="true"></i>
+                            Encerrar
                         </button>
                         <input id="cd_conta" type="hidden" value="<?= $conta_mesa_info->ci_conta;?>" />
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-7 pnCategoria">
-        <div class="card">
+        <div class="card" style="margin-top:10px">
             <div class="card-body">
                 <div class="row" id="pnCategorias">
                     <?php foreach($categorias as $cat){  ?>
@@ -157,7 +157,6 @@ tbody tr {
         </div>
     </div>
 </div>
-
 <div class="header_produtos" hidden>
     <div class="form-group">
         <button type="button" class="btn btn-block btn-categorias btn-raised btn-info">
@@ -190,15 +189,15 @@ $(document).ready(function() {
         }
     }
 
-    att_produtos(5);
-
     var tb_produtos = montar_produtos(dataTableConfig);
     var tb_pedidos = montar_conta(dataTableConfig);
 
-
-
-
     att_conta(conta);
+
+
+    $('input[name="fl_dez_porcento"]').change(function(){
+        console.log($(this).is(':checked'));
+    });
 
 
     $(".btn-categoria").click(function() {
@@ -236,10 +235,8 @@ $(document).ready(function() {
 
     $modal.on('click', '#btn_confirmar', function() {
         let cd_conta = $("#cd_conta").val();
-        window.location = '<?= base_url ('
-        conta / encerrar_conta / ')?>' + cd_conta;
+        window.location = "<?= base_url ('conta/encerrar_conta/ ')?>" + cd_conta;
     });
-
 
     $("#tbProdutos tbody").on('click', 'tr', function() {
         var pedido = {};
@@ -267,6 +264,18 @@ $(document).ready(function() {
         });
 
     });
+
+    function calcula_conta(soma, dez_porcento, fl_dez_porcento) {
+        if (fl_dez_porcento) {
+            $("#conta_soma").html(somatorio.soma);
+            $("#conta_dez_porcento").html(somatorio.dez_porcento);
+            $("#conta_total").html(somatorio.total);
+        } else {
+            $("#conta_soma").html(somatorio.soma);
+            $("#conta_dez_porcento").html('R$ 00,00');
+            $("#conta_total").html(somatorio.soma);
+        }
+    }
 
     function att_produtos(categoria) {
         $.ajax({
@@ -312,7 +321,7 @@ $(document).ready(function() {
     function montar_conta(dataTableConfig) {
         var generico = JSON.parse(JSON.stringify(dataTableConfig));
         var conta = {
-            "scrollY": "310px",
+            "scrollY": "450px",
             "searching": false,
             "aoColumns": [{
                     "data": 'nm_produto'
