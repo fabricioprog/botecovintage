@@ -18,7 +18,7 @@ class Mesas extends MY_Controller
         
     }
 
-    public function index(){    
+    public function index(){        
         $mesas_status = $this->conta_model->get_mesas_status();          
         $mesas_indexadas = array();
         foreach($mesas_status as $ms){            

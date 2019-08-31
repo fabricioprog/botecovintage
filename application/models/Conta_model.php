@@ -18,7 +18,7 @@ class Conta_model extends CI_Model
     {
         $sql = "select
                     ci_conta, cd_mesa, cd_status,
-                    TO_CHAR(dt_inicio, 'DD/MM/YYYY HH:mm:SS') dt_inicio,
+                    TO_CHAR(dt_inicio, 'DD/MM/YYYY HH:MI:SS') dt_inicio,
                     TO_CHAR(dt_fim, 'DD/MM/YYYY HH:mm:SS') dt_fim, nr_total
                     from tb_conta
                     where cd_status NOT IN(1,5) and dt_inicio is not null and dt_fim is null and ci_conta = ?

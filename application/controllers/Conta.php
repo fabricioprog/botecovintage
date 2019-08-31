@@ -28,7 +28,8 @@ class Conta extends MY_Controller
     {   
         $data['conta_mesa_info'] = $this->conta_model->get_conta_aberta_by_mesa($cd_conta);
         $data['mesa_id'] = $data['conta_mesa_info']->cd_mesa;
-        if(!empty($data['conta_mesa_info']) && $data['conta_mesa_info']->cd_status == self::OCUPADO){                    
+        if(!empty($data['conta_mesa_info']) && $data['conta_mesa_info']->cd_status == self::OCUPADO){  
+            trace()                  
             $data['categorias'] = $this->categoria_model->get_categorias();
             $this->template->load('template', 'conta', $data);
         }elseif( !empty($data['conta_mesa_info']) && $data['conta_mesa_info']->cd_status == self::RESERVADO) {

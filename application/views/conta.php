@@ -47,8 +47,9 @@ tbody tr {
 <div class="row">
     <div class="col-md-12">
         <p class="h4 text-primary">
-            <i class="fa fa-th-large"></i> Mesa <?= $mesa_id ?>            
-            <a href="<?= base_url('mesas') ?>" id="btnVoltar"><span class="pull-right">
+            <i class="fa fa-th-large"></i> Mesa <?= $mesa_id ?>
+            <a href="<?= base_url('mesas') ?>" id="btnVoltar">
+                <span class="pull-right">
                     <button type="button" class="btn btn-md btn-outline-success pull-right">
                         <i class="fa fa-share fa-flip-horizontal" aria-hidden="true"></i></span>
                 </button>
@@ -116,7 +117,7 @@ tbody tr {
         </div>
     </div>
     <div class="col-md-5 pnConta">
-        <div class="card">  
+        <div class="card">
             <div class="card-body">
                 <div class="row">
                     <div class="col-12">
@@ -233,9 +234,10 @@ $(document).ready(function() {
         abrir_modal('Encerrar Conta', $("#md_encerrar_conta"));
     });
 
-    $modal.on('click','#btn_confirmar',function(){
+    $modal.on('click', '#btn_confirmar', function() {
         let cd_conta = $("#cd_conta").val();
-        window.location = '<?= base_url ('conta/encerrar_conta/')?>'+cd_conta;        
+        window.location = '<?= base_url ('
+        conta / encerrar_conta / ')?>' + cd_conta;
     });
 
 
