@@ -1,6 +1,10 @@
 $modalTitulo = $("#myModal").find("#modalTitulo");
 
 
+$(document).on('hidden.bs.modal' ,'#myModal' , function (e) {    
+    $(this).off('click','#btn_confirmar');
+    modal_set_confirmar('Salvar');
+  });
 
 function anima_confirma(tp_alert, delay, msg) {
     $alert = $('#alert');
@@ -16,13 +20,17 @@ function anima_confirma(tp_alert, delay, msg) {
 
 }
 
+function modal_set_confirmar(texto){
+    $("#myModal").find('#btn_confirmar').text(texto);
+}
 
-
-function abrir_modal(titulo, conteudo) {
+function abrir_modal(titulo, conteudo, atualiza_dom) {
     $("MyModal").find("#modalCorpo").html("");
-    $("#myModal").find("#modalTitulo").text(titulo);
+    $("#myModal").find("#modalTitulo").html(titulo);
     $("#modalCorpo").html(conteudo);
     $("#modalCorpo").find('form').removeAttr('hidden');
-    $(conteudo).bootstrapMaterialDesign();
+    if(atualiza_dom){
+        $(conteudo).bootstrapMaterialDesign();
+    }
     $("#myModal").modal();
 }

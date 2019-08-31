@@ -63,7 +63,7 @@ return canvas.toDataURL();
 $(document).ready(function() {
     var add_cat = $('#md_categoria').html();
     $(document).on('click', '#btnAdd', function(e) {
-        abrir_modal("Adicionar Nova Categoria", add_cat);
+        abrir_modal("Adicionar Nova Categoria", add_cat,true);
         return false;
     });
 

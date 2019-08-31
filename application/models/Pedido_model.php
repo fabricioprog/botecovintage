@@ -46,7 +46,20 @@ class Pedido_model extends CI_Model
     public function update_pedido($cd_conta, $cd_produto, $quantidade)
     {
         $sql = "UPDATE tb_pedido set quantidade = ? where cd_conta = ? and cd_produto = ?";
-        $this->db->query($sql, array($quantidade, $cd_conta, $cd_produto));
+        $this->db->query($sql, array($quantidade, $cd_conta, $cd_produto));        
+    }
+
+    public function remove_produto_conta($cd_produto,$cd_conta){
+        $sql = "delete from tb_pedido where cd_produto = ? and cd_conta = ?";
+        $this->db->query($sql,array($cd_produto,$cd_conta));
+
+    }
+
+    public function get_conta_produto($cd_conta,$cd_produto){
+        $sql = "select ped.* from tb_pedido ped
+                inner join tb_conta c on c.ci_conta = ped.cd_conta
+                where c.ci_conta = ? and ped.cd_produto  = ? and c.cd_status = 2";
+       return $this->db->query($sql,array($cd_conta,$cd_produto))->row();         
     }
 
     public function add_pedido($cd_conta, $cd_produto)

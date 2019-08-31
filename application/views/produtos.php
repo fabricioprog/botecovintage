@@ -79,14 +79,14 @@ $(document).ready(function() {
 
     $(document).on('click', '#btnAdd', function(e) {
         $('form[name="md_produto"] input[name="id"]').val("").trigger('change');        
-        abrir_modal("Adicionar Produto", add_prod);
+        abrir_modal("Adicionar Produto", add_prod,true);
         aplicar_js();
         return false;
     });
 
     $(document).on('click', '.prod', function() {
         $('form[name="md_produto"] input[name="id"]').val($(this).data('id')).trigger('change');
-        abrir_modal("Editar Produto", add_prod);
+        abrir_modal("Editar Produto", add_prod,true);
         return false;
     });
 

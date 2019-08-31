@@ -72,6 +72,29 @@ class Conta extends MY_Controller
         return $res;
     }
 
+
+    public function remover_produto_conta($produto,$cd_conta,$ajax=true){
+        $ped = $this->pedido_model->get_conta_produto($cd_conta,$produto);
+        
+        if(!empty($ped)){            
+            if($ped->quantidade>1){                                
+                $this->pedido_model->update_pedido($ped->cd_conta,$ped->cd_produto,--$ped->quantidade);
+            }else{                
+                $this->pedido_model->remove_produto_conta($ped->cd_produto,$ped->cd_conta);
+            }
+            $res= $this->get_pedidos_conta($ped->cd_conta,false);
+            if($ajax){
+               echo json_encode($res);
+            }
+            return $res;
+        }else{
+            //TODO: Mensagem de alerta informando que conta e produto são inválidos
+            return false;
+        }
+
+
+    }
+
     //Imprimir Boleto de pagamento
     public function fechar_conta(){}
     
@@ -109,14 +132,8 @@ class Conta extends MY_Controller
         }
 
         //TODO: Definir rotina para contabilizar todos os pedidos de acordo com intervalo
-        $this->template->load('template', 'relatorio_contas',$data);    
-        
-        
+        $this->template->load('template', 'relatorio_contas',$data); 
 
-    }
-
-    public function get_conta_periodo(){
-        
-    }
+    }    
 
 }

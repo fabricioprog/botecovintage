@@ -195,7 +195,7 @@ $(document).ready(function() {
     att_conta(conta);
 
 
-    $('input[name="fl_dez_porcento"]').change(function(){
+    $('input[name="fl_dez_porcento"]').change(function() {
         console.log($(this).is(':checked'));
     });
 
@@ -209,8 +209,19 @@ $(document).ready(function() {
 
     });
 
+    $('#tbConta').on('click', 'tr', function() {
+        let produto = $(this).find('td:eq(0)').text();
+        produto = "<strong>" + produto + "</strong>";
+        let titulo = "<span class= 'text-danger'> Remoção de Pedido </strong>";
+        let id_produto = $(this).data('id');
+        modal_set_confirmar("SIM");
+        abrir_modal(titulo, "Tem certeza que deseja remover " + produto + " ? ", false);
+        $modal.on('click', '#btn_confirmar', function() {            
+            remover_produto_conta(id_produto, conta);
+            $modal.modal('hide');
+        });
 
-    $()
+    });
 
 
     $(document).on("click", ".btn-categorias", function() {
@@ -230,13 +241,14 @@ $(document).ready(function() {
     });
 
     $("#btn-encerrar-conta").click(function() {
-        abrir_modal('Encerrar Conta', $("#md_encerrar_conta"));
+        abrir_modal('Encerrar Conta', $("#md_encerrar_conta"), true);
+        $modal.on('click', '#btn_confirmar', function() {
+            let cd_conta = $("#cd_conta").val();
+            window.location = "<?= base_url ('conta/encerrar_conta/')?>" + cd_conta;
+
+        });
     });
 
-    $modal.on('click', '#btn_confirmar', function() {
-        let cd_conta = $("#cd_conta").val();
-        window.location = "<?= base_url ('conta/encerrar_conta/ ')?>" + cd_conta;
-    });
 
     $("#tbProdutos tbody").on('click', 'tr', function() {
         var pedido = {};
@@ -277,6 +289,22 @@ $(document).ready(function() {
         }
     }
 
+    function remover_produto_conta(produto, conta) {
+        $.ajax({
+            type: "GET",
+            url: "<?=base_url('')?>conta/remover_produto_conta/" + produto + "/" + conta,
+            dataType: "json",
+            error: function(res) {
+                console.log("erro");
+                console.log(res);
+            },
+            success: function(pedidos) {                                
+                att_info_conta(pedidos);
+                anima_confirma('success', 4000, "Produto Removido com Sucesso!");
+            },
+        });
+    }
+
     function att_produtos(categoria) {
         $.ajax({
             type: "GET",
@@ -305,16 +333,21 @@ $(document).ready(function() {
                 console.log(res);
             },
             success: function(pedidos) {
-                tb_pedidos.clear();
-                tb_pedidos.rows.add(pedidos.lista);
-                tb_pedidos.draw();
-                let somatorio = pedidos.somatorio;
-                $("#conta_soma").html(somatorio.soma);
-                $("#conta_dez_porcento").html(somatorio.dez_porcento);
-                $("#conta_total").html(somatorio.total);
+                att_info_conta(pedidos);
             },
         });
 
+
+    }
+
+    function att_info_conta(pedidos) {
+        tb_pedidos.clear();
+        tb_pedidos.rows.add(pedidos.lista);
+        tb_pedidos.draw();
+        let somatorio = pedidos.somatorio;
+        $("#conta_soma").html(somatorio.soma);
+        $("#conta_dez_porcento").html(somatorio.dez_porcento);
+        $("#conta_total").html(somatorio.total);
 
     }
 
@@ -353,6 +386,10 @@ $(document).ready(function() {
                     "aTargets": [3]
                 },
             ],
+            "fnRowCallback": function(nRow, aData, iDisplayIndex) {
+                $(nRow).attr("data-id", aData.ci_produto);
+                return nRow;
+            },
 
         }
         let merge = Object.assign(generico, conta);
