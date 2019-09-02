@@ -79,7 +79,7 @@ tbody tr {
                             <i class="fa fa-check" aria-hidden="true"></i>
                             Encerrar
                         </button>
-                        <input id="cd_conta" type="hidden" value="<?= $conta_mesa_info->ci_conta;?>" />
+                        <input name="cd_conta" id="cd_conta" type="hidden" value="<?= $conta_mesa_info->ci_conta;?>" />
                     </div>
                 </div>
             </div>
@@ -138,9 +138,9 @@ tbody tr {
                         <table class="table table-sm table-bordered">
                             <thead>
                                 <tr>
-                                    <th><strong>Conta</strong></th>
-                                    <th><strong>10%</strong></th>
-                                    <th><strong>Total</strong></th>
+                                    <th width='33%'><strong>Conta</strong></th>
+                                    <th width='33%' ><strong>10%</strong></th>
+                                    <th width='33%' ><strong>Total</strong></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -196,7 +196,9 @@ $(document).ready(function() {
 
 
     $('input[name="fl_dez_porcento"]').change(function() {
-        console.log($(this).is(':checked'));
+        let fl_dez_porcento = $(this).is(':checked');
+        let cd_conta = $('input[name="cd_conta"]').val();
+        recalcula_dez_porcento(cd_conta, fl_dez_porcento);
     });
 
 
@@ -216,7 +218,7 @@ $(document).ready(function() {
         let id_produto = $(this).data('id');
         modal_set_confirmar("SIM");
         abrir_modal(titulo, "Tem certeza que deseja remover " + produto + " ? ", false);
-        $modal.on('click', '#btn_confirmar', function() {            
+        $modal.on('click', '#btn_confirmar', function() {
             remover_produto_conta(id_produto, conta);
             $modal.modal('hide');
         });
@@ -268,9 +270,7 @@ $(document).ready(function() {
                 tb_pedidos.rows.add(pedidos.lista);
                 tb_pedidos.draw();
                 let somatorio = pedidos.somatorio;
-                $("#conta_soma").html(somatorio.soma);
-                $("#conta_dez_porcento").html(somatorio.dez_porcento);
-                $("#conta_total").html(somatorio.total);
+                att_info_conta(pedidos)
                 anima_confirma('success', 1000, "Pedido Adicionado com Sucesso!!!");
             },
         });
@@ -279,13 +279,13 @@ $(document).ready(function() {
 
     function calcula_conta(soma, dez_porcento, fl_dez_porcento) {
         if (fl_dez_porcento) {
-            $("#conta_soma").html(somatorio.soma);
+            $("#conta_soma").html(somatorio.lbl_soma);
             $("#conta_dez_porcento").html(somatorio.dez_porcento);
             $("#conta_total").html(somatorio.total);
         } else {
-            $("#conta_soma").html(somatorio.soma);
+            $("#conta_soma").html(somatorio.lbl_soma);
             $("#conta_dez_porcento").html('R$ 00,00');
-            $("#conta_total").html(somatorio.soma);
+            $("#conta_total").html(somatorio.lbl_soma);
         }
     }
 
@@ -298,7 +298,7 @@ $(document).ready(function() {
                 console.log("erro");
                 console.log(res);
             },
-            success: function(pedidos) {                                
+            success: function(pedidos) {
                 att_info_conta(pedidos);
                 anima_confirma('success', 4000, "Produto Removido com Sucesso!");
             },
@@ -323,6 +323,22 @@ $(document).ready(function() {
 
     }
 
+    function recalcula_dez_porcento(conta, fl_dez_porcento) {
+        $.ajax({
+            type: "GET",
+            url: "<?=base_url('')?>conta/recalcula_dez_porcento_conta/" + conta + "/" + fl_dez_porcento,
+            dataType: "json",
+            error: function(res) {
+                console.log("erro");
+                console.log(res);
+            },
+            success: function(pedidos_conta) {                
+                att_info_conta(pedidos_conta);
+            },
+        });
+
+    }
+
     function att_conta(conta) {
         $.ajax({
             type: "GET",
@@ -332,21 +348,28 @@ $(document).ready(function() {
                 console.log("erro");
                 console.log(res);
             },
-            success: function(pedidos) {
-                att_info_conta(pedidos);
+            success: function(pedidos_conta) {                
+                att_info_conta(pedidos_conta);                
+                if(pedidos_conta.info.fl_dez_porcento == 'f'){
+                    $('input[name="fl_dez_porcento"]').removeAttr('checked');
+                }
             },
         });
+    }    
 
-
-    }
-
-    function att_info_conta(pedidos) {
+    function att_info_conta(pedidos_conta) {            
         tb_pedidos.clear();
-        tb_pedidos.rows.add(pedidos.lista);
+        tb_pedidos.rows.add(pedidos_conta.lista);
         tb_pedidos.draw();
-        let somatorio = pedidos.somatorio;
-        $("#conta_soma").html(somatorio.soma);
-        $("#conta_dez_porcento").html(somatorio.dez_porcento);
+        let somatorio = pedidos_conta.somatorio;
+        if(pedidos_conta.info.fl_dez_porcento == 'f'){
+            somatorio.total = somatorio.lbl_soma;
+            somatorio.lbl_dez_porcento = '';
+            somatorio.lbl_soma = '';
+            
+        }
+        $("#conta_soma").html(somatorio.lbl_soma);
+        $("#conta_dez_porcento").html(somatorio.lbl_dez_porcento);
         $("#conta_total").html(somatorio.total);
 
     }

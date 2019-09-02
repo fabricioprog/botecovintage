@@ -14,6 +14,12 @@ class Conta_model extends CI_Model
         return $this->db->query($sql)->result();
     }
 
+
+    public function get_conta($ci_conta){
+        $sql = "SELECT * FROM  tb_conta where ci_conta = ?";
+        return $this->db->query($sql,array($ci_conta))->row();
+    }
+
     public function get_conta_aberta_by_mesa($cd_conta)
     {
         $sql = "select
@@ -28,7 +34,7 @@ class Conta_model extends CI_Model
 
     public function add_conta($cd_mesa, $cd_status, $dt_abrir)
     {
-        $sql = "INSERT INTO tb_conta values (default,?,?,?,null,0) returning ci_conta";
+        $sql = "INSERT INTO tb_conta values (default,?,?,?,null,0,0,true) returning ci_conta";
         return $this->db->query($sql, array($cd_mesa, $cd_status, $dt_abrir))->row();
     }
 
@@ -37,13 +43,18 @@ class Conta_model extends CI_Model
         $this->db->query($sql,array($cd_status,$dt_inicio,$ci_conta));
     }
 
+    public function atualiza_status_dez_porcento($valor_dez_porcento,$cd_conta){
+        $sql = "update tb_conta set fl_dez_porcento = ? where ci_conta = ?";
+        $this->db->query($sql,array($valor_dez_porcento,$cd_conta));
+    }
+
     //Finaliza conta com o preço total que foi calculado, Se não tiver feito nenhum pedido, remove conta.
-    public function encerrar_conta($cd_conta,$total){
+    public function encerrar_conta($cd_conta,$nr_dez_porcento,$total){        
         $sql = "SELECT * FROM tb_pedido where cd_conta = ?";
-        $pedidos = $this->db->query($sql,array($cd_conta))->result();        
+        $pedidos = $this->db->query($sql,array($cd_conta))->result();
         if(count($pedidos) > 0){
-            $sql = "update tb_conta set cd_status = 5 , dt_fim = now(), nr_total = ? where ci_conta = ?";
-            $this->db->query($sql,array($total,$cd_conta));                
+            $sql = "update tb_conta set cd_status = 5 , dt_fim = now(), nr_total = ? , nr_dez_porcento = ? where ci_conta = ?";            
+            $this->db->query($sql,array($total,$nr_dez_porcento,$cd_conta));                
         }else{
             $sql = "delete from tb_conta where ci_conta = ?";
             $this->db->query($sql,array($cd_conta));
@@ -58,19 +69,15 @@ class Conta_model extends CI_Model
                 prod.valor_venda:: money lbl_valor_venda,                                
                 sum(ped.quantidade) quantidade, 
                 sum(prod.valor_venda*ped.quantidade)  total,
-                sum(prod.valor_venda*ped.quantidade)::money  lbl_total,
-                sum( case when prod.cd_categoria <> 13 then (prod.valor_venda*ped.quantidade)*0.1 else 0 end  ) dez_porcento,
-                sum( case when prod.cd_categoria <> 13 then (prod.valor_venda*ped.quantidade)*0.1 else 0 end  )::money lbl_dez_porcento,
-                (sum(prod.valor_venda*ped.quantidade)+ sum( case when prod.cd_categoria <> 13 then (prod.valor_venda*ped.quantidade)*0.1 else 0 end  ) ) com_dez_porcento,
-                (sum(prod.valor_venda*ped.quantidade)+ sum( case when prod.cd_categoria <> 13 then (prod.valor_venda*ped.quantidade)*0.1 else 0 end  ) )::money lbl_com_dez_porcento
+                sum(prod.valor_venda*ped.quantidade)::money  lbl_total                                
                 from tb_pedido ped
-        inner join tb_produto prod on prod.ci_produto = ped.cd_produto
-        inner join tb_conta c on ped.cd_conta = c.ci_conta
+        inner join tb_produto prod on prod.ci_produto = ped.cd_produto        
+        inner join tb_conta c on ped.cd_conta = c.ci_conta        
         where c.cd_status = 5 /* adiciona intervalo de tempo */
         group by 1,2 ";
         
         if($total){
-            $sql = "select sum(total)::money total ,sum(com_dez_porcento)::money com_dez_porcento from ($sql) conta ";
+            $sql = "select sum(total)::money total  from ($sql) conta ";
         }
         
         return $this->db->query($sql)->result();

@@ -9,25 +9,28 @@ class Pedido_model extends CI_Model
 
     
     public function get_pedidos($cd_conta, $somatorio = false)
-    {
-        //Categoria que não se cobra 10%
-        $categoria_servico = 13;
+    {                
         $sql = "select  prod.ci_produto,prod.nm_produto, prod.cd_categoria,
         ped.quantidade,
-        prod.valor_venda,
+        prod.valor_venda,  
+        cat.fl_dez_porcento,      
         (ped.quantidade * prod.valor_venda) as total,
         prod.valor_venda::money lbl_valor_venda,
         (ped.quantidade * prod.valor_venda)::money lbl_total        
         from tb_pedido ped        
         inner join tb_produto prod on ped.cd_produto = prod.ci_produto
+        inner join tb_categoria cat on cat.ci_categoria = prod.cd_categoria
         where cd_conta = ?";
         if($somatorio){
-            $sql = "select  coalesce(sum(total),0)::money soma,		
-            coalesce(round((sum(case when cd_categoria <> $categoria_servico then total else 0 end) *0.1),2),0)::money dez_porcento ,
+            $sql = "select  
+            coalesce(sum(total),0) soma,
+            coalesce(sum(total),0)::money lbl_soma,
+            coalesce(round((sum(case when fl_dez_porcento then total else 0 end) *0.1),2),0) dez_porcento ,
+            coalesce(round((sum(case when fl_dez_porcento then total else 0 end) *0.1),2),0)::money lbl_dez_porcento ,
             (coalesce(sum(total),0) + 
-             coalesce(round((sum(case when cd_categoria <> $categoria_servico then total else 0 end) *0.1),2),0)) valor_total,		
+             coalesce(round((sum(case when fl_dez_porcento then total else 0 end) *0.1),2),0)) valor_total,		
             (coalesce(sum(total),0) + 
-             coalesce(round((sum(case when cd_categoria <> $categoria_servico then total else 0 end) *0.1),2),0))::money total
+             coalesce(round((sum(case when fl_dez_porcento then total else 0 end) *0.1),2),0))::money total
             from ( $sql ) conta ";
             return $this->db->query($sql, array($cd_conta))->row();
         }
@@ -54,6 +57,8 @@ class Pedido_model extends CI_Model
         $this->db->query($sql,array($cd_produto,$cd_conta));
 
     }
+
+    
 
     public function get_conta_produto($cd_conta,$cd_produto){
         $sql = "select ped.* from tb_pedido ped

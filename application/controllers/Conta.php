@@ -43,6 +43,7 @@ class Conta extends MY_Controller
 
     public function get_pedidos_conta($cd_conta,$ajax=true){
         $conta = new stdClass();
+        $conta->info =  $this->conta_model->get_conta($cd_conta);
         $conta->lista  = $this->pedido_model->get_pedidos($cd_conta);
         $conta->somatorio = $this->pedido_model->get_pedidos($cd_conta,true);
         if($ajax){
@@ -64,8 +65,8 @@ class Conta extends MY_Controller
             $prod->quantidade++;
             $this->pedido_model->update_pedido($prod->cd_conta,$prod->cd_produto,$prod->quantidade);
             
-        }
-        $res = $this->get_pedidos_conta($inputs['cd_conta'],false);
+        }          
+        $res = $this->get_pedidos_conta($inputs['cd_conta'],false);        
        if($ajax){
            echo json_encode($res);
        }     
@@ -99,10 +100,27 @@ class Conta extends MY_Controller
     public function fechar_conta(){}
     
     public function encerrar_conta($cd_conta){        
-        $conta = $this->pedido_model->get_pedidos($cd_conta,true);
-        $this->conta_model->encerrar_conta($cd_conta,$conta->valor_total);
+        $conta = $this->get_pedidos_conta($cd_conta,false);
+        
+        $pagamento_dp = $conta->somatorio->dez_porcento;
+        if($conta->info->fl_dez_porcento=='f'){
+            $pagamento_dp = 0;
+        }
+        $this->conta_model->encerrar_conta($conta->info->ci_conta,$pagamento_dp,$conta->somatorio->soma);
         //TODO: Criar uma confirmação para o usuário
         redirect(base_url('mesas'));
+    }
+    
+
+    
+
+    public function recalcula_dez_porcento_conta($cd_conta,$fl_dez_porcento){                
+        if($fl_dez_porcento == 'true'){            
+            $this->conta_model->atualiza_status_dez_porcento(true,$cd_conta);
+        }else{            
+            $this->conta_model->atualiza_status_dez_porcento(false,$cd_conta);
+        }
+        $this->get_pedidos_conta($cd_conta);        
     }
 
 
