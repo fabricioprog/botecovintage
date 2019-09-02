@@ -171,14 +171,10 @@ tbody tr {
 <script>
 $(document).ready(function() {
     jQuery.datetimepicker.setLocale('pt-BR');
-
     $modal = $("#myModal");
-
-
-    var conta = $("#cd_conta").val();
-
-
-    
+    var conteudo = $("#md_encerrar_conta").html();
+    $("#md_encerrar_conta").remove();    
+    var conta = $("#cd_conta").val();    
 
     var dataTableConfig = {
         "scrollCollapse": true,
@@ -245,13 +241,12 @@ $(document).ready(function() {
         });
     });
 
-    $("#btn-encerrar-conta").click(function() {
-        abrir_modal('Encerrar Conta', $("#md_encerrar_conta"), true);
-    });
-
-
-
     
+    
+
+    $("#btn-encerrar-conta").click(function() {        
+        abrir_modal('Encerrar Conta',conteudo, true);
+    });    
 
 
     $("#tbProdutos tbody").on('click', 'tr', function() {
