@@ -139,8 +139,8 @@ tbody tr {
                             <thead>
                                 <tr>
                                     <th width='33%'><strong>Conta</strong></th>
-                                    <th width='33%' ><strong>10%</strong></th>
-                                    <th width='33%' ><strong>Total</strong></th>
+                                    <th width='33%'><strong>10%</strong></th>
+                                    <th width='33%'><strong>Total</strong></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -176,6 +176,9 @@ $(document).ready(function() {
 
 
     var conta = $("#cd_conta").val();
+
+
+    
 
     var dataTableConfig = {
         "scrollCollapse": true,
@@ -244,12 +247,11 @@ $(document).ready(function() {
 
     $("#btn-encerrar-conta").click(function() {
         abrir_modal('Encerrar Conta', $("#md_encerrar_conta"), true);
-        $modal.on('click', '#btn_confirmar', function() {
-            let cd_conta = $("#cd_conta").val();
-            window.location = "<?= base_url ('conta/encerrar_conta/')?>" + cd_conta;
-
-        });
     });
+
+
+
+    
 
 
     $("#tbProdutos tbody").on('click', 'tr', function() {
@@ -332,7 +334,7 @@ $(document).ready(function() {
                 console.log("erro");
                 console.log(res);
             },
-            success: function(pedidos_conta) {                
+            success: function(pedidos_conta) {
                 att_info_conta(pedidos_conta);
             },
         });
@@ -348,25 +350,25 @@ $(document).ready(function() {
                 console.log("erro");
                 console.log(res);
             },
-            success: function(pedidos_conta) {                
-                att_info_conta(pedidos_conta);                
-                if(pedidos_conta.info.fl_dez_porcento == 'f'){
+            success: function(pedidos_conta) {
+                att_info_conta(pedidos_conta);
+                if (pedidos_conta.info.fl_dez_porcento == 'f') {
                     $('input[name="fl_dez_porcento"]').removeAttr('checked');
                 }
             },
         });
-    }    
+    }
 
-    function att_info_conta(pedidos_conta) {            
+    function att_info_conta(pedidos_conta) {
         tb_pedidos.clear();
         tb_pedidos.rows.add(pedidos_conta.lista);
         tb_pedidos.draw();
         let somatorio = pedidos_conta.somatorio;
-        if(pedidos_conta.info.fl_dez_porcento == 'f'){
+        if (pedidos_conta.info.fl_dez_porcento == 'f') {
             somatorio.total = somatorio.lbl_soma;
             somatorio.lbl_dez_porcento = '';
             somatorio.lbl_soma = '';
-            
+
         }
         $("#conta_soma").html(somatorio.lbl_soma);
         $("#conta_dez_porcento").html(somatorio.lbl_dez_porcento);
