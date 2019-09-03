@@ -1,5 +1,6 @@
 <div id="<?= $id ?>">
-    <form name="<?= $id ?>" method="POST" hidden enctype="multipart/form-data">
+    <form name="<?= $id ?>" method="POST" action="<?=base_url('conta/encerrar_conta')?>" hidden>
+        <input type="hidden" name="cd_conta" value="">
         <div class='row'>
             <div id='md-alert' class="alert alert-warning" role="alert" style='display:none'>
                 <strong> Não foi possível finalizar o caixa: </strong>
@@ -10,9 +11,9 @@
                     <label for="tp_pagamento" class="bmd-label-floating">Forma de pagamento</label>
                     <select class="form-control" name="tp_pagamento" id="tp_pagamento" required>
                         <option value=''></option>
-                        <option value='1'>Cartão (Débito)</option>
                         <option value='1'>Cartão (Crédito)</option>
-                        <option value='2'>Dinheiro</option>
+                        <option value='2'>Cartão (Débito)</option>                        
+                        <option value='3'>Dinheiro</option>
                         <option value='4'>Pagamento Diversificado</option>
                     </select>
                 </div>
@@ -56,29 +57,22 @@
                     </tbody>
                 </table>
             </div>
-            <button id="btn-confirmar-pagamento" type='submit' name='btn-confirmar-pagamento' hidden>
+            <button id="btn-confirmar-pagamento" type='submit' hidden>
         </div>
     </form>
 </div>
 <script>
+$(document).find('input[name="cd_conta"]').val($("#cd_conta").val());
+
 $(document).on('click', '#myModal #btn_confirmar', function() {
-    console.log("evento botão");
     let tp_pagamento = $(document).find('select[name="tp_pagamento"]').val();
-    let conta_total = $(document).find('#conta_total').data('valor');     
+    let conta_total = $(document).find('#conta_total').data('valor');
     if (tp_pagamento == '4' && calcula_valor() < conta_total) {
         $("#md-alert").css('display', 'none').finish();
         $("#md-alert").slideDown(400).delay(4000).slideUp(400);
         return false;
-    }    
+    }
     $("#btn-confirmar-pagamento").trigger('click');
-    return false;
-});
-
-$('#myModal').on('submit', 'form[name="<?= $id ?>"]', function() {
-    console.log("Redireciona");
-
-
-    //window.location = "<?= base_url ('conta/encerrar_conta/')?>" + cd_conta;
     return false;
 });
 

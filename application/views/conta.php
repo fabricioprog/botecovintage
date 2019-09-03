@@ -248,9 +248,9 @@ $(document).ready(function() {
             reverse: true
         });
         var lbl_total = $("#conta_total").text();
-        var total = $("#conta_total").data('valor');
+        var total = $(document).find("#conta_total").data('valor');        
         $(document).find('#md-lbl-total').text(lbl_total);
-        $(document).find('#md-lbl-total').attr('data-valor',total);
+        $(document).find('#md-lbl-total').data('valor',total);
     });
 
 
@@ -359,11 +359,11 @@ $(document).ready(function() {
             somatorio.lbl_soma = '';
             somatorio.valor_total = somatorio.soma;
         }
-        
+
         $("#conta_soma").html(somatorio.lbl_soma);
         $("#conta_dez_porcento").html(somatorio.lbl_dez_porcento);
-        $("#conta_total").html(somatorio.total);
-        $("#conta_total").attr('data-valor', somatorio.valor_total);        
+        $("#conta_total").html(somatorio.total);        
+        $("#conta_total").data('valor', somatorio.valor_total);
     }
 
     function montar_conta(dataTableConfig) {

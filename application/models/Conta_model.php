@@ -49,16 +49,18 @@ class Conta_model extends CI_Model
     }
 
     //Finaliza conta com o preço total que foi calculado, Se não tiver feito nenhum pedido, remove conta.
-    public function encerrar_conta($cd_conta,$nr_dez_porcento,$total){        
+    public function encerrar_conta($cd_conta,$nr_dez_porcento,$pg_credito,$pg_debito,$pg_dinheiro){        
         $sql = "SELECT * FROM tb_pedido where cd_conta = ?";
         $pedidos = $this->db->query($sql,array($cd_conta))->result();
         if(count($pedidos) > 0){
-            $sql = "update tb_conta set cd_status = 5 , dt_fim = now(), nr_total = ? , nr_dez_porcento = ? where ci_conta = ?";            
-            $this->db->query($sql,array($total,$nr_dez_porcento,$cd_conta));                
+            $total = $pg_credito + $pg_debito + $pg_dinheiro;
+            $sql = "update tb_conta set cd_status = 5 , dt_fim = now(), nr_pagamento_credito =  ?, nr_pagamento_debito =  ?, nr_pagamento_dinheiro =  ?, nr_total = ? , nr_dez_porcento = ? where ci_conta = ?";            
+            $this->db->query($sql,array($pg_credito,$pg_debito,$pg_dinheiro,$total,$nr_dez_porcento,$cd_conta));                
         }else{
             $sql = "delete from tb_conta where ci_conta = ?";
             $this->db->query($sql,array($cd_conta));
         }
+        
     }
 //TODO: Adicionar intervalo de tempo para pesquisa
     public function get_contas_periodo($dt_inicio,$dt_fim,$total = false){

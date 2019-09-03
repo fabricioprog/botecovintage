@@ -99,14 +99,32 @@ class Conta extends MY_Controller
     //Imprimir Boleto de pagamento
     public function fechar_conta(){}
     
-    public function encerrar_conta($cd_conta){        
-        $conta = $this->get_pedidos_conta($cd_conta,false);
-        
+    public function encerrar_conta(){        
+        $inputs = $this->input->post();
+        $conta = $this->get_pedidos_conta($inputs['cd_conta'],false);
         $pagamento_dp = $conta->somatorio->dez_porcento;
         if($conta->info->fl_dez_porcento=='f'){
             $pagamento_dp = 0;
         }
-        $this->conta_model->encerrar_conta($conta->info->ci_conta,$pagamento_dp,$conta->somatorio->soma);
+
+        $pagamento = array();
+        $pagamento['credito'] = 0;
+        $pagamento['debito'] = 0;        
+        $pagamento['dinheiro'] = 0;
+
+        switch($inputs['tp_pagamento']){
+            case '1': $pagamento['credito'] = $conta->somatorio->soma+$pagamento_dp;  break;
+            case '2': $pagamento['debito'] = $conta->somatorio->soma+$pagamento_dp; break;
+            case '3': $pagamento['dinheiro'] = $conta->somatorio->soma+$pagamento_dp; break;
+            case '4': 
+            $pagamento['credito'] = !empty($inputs['credito'])? $inputs['credito']:0;
+            $pagamento['debito'] = !empty($inputs['debito'])? $inputs['debito']:0;
+            $pagamento['dinheiro'] = !empty($inputs['dinheiro'])? $inputs['dinheiro']:0;
+            break;
+            default: //TODO: Mostrar erros
+        }
+         //TODO: Faer verificação backend se o que foi pago é meior ou igual ao o que foi cobrado.        
+        $this->conta_model->encerrar_conta($conta->info->ci_conta,$pagamento_dp,$pagamento['credito'],$pagamento['debito'],$pagamento['dinheiro']);
         //TODO: Criar uma confirmação para o usuário
         redirect(base_url('mesas'));
     }
