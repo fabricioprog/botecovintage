@@ -173,8 +173,8 @@ $(document).ready(function() {
     jQuery.datetimepicker.setLocale('pt-BR');
     $modal = $("#myModal");
     var conteudo = $("#md_encerrar_conta").html();
-    $("#md_encerrar_conta").remove();    
-    var conta = $("#cd_conta").val();    
+    $("#md_encerrar_conta").remove();
+    var conta = $("#cd_conta").val();
 
     var dataTableConfig = {
         "scrollCollapse": true,
@@ -241,12 +241,17 @@ $(document).ready(function() {
         });
     });
 
-    
-    
 
-    $("#btn-encerrar-conta").click(function() {        
-        abrir_modal('Encerrar Conta',conteudo, true);
-    });    
+    $("#btn-encerrar-conta").click(function() {
+        abrir_modal('Encerrar Conta', conteudo, true);
+        $("#myModal").find('input, #md-lbl-total, #md-lbl-soma').mask('000.000,00', {
+            reverse: true
+        });
+        var lbl_total = $("#conta_total").text();
+        var total = $("#conta_total").data('valor');
+        $(document).find('#md-lbl-total').text(lbl_total);
+        $(document).find('#md-lbl-total').attr('data-valor',total);
+    });
 
 
     $("#tbProdutos tbody").on('click', 'tr', function() {
@@ -274,17 +279,6 @@ $(document).ready(function() {
 
     });
 
-    function calcula_conta(soma, dez_porcento, fl_dez_porcento) {
-        if (fl_dez_porcento) {
-            $("#conta_soma").html(somatorio.lbl_soma);
-            $("#conta_dez_porcento").html(somatorio.dez_porcento);
-            $("#conta_total").html(somatorio.total);
-        } else {
-            $("#conta_soma").html(somatorio.lbl_soma);
-            $("#conta_dez_porcento").html('R$ 00,00');
-            $("#conta_total").html(somatorio.lbl_soma);
-        }
-    }
 
     function remover_produto_conta(produto, conta) {
         $.ajax({
@@ -363,12 +357,13 @@ $(document).ready(function() {
             somatorio.total = somatorio.lbl_soma;
             somatorio.lbl_dez_porcento = '';
             somatorio.lbl_soma = '';
-
+            somatorio.valor_total = somatorio.soma;
         }
+        
         $("#conta_soma").html(somatorio.lbl_soma);
         $("#conta_dez_porcento").html(somatorio.lbl_dez_porcento);
         $("#conta_total").html(somatorio.total);
-
+        $("#conta_total").attr('data-valor', somatorio.valor_total);        
     }
 
     function montar_conta(dataTableConfig) {
