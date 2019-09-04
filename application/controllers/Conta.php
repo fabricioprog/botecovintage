@@ -117,11 +117,11 @@ class Conta extends MY_Controller
             case '2': $pagamento['debito'] = $conta->somatorio->soma+$pagamento_dp; break;
             case '3': $pagamento['dinheiro'] = $conta->somatorio->soma+$pagamento_dp; break;
             case '4': 
-            $pagamento['credito'] = !empty($inputs['credito'])? $inputs['credito']:0;
-            $pagamento['debito'] = !empty($inputs['debito'])? $inputs['debito']:0;
-            $pagamento['dinheiro'] = !empty($inputs['dinheiro'])? $inputs['dinheiro']:0;
+            $pagamento['credito'] = !empty($inputs['credito'])? $this->converte_moeda_to_float($inputs['credito']):0;
+            $pagamento['debito'] = !empty($inputs['debito'])? $this->converte_moeda_to_float($inputs['debito']):0;
+            $pagamento['dinheiro'] = !empty($inputs['dinheiro'])? $this->converte_moeda_to_float($inputs['dinheiro']):0;
             break;
-            default: //TODO: Mostrar erros
+            default: //TODO: Mostrar erros de tipo de pagamento inválido
         }
          //TODO: Faer verificação backend se o que foi pago é meior ou igual ao o que foi cobrado.        
         $this->conta_model->encerrar_conta($conta->info->ci_conta,$pagamento_dp,$pagamento['credito'],$pagamento['debito'],$pagamento['dinheiro']);
@@ -162,14 +162,32 @@ class Conta extends MY_Controller
     public function relatorio(){
         $inputs   = $this->input->post(); 
         $data = array();       
+         
         if(!empty($inputs)){
-            $data['relatorio_detalhado'] = $this->conta_model->get_contas_periodo(1,1);
-            $data['relatorio_geral'] = $this->conta_model->get_contas_periodo(1,1,true);            
-        }
-
+            $data['input_dt_inicio'] =  $inputs['dt_inicio'];           
+            $data['input_dt_fim'] =  $inputs['dt_fim'];
+            $dt_inicio = $this->convert_string_timestamp($inputs['dt_inicio']);
+            $dt_fim = $this->convert_string_timestamp($inputs['dt_fim']);
+            $data['relatorio_detalhado'] = $this->conta_model->get_contas_periodo($dt_inicio,$dt_fim);
+            $data['relatorio_geral'] = $this->conta_model->get_faturamento_periodo($dt_inicio,$dt_fim);
+            $data['cover'] = $this->conta_model->get_faturamento_cover($dt_inicio,$dt_fim)->valor;
+        }                
         //TODO: Definir rotina para contabilizar todos os pedidos de acordo com intervalo
         $this->template->load('template', 'relatorio_contas',$data); 
 
-    }    
+    }
+    
+    private function converte_moeda_to_float($moeda){
+        return str_replace(',','.', str_replace('.','',$moeda));
+    }
+
+
+    private function convert_string_timestamp($data){
+        $dtime = DateTime::createFromFormat("d/m/Y H:i:s", $data);
+        if(!$dtime){
+            $dtime = DateTime::createFromFormat("d/m/Y H:i", $data);
+        }
+        return $dtime->format('Y-m-d H:i:s');;
+    }
 
 }

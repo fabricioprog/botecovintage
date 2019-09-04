@@ -63,7 +63,7 @@ class Conta_model extends CI_Model
         
     }
 //TODO: Adicionar intervalo de tempo para pesquisa
-    public function get_contas_periodo($dt_inicio,$dt_fim,$total = false){
+    public function get_contas_periodo($dt_inicio,$dt_fim){
         $sql = "select                 
                 prod.ci_produto,
                 prod.nm_produto,
@@ -75,14 +75,34 @@ class Conta_model extends CI_Model
                 from tb_pedido ped
         inner join tb_produto prod on prod.ci_produto = ped.cd_produto        
         inner join tb_conta c on ped.cd_conta = c.ci_conta        
-        where c.cd_status = 5 /* adiciona intervalo de tempo */
+        where c.cd_status = 5 and dt_fim between ? and ? 
         group by 1,2 ";
-        
-        if($total){
-            $sql = "select sum(total)::money total  from ($sql) conta ";
-        }
-        
-        return $this->db->query($sql)->result();
+        return $this->db->query($sql,array($dt_inicio,$dt_fim))->result();
+    }
+
+    public function get_faturamento_periodo($dt_inicio,$dt_fim){
+        $sql = " select 
+                sum(nr_total)::money total, 
+                sum(nr_dez_porcento)::money dez_porcento ,
+                sum(nr_pagamento_debito)::money debito,
+                sum(nr_pagamento_credito)::money credito,
+                sum(nr_pagamento_dinheiro)::money dinheiro,
+                count(*) contas_encerradas,
+                (sum(nr_total)/count(*))::money consumo_medio, 
+                to_char(avg( dt_fim - dt_inicio ), 'HH24:MI:SS') permanencia_media
+                from tb_conta where cd_status= 5 and dt_fim between ? and ? ;";
+        return $this->db->query($sql,array($dt_inicio,$dt_fim))->row();
+    }
+
+    public function get_faturamento_cover($dt_inicio,$dt_fim){
+      $sql =  "select      
+                (sum(prod.valor_venda * ped.quantidade) * 0.95)::money  valor       
+                from tb_pedido ped
+                inner join tb_conta c on c.ci_conta = ped.cd_conta
+                inner join tb_produto prod on prod.ci_produto = ped.cd_produto
+                
+                where prod.cd_categoria = 13 and c.dt_fim between ? and ? ";
+        return $this->db->query($sql,array($dt_inicio,$dt_fim))->row();                
     }
 
 

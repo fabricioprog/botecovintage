@@ -4,7 +4,7 @@
 }
 
 .pn-rel-total {
-    min-height: 230px;
+    min-height: 188px;
 }
 </style>
 <div class="row">
@@ -29,18 +29,20 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="categoria" class="bmd-label-floating">Data/Hora Início</label>
-                                <input require autocomplete="off" type="text" class="form-control" name="dt_inicio">
+                                <label for="dt_fim" class="bmd-label-floating">Data/Hora Início</label>
+                                <input require autocomplete="off" type="text" class="form-control" name="dt_inicio"
+                                    value="<?= isset($input_dt_inicio)?$input_dt_inicio:"" ?>" required>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group is-focused">
-                                <label for="categoria" class="bmd-label-floating">Data/Hora Fim</label>
-                                <input require autocomplete="off" type="text" class="form-control" name="dt_fim">
+                                <label for="dt_fim" class="bmd-label-floating">Data/Hora Fim</label>
+                                <input require autocomplete="off" type="text" class="form-control" name="dt_fim"
+                                    value="<?= isset($input_dt_fim)?$input_dt_fim:"" ?>" required>
 
                             </div>
                         </div>
-                        <div class="col-md-12 align-self-center">
+                        <div class="col-md-5 offset-md-7">
                             <button type="submit" class="btn btn-raised btn-block  btn-success">GErar</button>
                         </div>
                     </div>
@@ -52,19 +54,26 @@
         <div class="card">
             <div class="card-body">
                 <div class="row">
+                    <?php if(isset($relatorio_geral)) {  ?>
                     <div class="col-md-6">
-                        <p> <strong> Faturamento Total </strong> R$ 00,00 </p>
-                        <p> <strong> Em Débito </strong> R$ 00,00 </p>
-                        <p> <strong> Em Dinheiro </strong> R$ 00,00 </p>
-                        <p> <strong> Contas Encerradas: </strong> 123123 </p>
-                        <p class='text-success'> <strong> Contas Abertas: </strong> 0 </p>
+                        <p> Faturamento: <strong><?= $relatorio_geral->total ?> </strong> </p>
+                        <p> Débito: <strong><?= $relatorio_geral->debito ?> </strong> </p>
+                        <p> Crédito: <strong><?= $relatorio_geral->credito ?> </strong> </p>
+                        <p> Dinheiro: <strong><?= $relatorio_geral->dinheiro ?> </strong> </p>
+                        <p> Cover: <strong> <?= $cover ?> </strong> </p>
                     </div>
                     <div class="col-md-6">
-                        <p> <strong> Cover: </strong> R$ 00,00 </p>
-                        <p> <strong> Permanencia Média : </strong> 00:00 </p>
-                        <p> <strong> Mais Vendido : <br> </strong> Produto X </p>
-                        <p> <strong> Menos Vendido : <br> </strong> Produto Y</p>
+                        <p> Contas Encerradas: <strong><?= $relatorio_geral->contas_encerradas ?> </strong> </p>
+                        <p> Permanencia Média : <strong><?= $relatorio_geral->permanencia_media ?> </strong> </p>
+                        <p> Consumo Médio : <strong><?= $relatorio_geral->consumo_medio ?> </strong> </p>
+                        <p> 10% : <strong><?= $relatorio_geral->dez_porcento ?> </strong> </p>
                     </div>
+                    <?php }else{ ?>
+                    <div class="alert alert-info" role="alert">
+                        Escolha o Intervalo de tempo que deseja analisar as mesas, serão analisado apenas mesas <strong>
+                            encerradas </strong>.
+                    </div>
+                    <?php } ?>
                 </div>
             </div>
         </div>
@@ -79,8 +88,8 @@
                     <thead>
                         <tr>
                             <th width="50%">Produto</th>
-                            <th width="10%">Qtd</th>                            
-                            <th width="15%">Unidade</th>                            
+                            <th width="10%">Qtd</th>
+                            <th width="15%">Unidade</th>
                             <th width="15%">Total </th>
                         </tr>
                     </thead>
@@ -89,7 +98,7 @@
                         <tr>
                             <td><?= $prod->nm_produto ?></td>
                             <td><?= $prod->quantidade ?></td>
-                            <td><?= $prod->lbl_valor_venda ?></td>                            
+                            <td><?= $prod->lbl_valor_venda ?></td>
                             <td><?= $prod->lbl_total ?></td>
                         </tr>
                         <?php } ?>
@@ -106,15 +115,21 @@
 <script>
 $(document).ready(function() {
     $.datetimepicker.setLocale('pt-BR');
+    var data = new Date();
     $("input[name='dt_inicio']").datetimepicker({
-        format: 'd/m/Y H:i'
+        format: 'd/m/Y H:i',
+        maxDate:data.toLocaleDateString() + " " + data.toLocaleTimeString(),
     });
 
     $("input[name='dt_fim']").datetimepicker({
-        format: 'd/m/Y H:i'
+        format: 'd/m/Y H:i',
+        maxDate:data.toLocaleDateString() + " " + data.toLocaleTimeString(),
     });
 
-    var data = new Date();
-    $("input[name='dt_fim']").val(data.toLocaleDateString() + " " + data.toLocaleTimeString())
+    
+    if ($("input[name='dt_fim']").val() == "") {
+        $("input[name='dt_fim']").val(data.toLocaleDateString() + " " + data.toLocaleTimeString())
+    }
+
 });
 </script>
