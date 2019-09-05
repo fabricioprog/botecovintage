@@ -117,7 +117,7 @@ $(document).ready(function() {
     $.datetimepicker.setLocale('pt-BR');
     var data = new Date();
     $("input[name='dt_inicio']").datetimepicker({
-        format: 'd/m/Y H:i',
+        format: 'd/m/Y H:i',]
         maxDate:data.toLocaleDateString() + " " + data.toLocaleTimeString(),
     });
 

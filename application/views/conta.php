@@ -70,10 +70,12 @@ tbody tr {
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <button type="button" class="btn btn-raised btn-info btn-block pull-right">
-                            <i class="fa fa-file" aria-hidden="true"></i>
-                            Fechar Conta
-                        </button>
+                        <a href="<?= base_url('home/report') ?>" target='_blank'>
+                            <button type="button" class="btn btn-raised btn-info btn-block pull-right">
+                                <i class="fa fa-file" aria-hidden="true"></i>
+                                Fechar Conta
+                            </button>
+                        </a>
                         <button id="btn-encerrar-conta" type="button"
                             class="btn btn-raised btn-block btn-success pull-right">
                             <i class="fa fa-check" aria-hidden="true"></i>
@@ -248,9 +250,9 @@ $(document).ready(function() {
             reverse: true
         });
         var lbl_total = $("#conta_total").text();
-        var total = $(document).find("#conta_total").data('valor');        
+        var total = $(document).find("#conta_total").data('valor');
         $(document).find('#md-lbl-total').text(lbl_total);
-        $(document).find('#md-lbl-total').data('valor',total);
+        $(document).find('#md-lbl-total').data('valor', total);
     });
 
 
@@ -362,7 +364,7 @@ $(document).ready(function() {
 
         $("#conta_soma").html(somatorio.lbl_soma);
         $("#conta_dez_porcento").html(somatorio.lbl_dez_porcento);
-        $("#conta_total").html(somatorio.total);        
+        $("#conta_total").html(somatorio.total);
         $("#conta_total").data('valor', somatorio.valor_total);
     }
 
