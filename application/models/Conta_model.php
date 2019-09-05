@@ -23,7 +23,7 @@ class Conta_model extends CI_Model
     public function get_conta_aberta_by_mesa($cd_conta)
     {
         $sql = "select
-                    ci_conta, cd_mesa, cd_status,
+                    ci_conta, cd_mesa, cd_status,fl_dez_porcento,
                     TO_CHAR(dt_inicio, 'DD/MM/YYYY HH:MI:SS') dt_inicio,
                     TO_CHAR(dt_fim, 'DD/MM/YYYY HH:mm:SS') dt_fim, nr_total
                     from tb_conta
@@ -62,7 +62,7 @@ class Conta_model extends CI_Model
         }
         
     }
-//TODO: Adicionar intervalo de tempo para pesquisa
+
     public function get_contas_periodo($dt_inicio,$dt_fim){
         $sql = "select                 
                 prod.ci_produto,

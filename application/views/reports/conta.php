@@ -13,49 +13,37 @@
 
 #content,
 table {
-    width: 100%;
+    width: 96%;
+}
+
+.info_dinheiro{
+    text-align:right;
 }
 </style>
 <div id='content'>
     ----------------<strong>BOTECO VINTAGE</strong>------------<br>
-    Endereço <br>
-    Telefone: <br>
-    Inicio : <br>
+    Endereço: Rua Padre Minguelino, 1159 - Fátima, Fortaleza - CE, CEP: 60040-300 <br>
+    Telefone: (85) 996123082 (Rosal) <br>
+    Início : <?= $conta->dia_semana . ' '. $conta->dt_inicio ?> <br>
     -------------------------------------------------------
     <table>
         <thead>
             <tr>
                 <td width="10%">Qtd.</td>
                 <td width="50%">Descrição</td>
-                <td width="20%">Unitário</td>
-                <td width="20%">Total</td>
+                <td class="info_dinheiro"  width="20%">Unitário</td>
+                <td class="info_dinheiro" width="20%">Total</td>
             </tr>
         </thead>
         <tbody>
+            <?php foreach($pedidos as $pedido){ ?>
             <tr>
-                <td> 10 </td>
-                <td> Teste </td>
-                <td> 20,00 </td>
-                <td> 200,00 </td>
+                <td><?= $pedido->quantidade ?> </td>
+                <td><?= substr($pedido->nm_produto,0,20); ?> </td>
+                <td class="info_dinheiro" ><?= str_replace('R$','', $pedido->lbl_valor_venda);  ?> </td>
+                <td class="info_dinheiro"><?= str_replace('R$','', $pedido->lbl_total); ?> </td>
             </tr>
-            <tr>
-                <td> 10 </td>
-                <td> Teste </td>
-                <td> 20,00 </td>
-                <td> 200,00 </td>
-            </tr>
-            <tr>
-                <td> 10 </td>
-                <td> Teste </td>
-                <td> 20,00 </td>
-                <td> 200,00 </td>
-            </tr>
-            <tr>
-                <td> 10 </td>
-                <td> Teste </td>
-                <td> 20,00 </td>
-                <td> 200,00 </td>
-            </tr>
+            <?php } ?>
         </tbody>
     </table>
     -------------------------------------------------------
@@ -63,15 +51,15 @@ table {
         <tbody>
             <tr>
                 <td width="70%"> Conta </td>
-                <td width="30%"> R$200,00 </td>
+                <td class="info_dinheiro" width="30%"><?= $total->lbl_soma ?></td>
             </tr>
             <tr>
                 <td width="70%"> 10% </td>
-                <td width="30%"> R$20,00 </td>
+                <td class="info_dinheiro" width="30%"> <?= $conta->fl_dez_porcento=='t'? $total->lbl_dez_porcento : 'R$ 00,00'; ?> </td>
             </tr>
             <tr>
                 <td width="70%"> <strong> Total </strong> </td>
-                <td width="30%"> <strong> R$220,00 </strong> </td>
+                <td class="info_dinheiro" width="30%"> <strong> <?= $conta->fl_dez_porcento=='t'? $total->total: $total->lbl_soma;  ?>  </strong> </td>
             </tr>
         </tbody>
     </table>

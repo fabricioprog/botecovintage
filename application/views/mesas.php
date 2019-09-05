@@ -37,6 +37,11 @@ a:hover {
                     Relatório
                 </button>
             </a>
+            <a href="<?= base_url('produtos'); ?>">
+                <button id="produtos" style="margin-right: 30px;" type="button" class="btn btn-md btn-outline-info  btn-rounded pull-right">
+                    Produtos
+                </button>
+            </a>
         </p>
     </div>
 </div>
@@ -44,7 +49,7 @@ a:hover {
     <div class="card-body">
         <div class="row">
             <?php 
-            $mesas = array(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,);
+            $mesas = array(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30);
             foreach($mesas as $mesa){  
                 $status = "livre";                
                 $url = base_url("mesas/gerenciar/").$mesa;

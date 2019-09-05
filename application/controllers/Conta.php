@@ -1,6 +1,8 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
+use Dompdf\Dompdf;
+
 class Conta extends MY_Controller
 {
 
@@ -188,6 +190,38 @@ class Conta extends MY_Controller
             $dtime = DateTime::createFromFormat("d/m/Y H:i", $data);
         }
         return $dtime->format('Y-m-d H:i:s');;
+    }
+
+    public function report($cd_conta)
+    {
+
+        $data['conta'] = $this->conta_model->get_conta_aberta_by_mesa($cd_conta);
+        $data['pedidos'] = $this->pedido_model->get_pedidos($cd_conta);
+        $data['total'] = $this->pedido_model->get_pedidos($cd_conta,true);       
+
+        
+        $diasemana = array('Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab');
+        $data['conta']->dia_semana = $diasemana[ date('w',strtotime($data['conta']->dt_inicio))];        
+		header("HTTP/1.1 200 OK");
+		header("Pragma: public");
+		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");	
+		header("Cache-Control: private", false);
+        header("Content-type: application/pdf");
+        
+        
+        $dompdf = new DOMPDF();
+        // instantiate and use the dompdf class
+		$dompdf = new Dompdf();
+		
+		$conteudo =$this->load->view('reports/conta.php',$data,true);		
+		$dompdf->loadHtml($conteudo);
+		// (Optional) Setup the paper size and orientation
+		$dompdf->set_paper(array(0,0,240,650));				
+		// Render the HTML as PDF
+        $dompdf->render();
+		// Output the generated PDF to Browser
+        $dompdf->stream('teste.pdf',array('Attachment'=>0));
+
     }
 
 }

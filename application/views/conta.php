@@ -70,7 +70,7 @@ tbody tr {
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <a href="<?= base_url('home/report') ?>" target='_blank'>
+                        <a href="<?= base_url('conta/report/'.$conta_mesa_info->ci_conta) ?>" target='_blank'>
                             <button type="button" class="btn btn-raised btn-info btn-block pull-right">
                                 <i class="fa fa-file" aria-hidden="true"></i>
                                 Fechar Conta
@@ -205,6 +205,8 @@ $(document).ready(function() {
 
     $(".btn-categoria").click(function() {
         let id = $(this).data('id');
+        tb_produtos.search('').draw();
+        
         $('#pnCategorias').fadeOut('10', function() {
             $('#pnProdutos').fadeIn('10');
         });

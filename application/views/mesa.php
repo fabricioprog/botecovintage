@@ -35,10 +35,7 @@
 <div class="row">
     <div class="col-md-12">
         <p class="h4 text-primary">
-            <i class="fa fa-th-large"></i> Mesa <?= $mesa_id ?>
-            <button id="btnAdd" type="button" class="btn btn-md btn-outline-success  btn-rounded pull-right">
-                <i class="fa fa-plus" aria-hidden="true"></i>
-                </span>
+            <i class="fa fa-th-large"></i> Mesa <?= $mesa_id ?>            
             </button>
             <a href="<?= base_url('mesas') ?>" id="btnVoltar"><span class="pull-right">
                     <button type="button" class="btn btn-md btn-outline-success pull-right">

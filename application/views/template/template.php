@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -17,10 +18,6 @@
     <script src="<?=base_url('')?>assets/js/popper.min.js"></script>
     <script src="<?=base_url('')?>assets/js/bootstrap-material-design.min.js"></script>
     <script src="<?=base_url('')?>assets/js/jquery.mask.min.js"></script>
-
-
-
-
     <script>
     $(document).ready(function() {
         $('body').bootstrapMaterialDesign();
@@ -29,8 +26,8 @@
 </head>
 
 <body>
-    <div class="bmd-layout-container bmd-drawer-f-l bmd-drawer">
-        <header class="bmd-layout-header">
+    <div class="bmd-layout-container bmd-drawer-f-l bmd-drawer">    
+        <!-- <header class="bmd-layout-header">
             <div class="navbar navbar-light bg-faded">
                 <button id="btn-main-menu" class="navbar-toggler" type="button" data-toggle="drawer"
                     data-target="#dw-s1">
@@ -41,7 +38,7 @@
                     <li class="nav-item"> </li>
                 </ul>
             </div>
-        </header>
+        </header> -->
         <div id="dw-s1" class="bmd-layout-drawer bg-faded">
             <header>
                 <a class="navbar-brand">
@@ -62,6 +59,7 @@
     <script src="<?=base_url('')?>assets/js/base.js"></script>
     <script src="<?=base_url('')?>assets/js/template.js"></script>
 </body>
+
 </html>
 <div id="alert">
     <div class="alert alert-success" role="alert">
