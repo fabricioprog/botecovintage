@@ -48,7 +48,7 @@ table {
             <?php foreach($pedidos as $pedido){ ?>
             <tr>
                 <td><?= $pedido->quantidade ?> </td>
-                <td class="produto"><?= substr($pedido->nm_produto,0,13); ?> </td>
+                <td class="produto"><?= ucwords(strtolower(substr($pedido->nm_produto,0,20))); ?> </td>
                 <td class="info_dinheiro"><?= str_replace('R$','', $pedido->lbl_valor_venda); ?></td>
                 <td class="info_dinheiro"><?= str_replace('R$','', $pedido->lbl_total); ?></td>
             </tr>

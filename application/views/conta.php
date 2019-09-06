@@ -205,12 +205,15 @@ $(document).ready(function() {
 
     $(".btn-categoria").click(function() {
         let id = $(this).data('id');
+
         tb_produtos.search('').draw();
-        
+
         $('#pnCategorias').fadeOut('10', function() {
-            $('#pnProdutos').fadeIn('10');
+            $('#pnProdutos').fadeIn('10'); 
+            $('div.dataTables_filter input').focus();           
         });
         att_produtos(id);
+        
 
     });
 
@@ -460,9 +463,8 @@ $(document).ready(function() {
                 $btn_voltar = $('.header_produtos').clone();
                 $btn_voltar.removeAttr('hidden');
                 $("#pnProdutos").find(".btn-voltar").html($btn_voltar.html());
-                $($btn_voltar).bootstrapMaterialDesign();
-            }
-
+                $($btn_voltar).bootstrapMaterialDesign();                                
+            },
         }
         let merge = Object.assign(generico, produtos);
 

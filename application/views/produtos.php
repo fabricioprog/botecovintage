@@ -24,7 +24,7 @@
     <div class="card-body">
         <div class="row">
             <?php foreach($produtos as $prod){  ?>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <a href="#">
                     <div data-id="<?=$prod->ci_produto?>" class="card btn btn-primary text-left prod">
                         <img class="card-img-top img-fluid rounded mx-auto d-block" src="<?= $prod->img_produto ?>"
