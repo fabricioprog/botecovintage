@@ -45,6 +45,8 @@ class Conta extends MY_Controller
 
     public function get_pedidos_conta($cd_conta,$ajax=true){
         $conta = new stdClass();
+        //TODO: reparo emergiencial
+        $cd_conta = str_replace('.','',str_replace(',','',$cd_conta));
         $conta->info =  $this->conta_model->get_conta($cd_conta);
         $conta->lista  = $this->pedido_model->get_pedidos($cd_conta);
         $conta->somatorio = $this->pedido_model->get_pedidos($cd_conta,true);
