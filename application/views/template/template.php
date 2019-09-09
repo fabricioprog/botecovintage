@@ -27,7 +27,7 @@
 
 <body>
     <div class="bmd-layout-container bmd-drawer-f-l bmd-drawer">    
-        <!-- <header class="bmd-layout-header">
+        <header class="bmd-layout-header">
             <div class="navbar navbar-light bg-faded">
                 <button id="btn-main-menu" class="navbar-toggler" type="button" data-toggle="drawer"
                     data-target="#dw-s1">
@@ -38,7 +38,7 @@
                     <li class="nav-item"> </li>
                 </ul>
             </div>
-        </header> -->
+        </header>
         <div id="dw-s1" class="bmd-layout-drawer bg-faded">
             <header>
                 <a class="navbar-brand">

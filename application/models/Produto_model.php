@@ -10,6 +10,11 @@ class Produto_model extends CI_Model{
         return $this->db->query($sql,array($cd_categoria))->result();
     }
 
+    public function get_todos(){
+        $sql = "SELECT * FROM tb_produto where fl_deletado = false ";
+        return $this->db->query($sql);
+    }
+
     public function get_produto($ci_produto){
         $sql = "SELECT * FROM tb_produto where ci_produto = ? order by nm_produto ";
         return $this->db->query($sql,array($ci_produto))->row();
