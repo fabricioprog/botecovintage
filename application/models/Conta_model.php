@@ -76,7 +76,7 @@ class Conta_model extends CI_Model
         inner join tb_produto prod on prod.ci_produto = ped.cd_produto        
         inner join tb_conta c on ped.cd_conta = c.ci_conta        
         where c.cd_status = 5 and dt_fim between ? and ? 
-        group by 1,2 ";
+        group by 1,2 order by quantidade DESC  ";
         return $this->db->query($sql,array($dt_inicio,$dt_fim))->result();
     }
 
