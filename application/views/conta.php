@@ -39,6 +39,14 @@ tbody tr {
 #btnFinalizar {
     margin-left: 15px;
 }
+
+.alerta-urgente {
+    background-color: rgba(255, 0, 0, 0.2) !important;
+}
+
+.alerta-aviso {
+    background-color: rgba(255, 255, 0, 0.2) !important;
+}
 </style>
 <div class="row">
     <div class="col-md-12">
@@ -209,11 +217,11 @@ $(document).ready(function() {
         tb_produtos.search('').draw();
 
         $('#pnCategorias').fadeOut('10', function() {
-            $('#pnProdutos').fadeIn('10'); 
-            $('div.dataTables_filter input').focus();           
+            $('#pnProdutos').fadeIn('10');
+            $('div.dataTables_filter input').focus();
         });
         att_produtos(id);
-        
+
 
     });
 
@@ -454,6 +462,25 @@ $(document).ready(function() {
                 },
             ],
             "fnRowCallback": function(nRow, aData, iDisplayIndex) {
+                let classe = "";
+
+                if (aData.nr_limite != null && aData.nr_limite < aData.nr_estoque) {
+                    classe = 'alerta-aviso';
+                }
+
+                if (aData.nr_limite != null && aData.nr_estoque == '0') {
+                    classe = "alerta-urgente";                    
+                }
+
+
+                if (aData.nr_estoque) {
+                    $(nRow).attr('data-toggle', "tooltip");
+                    $(nRow).attr('data-placement', "top");
+                    $(nRow).attr('title', "Estoque: "+aData.nr_estoque);
+                }
+
+                $(nRow).tooltip();
+                $(nRow).addClass(classe);
                 $(nRow).attr("data-id", aData.ci_produto);
                 $('td:eq(0)', nRow).html("<img src='" + aData.img_produto +
                     "' width='50px' height='10px' class='img-fluid' /> ");
@@ -463,7 +490,7 @@ $(document).ready(function() {
                 $btn_voltar = $('.header_produtos').clone();
                 $btn_voltar.removeAttr('hidden');
                 $("#pnProdutos").find(".btn-voltar").html($btn_voltar.html());
-                $($btn_voltar).bootstrapMaterialDesign();                                
+                $($btn_voltar).bootstrapMaterialDesign();
             },
         }
         let merge = Object.assign(generico, produtos);
