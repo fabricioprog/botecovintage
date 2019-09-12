@@ -10,7 +10,7 @@
                 <div class="form-group">
                     <label for="tp_pagamento" class="bmd-label-floating">Forma de pagamento</label>
                     <select class="form-control" name="tp_pagamento" id="tp_pagamento" required>
-                        <option value=''></option>
+                        <option value=''>Selecione uma forma de Pagamento</option>
                         <option value='1'>Cartão (Crédito)</option>
                         <option value='2'>Cartão (Débito)</option>                        
                         <option value='3'>Dinheiro</option>
