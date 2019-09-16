@@ -20,6 +20,12 @@ class Conta_model extends CI_Model
         return $this->db->query($sql,array($ci_conta))->row();
     }
 
+    public function transferir_mesa($ci_conta,$cd_nova_mesa){
+        $sql = "update tb_conta set cd_mesa = ? where ci_conta = ? ";
+        $this->db->query($sql,array($cd_nova_mesa,$ci_conta));
+
+    }
+
     public function get_conta_aberta_by_mesa($cd_conta)
     {
         $sql = "select

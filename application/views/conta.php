@@ -40,6 +40,7 @@ tbody tr {
     margin-left: 15px;
 }
 </style>
+<?php alert(); ?>
 <div class="row">
     <div class="col-md-12">
         <p class="h4 text-primary">
@@ -70,18 +71,32 @@ tbody tr {
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <a href="<?= base_url('conta/report/'.$conta_mesa_info->ci_conta) ?>" target='_blank'>
-                            <button type="button" class="btn btn-raised btn-info btn-block pull-right">
-                                <i class="fa fa-file" aria-hidden="true"></i>
-                                Fechar Conta
-                            </button>
-                        </a>
-                        <button id="btn-encerrar-conta" type="button"
-                            class="btn btn-raised btn-block btn-success pull-right">
-                            <i class="fa fa-check" aria-hidden="true"></i>
-                            Encerrar
-                        </button>
-                        <input name="cd_conta" id="cd_conta" type="hidden" value="<?= $conta_mesa_info->ci_conta;?>" />
+                        <div class="row">
+                            <div class="col-md-6">
+                                <button id="btn-transferir-mesa" type="button"
+                                    class="btn btn-raised btn-block btn-info pull-right">
+                                    <i class="fa fa-exchange" aria-hidden="true"></i>
+                                    Mudar Mesa
+                                </button>
+                            </div>
+                            <div class="col-md-6">
+                                <a href="<?= base_url('conta/report/'.$conta_mesa_info->ci_conta) ?>" target='_blank'>
+                                    <button type="button" class="btn btn-raised  btn-info btn-block pull-right">
+                                        <i class="fa fa-file" aria-hidden="true"></i>
+                                        Fechar Conta
+                                    </button>
+                                </a>
+                            </div>
+                            <div class="col-md-12">
+                                <button id="btn-encerrar-conta" type="button"
+                                    class="btn btn-raised btn-block btn-success pull-right">
+                                    <i class="fa fa-check" aria-hidden="true"></i>
+                                    Encerrar
+                                </button>
+                                <input name="cd_conta" id="cd_conta" type="hidden"
+                                    value="<?= $conta_mesa_info->ci_conta;?>" />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -169,12 +184,14 @@ tbody tr {
 </div>
 
 <?= $this->load->view('modal/encerrar_conta.php',array("id"=>'md_encerrar_conta'),true); ?>
+<?= $this->load->view('modal/transferir_mesa.php',array("id"=>'md_transferir_mesa'),true); ?>
 
 <script>
 $(document).ready(function() {
     jQuery.datetimepicker.setLocale('pt-BR');
     $modal = $("#myModal");
-    var conteudo = $("#md_encerrar_conta").html();
+    var md_encerrar_conta = $("#md_encerrar_conta").html();
+    var md_transferir_mesa = $("#md_transferir_mesa").html();
     $("#md_encerrar_conta").remove();
     var conta = $("#cd_conta").val();
 
@@ -209,11 +226,11 @@ $(document).ready(function() {
         tb_produtos.search('').draw();
 
         $('#pnCategorias').fadeOut('10', function() {
-            $('#pnProdutos').fadeIn('10'); 
-            $('div.dataTables_filter input').focus();           
+            $('#pnProdutos').fadeIn('10');
+            $('div.dataTables_filter input').focus();
         });
         att_produtos(id);
-        
+
 
     });
 
@@ -250,7 +267,7 @@ $(document).ready(function() {
 
 
     $("#btn-encerrar-conta").click(function() {
-        abrir_modal('Encerrar Conta', conteudo, true);
+        abrir_modal('Encerrar Conta', md_encerrar_conta, true);
         $("#myModal").find('input, #md-lbl-total, #md-lbl-soma').mask('000.000,00', {
             reverse: true
         });
@@ -258,6 +275,20 @@ $(document).ready(function() {
         var total = $(document).find("#conta_total").data('valor');
         $(document).find('#md-lbl-total').text(lbl_total);
         $(document).find('#md-lbl-total').data('valor', total);
+    });
+
+    $("#btn-transferir-mesa").click(function() {
+        $(document).on('click', '#myModal #btn_confirmar', function() {
+            let cd_conta = $('input[name="cd_conta"]').val();
+            let cd_mesa = $("#myModal").find('input[name="mesa"]').val();
+            let url = "<?= base_url('mesas/mudar_mesa')?>/" + cd_conta + "/" + cd_mesa;
+            window.location = url;
+            return false;
+        });
+        abrir_modal('Mudar mesa', md_transferir_mesa, true);
+        $("#myModal").find('input, #md-mesa').mask('00', {
+            reverse: true
+        });
     });
 
 
@@ -324,7 +355,8 @@ $(document).ready(function() {
     function recalcula_dez_porcento(conta, fl_dez_porcento) {
         $.ajax({
             type: "GET",
-            url: "<?=base_url('')?>conta/recalcula_dez_porcento_conta/" + conta + "/" + fl_dez_porcento,
+            url: "<?=base_url('')?>conta/recalcula_dez_porcento_conta/" + conta + "/" +
+                fl_dez_porcento,
             dataType: "json",
             error: function(res) {
                 console.log("erro");
@@ -463,7 +495,7 @@ $(document).ready(function() {
                 $btn_voltar = $('.header_produtos').clone();
                 $btn_voltar.removeAttr('hidden');
                 $("#pnProdutos").find(".btn-voltar").html($btn_voltar.html());
-                $($btn_voltar).bootstrapMaterialDesign();                                
+                $($btn_voltar).bootstrapMaterialDesign();
             },
         }
         let merge = Object.assign(generico, produtos);

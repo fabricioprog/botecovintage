@@ -28,6 +28,7 @@ a:hover {
     margin-left: 15px;
 }
 </style>
+<?php alert() ?>
 <div class="row">
     <div class="col-md-12">
         <p class="h4 text-primary">

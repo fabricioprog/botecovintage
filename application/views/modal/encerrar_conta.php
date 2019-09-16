@@ -83,7 +83,7 @@ $(document).on('hidden.bs.modal', '#myModal', function(e) {
 });
 
 
-$(document).on('keyup', '#myModal input', function() {
+$(document).on('keyup', 'form[name="<?= $id ?>"] input', function() {
     att_valor();
 });
 
