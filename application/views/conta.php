@@ -1,3 +1,4 @@
+<script src="http://localhost:3000/socket.io/socket.io.js"></script>
 <style>
 .tb-body {
     padding: 10px 0px 10px 0px;
@@ -188,6 +189,7 @@ tbody tr {
 
 <script>
 $(document).ready(function() {
+    var socket = io('http://localhost:3000/');
     jQuery.datetimepicker.setLocale('pt-BR');
     $modal = $("#myModal");
     var md_encerrar_conta = $("#md_encerrar_conta").html();
@@ -293,6 +295,13 @@ $(document).ready(function() {
 
 
     $("#tbProdutos tbody").on('click', 'tr', function() {
+        let produto = {
+            mesa: "<?= $mesa_id ?>",
+            img : $(this).find('td:eq(0)').html(), 
+            nome : $(this).find('td:eq(1)').text(),
+        };
+        socket.emit('add pedido', produto);
+
         var pedido = {};
         pedido.cd_produto = $(this).data('id');
         pedido.cd_conta = $("#cd_conta").val();

@@ -10,6 +10,19 @@
     <link rel="stylesheet" href="<?=base_url('')?>assets/css/template.css">
     <link rel="stylesheet" href="<?=base_url('')?>assets/css/jquery.datetimepicker.min.css">
     <link rel="stylesheet" href="<?=base_url('')?>assets/css/jquery.dataTables.min.css">
+    
+
+    <!-- início ícones para aplicação PWA -->
+    <link rel="apple-touch-icon" sizes="180x180" href="<?= base_url('assets/img/icons/apple-touch-icon.png')?>">
+    <link rel="icon" type="image/png" sizes="32x32" href="<?= base_url('assets/img/icons/favicon-32x32.png')?>">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url('assets/img/icons/favicon-16x16.png')?>">
+    <link rel="manifest" href="<?= base_url('assets/img/icons/site.webmanifest')?>">
+    <link rel="mask-icon" href="<?= base_url('assets/img/icons/safari-pinned-tab.svg" color="#5bbad5')?>">
+    <meta name="msapplication-TileColor" content="#ffc40d">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- FIM ícones para aplicação PWA -->
+
 
 
     <script src="<?=base_url('')?>assets/js/jquery.min.js"></script>
@@ -26,7 +39,7 @@
 </head>
 
 <body>
-    <div class="bmd-layout-container bmd-drawer-f-l bmd-drawer">    
+    <div class="bmd-layout-container bmd-drawer-f-l bmd-drawer">
         <!-- <header class="bmd-layout-header">
             <div class="navbar navbar-light bg-faded">
                 <button id="btn-main-menu" class="navbar-toggler" type="button" data-toggle="drawer"
