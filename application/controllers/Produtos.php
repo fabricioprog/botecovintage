@@ -38,10 +38,10 @@ class Produtos extends MY_Controller
 
     public function add_produto()
     {
-        $p = $this->get_produto_form();
+        $p = $this->get_produto_form();        
         $imagem = $this->get_imagem_convertida($_FILES['imagem']);
         $tp_imagem = $_FILES['imagem']['type'];
-        $this->produto_model->add_produto($p->produto, $p->descricao, 0, $imagem, $tp_imagem, $p->categoria, $p->valor_venda);
+        $this->produto_model->add_produto($p->produto, $p->descricao, 0, $imagem, $tp_imagem, $p->categoria, $p->valor_venda,$p->cozinha);
     }
 
 
@@ -60,13 +60,14 @@ class Produtos extends MY_Controller
             $imagem = $this->get_imagem_convertida($_FILES['imagem']);
             $tp_imagem = $_FILES['imagem']['type'];
 		}
-        $this->produto_model->update_produto($p->produto, $p->descricao, 0, $imagem, $tp_imagem, $p->categoria, $p->valor_venda, $p->id);
+        $this->produto_model->update_produto($p->produto, $p->descricao, 0, $imagem, $tp_imagem, $p->categoria, $p->valor_venda,$p->cozinha, $p->id);
 
     }
 
     private function get_produto_form()
     {
-        $p = (object) $this->input->post();        
+        $p = (object) $this->input->post();  
+        $p->cozinha = isset($p->cozinha)? true: false;       
         $p->valor_venda = $this->converter_dinheiro_to_number($p->valor_venda);
         return $p;
     }

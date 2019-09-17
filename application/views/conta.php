@@ -297,11 +297,13 @@ $(document).ready(function() {
     $("#tbProdutos tbody").on('click', 'tr', function() {
         let produto = {
             mesa: "<?= $mesa_id ?>",
-            img : $(this).find('td:eq(0)').html(), 
-            nome : $(this).find('td:eq(1)').text(),
+            img: $(this).find('td:eq(0)').html(),
+            nome: $(this).find('td:eq(1)').text(),
         };
-        socket.emit('add pedido', produto);
-
+        console.log($(this).data('cozinha'));
+        if ($(this).data('cozinha') == 't') {
+            socket.emit('add pedido', produto);
+        }
         var pedido = {};
         pedido.cd_produto = $(this).data('id');
         pedido.cd_conta = $("#cd_conta").val();
@@ -496,6 +498,7 @@ $(document).ready(function() {
             ],
             "fnRowCallback": function(nRow, aData, iDisplayIndex) {
                 $(nRow).attr("data-id", aData.ci_produto);
+                $(nRow).attr("data-cozinha", aData.fl_cozinha);
                 $('td:eq(0)', nRow).html("<img src='" + aData.img_produto +
                     "' width='50px' height='10px' class='img-fluid' /> ");
                 return nRow;

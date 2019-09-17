@@ -22,7 +22,14 @@
                     <span class="bmd-help">Digite aqui o valor da venda</span>
                 </div>
             </div>
-            <div class='col-7 align-self-center'>
+            <div class='col-5 align-self-center'>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="cozinha" > Cozinha
+                    </label>
+                </div>
+            </div>
+            <div class='col-2 align-self-center'>
                 <button id="btn-excluir" type="button" class="btn btn-raised btn-danger pull-right "
                     style='padding-top:10px' hidden><i class="fa fa-trash fa-2x"></i></button>
             </div>
@@ -58,10 +65,14 @@ function limpar_campos() {
     $("#MyModal").find("#modalCorpo").html("");
 }
 
-function preencher_campos(id, nome, descricao, valor, imagem) {
+function preencher_campos(id, nome, descricao, valor, imagem,fl_cozinha) {
     $form = $('#modalCorpo').find('form[name="<?= $id ?>"]');
     $form.find('input[name="id"]').val(id).trigger("change");
     $form.find('input[name="produto"]').val(nome).trigger("change");
+    if(fl_cozinha=='t'){
+        $form.find('input[name="cozinha"]').attr("checked", true);
+    }
+    
     $form.find('textarea[name="descricao"]').html(descricao).trigger("change");
     $form.find('input[name="valor_venda"]').val(valor).trigger("change");
     $form.find("#img").attr("src", imagem);
@@ -75,7 +86,7 @@ $(document).on('click', '#btn-excluir', function() {
     if (id) {
         $.ajax({
             type: "GET",
-            url: "produtos/rm_produto/" + id,            
+            url: "produtos/rm_produto/" + id,
             error: function(res) {
                 console.log(res);
             },
@@ -100,9 +111,8 @@ $md_form.find('input[name="id"]').change(function() {
                 console.log("erro");
                 console.log(res);
             },
-            success: function(data) {
-                preencher_campos(id, data.nm_produto, data.ds_produto, data.valor_venda, data
-                    .img_produto);
+            success: function(data) {                  
+                preencher_campos(id, data.nm_produto, data.ds_produto, data.valor_venda, data.img_produto,data.fl_cozinha);
 
             },
         });

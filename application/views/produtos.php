@@ -137,7 +137,7 @@ $(document).ready(function() {
             error: function(res) {
                 console.log(res);
             },
-            success: function(data) {
+            success: function(data) {                
                 location.reload();
             },
         });

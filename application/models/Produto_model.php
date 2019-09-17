@@ -15,9 +15,9 @@ class Produto_model extends CI_Model{
         return $this->db->query($sql,array($ci_produto))->row();
     }
 
-    public function add_produto($nome,$descricao,$nr_estoque,$imagem,$tp_imagem,$cd_categoria,$valor_venda) {        
-        $sql = "INSERT INTO tb_produto values (default,?,?,true,false,?,?,?,?,?)";
-        $this->db->query($sql,array($nome,$descricao,$nr_estoque,$imagem,$tp_imagem,$cd_categoria,$valor_venda));        
+    public function add_produto($nome,$descricao,$nr_estoque,$imagem,$tp_imagem,$cd_categoria,$valor_venda,$fl_cozinha) {        
+        $sql = "INSERT INTO tb_produto values (default,?,?,true,false,?,?,?,?,?,0,?)";
+        $this->db->query($sql,array($nome,$descricao,$nr_estoque,$imagem,$tp_imagem,$cd_categoria,$valor_venda,$fl_cozinha));
     }
 
     public function remover_produto($id){
@@ -25,8 +25,8 @@ class Produto_model extends CI_Model{
         $this->db->query($sql,array($id));;
     }
 
-    public function update_produto($nome,$descricao,$nr_estoque,$imagem,$tp_imagem,$cd_categoria,$valor_venda,$ci_produto) {
-        $params = array($nome,$descricao,$nr_estoque,$cd_categoria,$valor_venda);
+    public function update_produto($nome,$descricao,$nr_estoque,$imagem,$tp_imagem,$cd_categoria,$valor_venda,$fl_cozinha,$ci_produto) {
+        $params = array($nome,$descricao,$nr_estoque,$cd_categoria,$valor_venda,$fl_cozinha);
         $sql_tp_imagem = "";
         if($imagem && $tp_imagem){            
             $sql_tp_imagem = ", img_produto= ?,tp_imagem= ? ";
@@ -34,7 +34,7 @@ class Produto_model extends CI_Model{
             $params[] = $tp_imagem;
         }
         $params[] = $ci_produto;
-        $sql = "update tb_produto set nm_produto = ?,ds_produto=?,nr_estoque=?, cd_categoria=?,valor_venda=? $sql_tp_imagem where ci_produto = ?";
+        $sql = "update tb_produto set nm_produto = ?,ds_produto=?,nr_estoque=?, cd_categoria=?,valor_venda=?,fl_cozinha=?  $sql_tp_imagem where ci_produto = ?";
         $this->db->query($sql,$params);        
     }
 
