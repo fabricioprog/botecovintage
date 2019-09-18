@@ -17,6 +17,7 @@ class Conta extends MY_Controller
         $this->load->helper('url');
         $this->load->model('conta_model');
         $this->load->model('pedido_model');
+        $this->load->model('produto_model');
         $this->load->model('categoria_model');
 
     }
@@ -60,6 +61,8 @@ class Conta extends MY_Controller
 
     public function add_produto($ajax = true){
         $inputs =  $this->input->post();
+        $p = $this->produto_model->get_produto($inputs['cd_produto']);
+        $this->remover_estoque($p);
         
         $prod = $this->pedido_model->get_produto_conta($inputs['cd_conta'],$inputs['cd_produto']);
         
@@ -70,16 +73,35 @@ class Conta extends MY_Controller
             $this->pedido_model->update_pedido($prod->cd_conta,$prod->cd_produto,$prod->quantidade);
             
         }          
-        $res = $this->get_pedidos_conta($inputs['cd_conta'],false);        
+        $res = new StdClass();
+        $res->pedidos = $this->get_pedidos_conta($inputs['cd_conta'],false);        
+        $res->produtos = $this->produto_model->get_produtos_by_categoria($p->cd_categoria);
        if($ajax){
            echo json_encode($res);
        }     
         return $res;
     }
 
+    private function remover_estoque($p){
+        if(!empty($p->nr_limite) && $p->nr_estoque>0){            
+            $p->nr_estoque--;
+            $this->produto_model->update_estoque($p->ci_produto,$p->nr_estoque,$p->nr_limite);
+        }
+    }
+
+    private function add_estoque($p){
+        if(!empty($p->nr_limite)){            
+            $p->nr_estoque++;
+            $this->produto_model->update_estoque($p->ci_produto,$p->nr_estoque,$p->nr_limite);
+        }
+    }
+
 
     public function remover_produto_conta($produto,$cd_conta,$ajax=true){
         $ped = $this->pedido_model->get_conta_produto($cd_conta,$produto);
+        $p = $this->produto_model->get_produto($produto);
+        $this->add_estoque($p);
+
         
         if(!empty($ped)){            
             if($ped->quantidade>1){                                
@@ -87,7 +109,9 @@ class Conta extends MY_Controller
             }else{                
                 $this->pedido_model->remove_produto_conta($ped->cd_produto,$ped->cd_conta);
             }
-            $res= $this->get_pedidos_conta($ped->cd_conta,false);
+            $res = new StdClass();
+            $res->produtos = $this->produto_model->get_produtos_by_categoria($p->cd_categoria);
+            $res->pedidos = $this->get_pedidos_conta($ped->cd_conta,false);
             if($ajax){
                echo json_encode($res);
             }

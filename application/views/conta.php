@@ -40,6 +40,14 @@ tbody tr {
 #btnFinalizar {
     margin-left: 15px;
 }
+
+.alerta-urgente {
+    background-color: rgba(255, 0, 0, 0.2) !important;
+}
+
+.alerta-aviso {
+    background-color: rgba(255, 255, 0, 0.2) !important;
+}
 </style>
 <?php alert(); ?>
 <div class="row">
@@ -118,8 +126,7 @@ tbody tr {
                     <?php } ?>
                 </div>
                 <div class="col-12" id="pnProdutos">
-                    <table id="tbProdutos" class="row-border hover table dt-responsive no-footer" cellspacing="0"
-                        style="width:100%;">
+                    <table id="tbProdutos" class="row-border hover table dt-responsive no-footer">
                         <thead>
                             <tr>
                                 <th>Foto</th>
@@ -196,6 +203,8 @@ $(document).ready(function() {
     var md_transferir_mesa = $("#md_transferir_mesa").html();
     $("#md_encerrar_conta").remove();
     var conta = $("#cd_conta").val();
+    $('[data-toggle="tooltip"]').tooltip()
+
 
     var dataTableConfig = {
         "scrollCollapse": true,
@@ -226,7 +235,6 @@ $(document).ready(function() {
         let id = $(this).data('id');
 
         tb_produtos.search('').draw();
-
         $('#pnCategorias').fadeOut('10', function() {
             $('#pnProdutos').fadeIn('10');
             $('div.dataTables_filter input').focus();
@@ -316,12 +324,15 @@ $(document).ready(function() {
                 console.log("erro");
                 console.log(res);
             },
-            success: function(pedidos) {
+            success: function(res) {
+                tb_produtos.clear();
+                tb_produtos.rows.add(res.produtos);
+                tb_produtos.draw(false);
                 tb_pedidos.clear();
-                tb_pedidos.rows.add(pedidos.lista);
+                tb_pedidos.rows.add(res.pedidos.lista);
                 tb_pedidos.draw();
-                let somatorio = pedidos.somatorio;
-                att_info_conta(pedidos)
+                let somatorio = res.pedidos.somatorio;
+                att_info_conta(res.pedidos)
                 anima_confirma('success', 1000, "Pedido Adicionado com Sucesso!!!");
             },
         });
@@ -338,8 +349,12 @@ $(document).ready(function() {
                 console.log("erro");
                 console.log(res);
             },
-            success: function(pedidos) {
-                att_info_conta(pedidos);
+            success: function(res) {
+                tb_produtos.clear();
+                tb_produtos.rows.add(res.produtos);
+                tb_produtos.draw(false);
+                att_info_conta(res.pedidos);
+                
                 anima_confirma('success', 4000, "Produto Removido com Sucesso!");
             },
         });
@@ -484,19 +499,39 @@ $(document).ready(function() {
                 }
             ],
             "columnDefs": [{
-                    "sWidth": "10%",
-                    "aTargets": [0]
+                    "Width": "10%",
+                    "targets": [0]
                 },
                 {
-                    "sWidth": "70%",
-                    "aTargets": [1]
+                    "Width": "70%",
+                    "targets": [1]
                 },
                 {
-                    "sWidth": "20%",
-                    "aTargets": [2]
+                    "Width": "20%",
+                    "targets": [2]
                 },
             ],
             "fnRowCallback": function(nRow, aData, iDisplayIndex) {
+                let classe = "";                
+                if (parseInt(aData.nr_limite) >= parseInt(aData.nr_estoque)) {                    
+                    classe = 'alerta-aviso';
+                }
+
+                if (aData.nr_limite != null && aData.nr_estoque == '0') {
+                    classe = "alerta-urgente"; 
+                    $(nRow).click(false);                   
+                }
+
+
+                if (aData.nr_estoque) {
+                    $(nRow).attr('data-toggle', "tooltip");
+                    $(nRow).attr('data-placement', "top");
+                    $(nRow).attr('title', "Estoque: " + aData.nr_estoque);
+                }
+
+
+                $(nRow).addClass(classe);
+                
                 $(nRow).attr("data-id", aData.ci_produto);
                 $(nRow).attr("data-cozinha", aData.fl_cozinha);
                 $('td:eq(0)', nRow).html("<img src='" + aData.img_produto +
