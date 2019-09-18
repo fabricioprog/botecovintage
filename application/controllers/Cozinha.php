@@ -15,7 +15,7 @@ class Cozinha extends MY_Controller
 
     public function index()
     {
-        $data = array();
+        $data = def_data_main_titulo('fa fa-cutlery','Cozinha');
         $data['pedidos'] = json_encode($this->pedido_model->get_pedido_cozinha_livre());        
         $this->template->load('template', 'cozinha',$data);
     }

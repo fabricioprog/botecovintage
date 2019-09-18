@@ -62,7 +62,7 @@ class Pedido_model extends CI_Model
     public function get_pedido_cozinha_livre(){
         $sql = "SELECT * FROM tb_pedido_cozinha pc
         inner join tb_produto p on p.ci_produto = pc.cd_produto
-        where dt_fim is null";
+        where dt_fim is null order by pc.dt_inicio";
         return $this->db->query($sql)->result();
     }
 

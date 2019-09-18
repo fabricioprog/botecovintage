@@ -16,6 +16,7 @@ class Estoque extends MY_Controller
 
     public function index()
     { 
+        $data = def_data_main_titulo('fa fa-inbox','Estoque');
         $data['grau_urgencia'] = array('Todos','Baixa Quantidade','Esgotado');
         $data['inputs'] = $this->input->get();
         if(!empty($inputs)){
