@@ -22,6 +22,8 @@
     <source src="<?=base_url('assets/som/sms-alert-1-daniel_simon.mp3')?>" type="audio/mp3" />
 </audio>
 <div id="pedidos" class="row">
+
+
 </div>
 
 
@@ -51,33 +53,55 @@ function play() {
     audio.play();
 }
 
+function add_pedido_cozinha(pedido, mod_pedido, som) {
+    if (som) {
+        play();
+    }
+    let novo_pedido = $(mod_pedido).clone();
+    $(novo_pedido).attr("data-id", pedido.ci_pedido_cozinha);
+    let img_pedido = "<img src='" + pedido.img_produto + "' class='img-fluid' />";
+    $(novo_pedido).find('.img_produto').html(img_pedido);
+    $(novo_pedido).find('.img_produto img').removeAttr("width");
+    $(novo_pedido).find('.img_produto img').removeAttr("height");
+    $(novo_pedido).find('.nr_mesa').html("MESA: " + pedido.cd_mesa);
+    $(novo_pedido).find('.nm_produto').html(pedido.nm_produto);
+    $("#pedidos").append(novo_pedido);
+    $("#pedidos").find('div').fadeIn(200);
+}
 
-$(document).ready(function() {    
+function add_pedidos_init(pedidos, modelo_pedido) {
+    if (pedidos.length > 0 && pedidos != null) {
+        pedidos.forEach(function(pedido) {
+            add_pedido_cozinha(pedido, modelo_pedido, false);
+        });
+    }
+}
+
+
+$(document).ready(function() {
     var mod_pedido = $("#modelo_pedido").html();
-    $("#modelo_pedido").remove();
+    add_pedidos_init( <?= $pedidos ?> , mod_pedido);
 
-    var pedido = 0;
+    $("#modelo_pedido").remove();
 
     var socket = io('http://192.168.0.2:3000/');
 
     $('body').on('click', '.pedido', function() {
         let pedido = $(this);
+        let ci_pedido_cozinha = pedido.data('id');
+        socket.emit('pedido feito', ci_pedido_cozinha);
+    });
+
+    socket.on('add pedido', function(pedido) {
+        add_pedido_cozinha(pedido, mod_pedido, true);
+    });
+
+
+    socket.on('pedido feito', function(ci_pedido_cozinha) {
+        let pedido = $(document).find('.pedido[data-id="' + ci_pedido_cozinha + '"]');        
         pedido.fadeOut(200, function() {
             pedido.remove();
         });
-    });
-
-    socket.on('add pedido', function(produto) {
-        
-        play();
-        let novo_pedido = $(mod_pedido).clone();
-        $(novo_pedido).find('.img_produto').html(produto.img);
-        $(novo_pedido).find('.img_produto img').removeAttr("width");
-        $(novo_pedido).find('.img_produto img').removeAttr("height");
-        $(novo_pedido).find('.nr_mesa').html("MESA: " + produto.mesa);
-        $(novo_pedido).find('.nm_produto').html(produto.nome);
-        $("#pedidos").append(novo_pedido);
-        $("#pedidos").find('div').fadeIn(200);
     });
 
 

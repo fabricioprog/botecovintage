@@ -58,6 +58,14 @@ class Pedido_model extends CI_Model
 
     }
 
+
+    public function get_pedido_cozinha_livre(){
+        $sql = "SELECT * FROM tb_pedido_cozinha pc
+        inner join tb_produto p on p.ci_produto = pc.cd_produto
+        where dt_fim is null";
+        return $this->db->query($sql)->result();
+    }
+
     
 
     public function get_conta_produto($cd_conta,$cd_produto){

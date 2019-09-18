@@ -294,13 +294,13 @@ $(document).ready(function() {
     });
 
 
-    $("#tbProdutos tbody").on('click', 'tr', function() {
+    $("#tbProdutos tbody").on('click', 'tr', function() {        
         let produto = {
-            mesa: "<?= $mesa_id ?>",
-            img: $(this).find('td:eq(0)').html(),
-            nome: $(this).find('td:eq(1)').text(),
-        };
-        console.log($(this).data('cozinha'));
+            cd_mesa: "<?= $mesa_id ?>",
+            cd_produto : $(this).data('id'), 
+            img_produto: $(this).find('td:eq(0) img').attr('src'),
+            nm_produto: $(this).find('td:eq(1)').text(),
+        };        
         if ($(this).data('cozinha') == 't') {
             socket.emit('add pedido', produto);
         }

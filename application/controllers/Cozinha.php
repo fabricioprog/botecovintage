@@ -6,8 +6,17 @@ use Dompdf\Dompdf;
 class Cozinha extends MY_Controller
 {
 
+    public function __construct()
+    {
+        parent::__construct();
+        $this->load->helper('url');        
+        $this->load->model('pedido_model');
+    }
+
     public function index()
     {
-        $this->template->load('template', 'cozinha');
+        $data = array();
+        $data['pedidos'] = json_encode($this->pedido_model->get_pedido_cozinha_livre());        
+        $this->template->load('template', 'cozinha',$data);
     }
 }
