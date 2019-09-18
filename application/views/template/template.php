@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title></title>
+    <title>Boteco Vintage</title>
     <link rel="stylesheet" href="<?=base_url('')?>assets/font-awesome/css/font-awesome.min.css" type="text/css">
     <link rel="stylesheet" href="<?=base_url('')?>assets/css/bootstrap-material-design.min.css">
     <link rel="stylesheet" href="<?=base_url('')?>assets/css/template.css">
@@ -36,17 +36,28 @@
 </head>
 
 <body>
-    <div class="bmd-layout-container bmd-drawer-f-l bmd-drawer">
+    <div id="main-menu" class="bmd-layout-container bmd-drawer-f-l bmd-drawer">
         <header class="bmd-layout-header">
             <div class="navbar navbar-light bg-faded">
-                <button id="btn-main-menu" class="navbar-toggler" type="button" data-toggle="drawer"
-                    data-target="#dw-s1">
-                    <span class="sr-only">Toggle drawer</span>
-                    <i class="fa fa-bars"></i>
-                </button>
-                <ul class="nav navbar-nav">
-                    <li class="nav-item"> </li>
-                </ul>
+                <div class="row">
+                    <div class="col-12">
+                        <button id="btn-main-menu" class="navbar-toggler" type="button" data-toggle="drawer"
+                            data-target="#dw-s1">
+                            <span class="sr-only">Toggle drawer</span>
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <?php if(isset($main_titulo)) { ?>
+                        <span class="h4  text-primary main-titulo">
+                            <i class="<?= $main_titulo['icone'] ?>"></i> 
+                            <?= $main_titulo['titulo'] ?>
+                        </span>
+                        <?php } ?>
+
+                    </div>
+                    <ul class="nav navbar-nav">
+                        <li class="nav-item"> </li>
+                    </ul>
+                </div>
             </div>
         </header>
         <div id="dw-s1" class="bmd-layout-drawer bg-faded">
@@ -81,7 +92,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalTitulo">Modal title</h5>
+                <h5 class="modal-title" id="modalTitulo"></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>

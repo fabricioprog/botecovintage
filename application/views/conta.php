@@ -62,7 +62,6 @@ tbody tr {
             </a>
         </p>
     </div>
-
 </div>
 
 <div class="row">
@@ -302,13 +301,13 @@ $(document).ready(function() {
     });
 
 
-    $("#tbProdutos tbody").on('click', 'tr', function() {        
+    $("#tbProdutos tbody").on('click', 'tr', function() {
         let produto = {
             cd_mesa: "<?= $mesa_id ?>",
-            cd_produto : $(this).data('id'), 
+            cd_produto: $(this).data('id'),
             img_produto: $(this).find('td:eq(0) img').attr('src'),
             nm_produto: $(this).find('td:eq(1)').text(),
-        };        
+        };
         if ($(this).data('cozinha') == 't') {
             socket.emit('add pedido', produto);
         }
@@ -354,7 +353,7 @@ $(document).ready(function() {
                 tb_produtos.rows.add(res.produtos);
                 tb_produtos.draw(false);
                 att_info_conta(res.pedidos);
-                
+
                 anima_confirma('success', 4000, "Produto Removido com Sucesso!");
             },
         });
@@ -512,14 +511,14 @@ $(document).ready(function() {
                 },
             ],
             "fnRowCallback": function(nRow, aData, iDisplayIndex) {
-                let classe = "";                
-                if (parseInt(aData.nr_limite) >= parseInt(aData.nr_estoque)) {                    
+                let classe = "";
+                if (parseInt(aData.nr_limite) >= parseInt(aData.nr_estoque)) {
                     classe = 'alerta-aviso';
                 }
 
                 if (aData.nr_limite != null && aData.nr_estoque == '0') {
-                    classe = "alerta-urgente"; 
-                    $(nRow).click(false);                   
+                    classe = "alerta-urgente";
+                    $(nRow).click(false);
                 }
 
 
@@ -531,7 +530,7 @@ $(document).ready(function() {
 
 
                 $(nRow).addClass(classe);
-                
+
                 $(nRow).attr("data-id", aData.ci_produto);
                 $(nRow).attr("data-cozinha", aData.fl_cozinha);
                 $('td:eq(0)', nRow).html("<img src='" + aData.img_produto +

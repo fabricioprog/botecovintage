@@ -4,7 +4,7 @@
 }
 
 .pn-rel-total {
-    min-height: 188px;
+    height: 225px;
 }
 </style>
 <div class="row">
@@ -29,7 +29,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="dt_fim" class="bmd-label-floating">Data/Hora Início</label>
+                                <label for="dt_inicio" class="bmd-label-floating">Data/Hora Início</label>
                                 <input require autocomplete="off" type="text" class="form-control" name="dt_inicio"
                                     value="<?= isset($input_dt_inicio)?$input_dt_inicio:"" ?>" required>
                             </div>
@@ -51,7 +51,7 @@
         </div>
     </div>
     <div class="col-md-6">
-        <div class="card">
+        <div class="card pn-rel-total">
             <div class="card-body">
                 <div class="row">
                     <?php if(isset($relatorio_geral)) {  ?>
@@ -118,15 +118,15 @@ $(document).ready(function() {
     var data = new Date();
     $("input[name='dt_inicio']").datetimepicker({
         format: 'd/m/Y H:i',
-        maxDate:data.toLocaleDateString() + " " + data.toLocaleTimeString(),
+        maxDate: data.toLocaleDateString() + " " + data.toLocaleTimeString(),
     });
 
     $("input[name='dt_fim']").datetimepicker({
         format: 'd/m/Y H:i',
-        maxDate:data.toLocaleDateString() + " " + data.toLocaleTimeString(),
+        maxDate: data.toLocaleDateString() + " " + data.toLocaleTimeString(),
     });
 
-    
+
     if ($("input[name='dt_fim']").val() == "") {
         $("input[name='dt_fim']").val(data.toLocaleDateString() + " " + data.toLocaleTimeString())
     }

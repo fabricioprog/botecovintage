@@ -19,7 +19,8 @@ class Mesas extends MY_Controller
         
     }
 
-    public function index(){        
+    public function index(){  
+        $data = def_data_main_titulo('fa fa-th-large','Mesas');        
         $mesas_status = $this->conta_model->get_mesas_status();          
         $mesas_indexadas = array();
         foreach($mesas_status as $ms){            

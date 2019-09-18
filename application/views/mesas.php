@@ -29,23 +29,6 @@ a:hover {
 }
 </style>
 <?php alert() ?>
-<div class="row">
-    <div class="col-md-12">
-        <p class="h4 text-primary">
-            <i class="fa fa-th-large"></i> Gerencias Mesas
-            <a href="<?= base_url('conta/relatorio'); ?>">
-                <button id="btnFecharDia" type="button" class="btn btn-md btn-outline-success  btn-rounded pull-right">
-                    Relatório
-                </button>
-            </a>
-            <a href="<?= base_url('produtos'); ?>">
-                <button id="produtos" style="margin-right: 30px;" type="button" class="btn btn-md btn-outline-info  btn-rounded pull-right">
-                    Produtos
-                </button>
-            </a>
-        </p>
-    </div>
-</div>
 <div class="card">
     <div class="card-body">
         <div class="row">

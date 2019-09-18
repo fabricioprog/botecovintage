@@ -20,6 +20,10 @@ span {
     font-family: 'FontAwesome'!important;
 }
 
+.main-titulo{    
+    margin-left: 25px;
+}
+
 .main-content {
     padding-top: 20px;
     padding-bottom: 20px;

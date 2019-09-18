@@ -63,7 +63,7 @@
             <tbody>
                 <?php foreach($produtos as $p){ 
                     $class_linha = "";
-                    if($p->nr_estoque< $p->nr_limite){
+                    if($p->nr_estoque<= $p->nr_limite){
                         $class_linha= 'alerta-aviso';
                     }
                     if(!empty($p->nr_limite) && (empty($p->nr_estoque) || $p->nr_estoque == 0  )){

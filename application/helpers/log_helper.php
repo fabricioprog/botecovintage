@@ -9,6 +9,10 @@ function get_dinheiro($num,$rs=false){
     echo $valor;
 }
 
+function def_data_main_titulo($icone,$titulo){
+	return array('main_titulo'=> array('icone'=> $icone,'titulo'=>$titulo));
+}
+
 if ( ! function_exists('alert')) {
 	function alert()
 	{

@@ -22,7 +22,7 @@ class Produto_model extends CI_Model{
             $params[] = $cd_categoria;
         }
 
-        $sql = "SELECT * FROM tb_produto where fl_deletado = false $where order by nr_estoque";
+        $sql = "SELECT * FROM tb_produto where fl_deletado = false $where order by nm_produto ";
         return $this->db->query($sql,$params)->result();        
         
         

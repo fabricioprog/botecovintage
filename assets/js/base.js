@@ -1,11 +1,30 @@
 $modalTitulo = $("#myModal").find("#modalTitulo");
 
+var $largura = $(window).width();
+this.change_menu($largura);
+
+
+$(window).resize(function(){
+var $theWindowSize = $(this).width();
+    this.change_menu($theWindowSize);
+});
+
+function change_menu($largura){     
+    let menu = $("#main-menu");
+    if($largura > 900){        
+            menu.removeClass('bmd-drawer-overlay');
+            menu.addClass('bmd-drawer');
+        } else {        
+            menu.removeClass('bmd-drawer');
+            menu.addClass('bmd-drawer-overlay');
+        }
+    
+    }    
 
 $(document).on('hidden.bs.modal' ,'#myModal' , function (e) {    
     $(this).off('click','#btn_confirmar');
     modal_set_confirmar('Salvar');    
   });
-
 
 
 function anima_confirma(tp_alert, delay, msg) {
