@@ -41,13 +41,6 @@ tbody tr {
     margin-left: 15px;
 }
 
-.alerta-urgente {
-    background-color: rgba(255, 0, 0, 0.2) !important;
-}
-
-.alerta-aviso {
-    background-color: rgba(255, 255, 0, 0.2) !important;
-}
 </style>
 <?php alert(); ?>
 <div class="row">

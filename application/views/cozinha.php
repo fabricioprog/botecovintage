@@ -13,6 +13,10 @@
 .my-card-content {
     padding: 10px 10px 10px 0px;
 }
+
+.alerta-sucesso {
+    background-color: rgba(0, 255, 0, 0.2) !important;
+}
 </style>
 
 <?php alert(); ?>
@@ -79,6 +83,7 @@ function add_pedidos_init(pedidos, modelo_pedido) {
 
 
 $(document).ready(function() {
+
     var mod_pedido = $("#modelo_pedido").html();
     add_pedidos_init( <?= $pedidos ?> , mod_pedido);
 
@@ -87,9 +92,14 @@ $(document).ready(function() {
     var socket = io('http://192.168.0.2:3000/');
 
     $('body').on('click', '.pedido', function() {
-        let pedido = $(this);
-        let ci_pedido_cozinha = pedido.data('id');
-        socket.emit('pedido feito', ci_pedido_cozinha);
+        var pedido = $(this);
+        if (pedido.find('.card').hasClass('alerta-sucesso')) {
+            let ci_pedido_cozinha = pedido.data('id');            
+            socket.emit('pedido feito', ci_pedido_cozinha);
+        } else {
+            pedido.find('.card').addClass('alerta-sucesso');
+        }
+
     });
 
     socket.on('add pedido', function(pedido) {
@@ -98,7 +108,7 @@ $(document).ready(function() {
 
 
     socket.on('pedido feito', function(ci_pedido_cozinha) {
-        let pedido = $(document).find('.pedido[data-id="' + ci_pedido_cozinha + '"]');        
+        let pedido = $(document).find('.pedido[data-id="' + ci_pedido_cozinha + '"]');
         pedido.fadeOut(200, function() {
             pedido.remove();
         });

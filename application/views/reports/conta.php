@@ -33,7 +33,8 @@ table {
     <br>
     Endereço: Rua Padre Minguelino, 1159 - Fátima, Fortaleza - CE, CEP: 60040-300 <br>
     Telefone: (85) 996123082 (Rosal) <br>
-    Início : <?= $conta->dia_semana . ' '. $conta->dt_inicio ?> <br>
+    Mesa: <?= $conta->cd_mesa ?>  <br>
+    Início : <?= $conta->dia_semana . ' '. $conta->dt_inicio ?> <br>    
     ---------------------------------------------------
     <table>
         <thead>
