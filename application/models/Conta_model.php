@@ -111,6 +111,18 @@ class Conta_model extends CI_Model
         return $this->db->query($sql,array($dt_inicio,$dt_fim))->row();                
     }
 
+    public function get_rendimentos_semanais($ano_mes){
+        $sql = "select to_char(dt_fim, 'W'),
+        sum(nr_total + nr_dez_porcento) rendimento,
+        count(ci_conta) mesas_encerradas,
+        to_char(avg( dt_fim - dt_inicio ), 'HH24:MI:SS') permanencia_media
+        from tb_conta 
+        where to_char(dt_fim, 'YYYY-MM') = ?
+        group by 1 order by 1";
+        return $this->db->query($sql,array($ano_mes))->result();
+
+    }
+
 
 
 }
