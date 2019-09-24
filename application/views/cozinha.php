@@ -6,6 +6,10 @@
     cursor: pointer;
 }
 
+.my-card-body {
+    padding-right:14px;
+}
+
 .my-card-image {
     max-height: 100px;
 }
@@ -16,6 +20,13 @@
 
 .alerta-sucesso {
     background-color: rgba(0, 255, 0, 0.2) !important;
+}
+
+.div-mesa { 
+    font-weight:bold;
+    font-size: 18px;
+    padding-top: 20px;       
+    background-color: rgba(100, 100, 100, 0.2);
 }
 </style>
 
@@ -34,14 +45,20 @@
 <div id="modelo_pedido">
     <div class='pedido col-md-6' style="display:none">
         <div class="card my-card">
-            <div class="row">
-                <div class='col-4 text-center align-self-center img_produto'>
-                </div>
-                <div class='col-8 my-card-content align-self-center '>
-                    <strong>
-                        <h3 class="nm_produto"> </h3>
+            <div class="my-card-body">
+                <div class="row">
+                    <div class='col-4 text-center align-self-center img_produto'>
+                    </div>
+                    <div class='col-6 align-self-center '>
+                        <strong>
+                            <h3 class="nm_produto"> </h3>
+                            <p class="obs"> </p>
+                        </strong>
+                    </div>
+                    <div class='col-2 div-mesa text-center'>
+                    MESA
                         <p class="nr_mesa"> </p>
-                    </strong>
+                    </div>
                 </div>
             </div>
         </div>
@@ -67,8 +84,11 @@ function add_pedido_cozinha(pedido, mod_pedido, som) {
     $(novo_pedido).find('.img_produto').html(img_pedido);
     $(novo_pedido).find('.img_produto img').removeAttr("width");
     $(novo_pedido).find('.img_produto img').removeAttr("height");
-    $(novo_pedido).find('.nr_mesa').html("MESA: " + pedido.cd_mesa);
+    $(novo_pedido).find('.nr_mesa').html(pedido.cd_mesa);
     $(novo_pedido).find('.nm_produto').html(pedido.nm_produto);
+    if (pedido.ds_observacao != undefined && pedido.ds_observacao.trim() != '') {
+        $(novo_pedido).find('.obs').html("OBS : " + pedido.ds_observacao);
+    }
     $("#pedidos").append(novo_pedido);
     $("#pedidos").find('div').fadeIn(200);
 }
@@ -94,7 +114,7 @@ $(document).ready(function() {
     $('body').on('click', '.pedido', function() {
         var pedido = $(this);
         if (pedido.find('.card').hasClass('alerta-sucesso')) {
-            let ci_pedido_cozinha = pedido.data('id');            
+            let ci_pedido_cozinha = pedido.data('id');
             socket.emit('pedido feito', ci_pedido_cozinha);
         } else {
             pedido.find('.card').addClass('alerta-sucesso');

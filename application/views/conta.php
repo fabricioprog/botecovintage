@@ -40,7 +40,6 @@ tbody tr {
 #btnFinalizar {
     margin-left: 15px;
 }
-
 </style>
 <?php alert(); ?>
 <div class="row">
@@ -63,13 +62,18 @@ tbody tr {
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
-                        <label> <strong> Código : </strong> <?= $conta_mesa_info->ci_conta ?></label><br>
-                        <label> <strong> Início : </strong> <?= $conta_mesa_info->dt_inicio ?></label><br>
-                        <div class="checkbox">
-                            <label style="color:black">
-                                <input name="fl_dez_porcento" type="checkbox" checked> 10%
-                            </label>
+                        <label> <strong> Código : </strong> <?= $conta_mesa_info->ci_conta ?> </label>
+                        <label style="color:black" class="checkbox-inline">
+                            <input name="fl_dez_porcento" type="checkbox" checked> 10%
+                        </label>
+                        <div class="form-group row">
+                            <label for="obs_cozinha" class="col-sm-12 col-form-label col-form-label-sm">Observação Pedido</label>
+                            <div class="col-sm-12">
+                                <input type="text" name="obs_cozinha" class="form-control form-control-sm" id="obs_cozinha"
+                                    placeholder="Observação do Pedido para Cozinha">
+                            </div>
                         </div>
+
                     </div>
                     <div class="col-md-6">
                         <div class="row">
@@ -300,7 +304,9 @@ $(document).ready(function() {
             cd_produto: $(this).data('id'),
             img_produto: $(this).find('td:eq(0) img').attr('src'),
             nm_produto: $(this).find('td:eq(1)').text(),
+            ds_observacao: $('input[name="obs_cozinha"').val()
         };
+        $('input[name="obs_cozinha"').val("");
         if ($(this).data('cozinha') == 't') {
             socket.emit('add pedido', produto);
         }

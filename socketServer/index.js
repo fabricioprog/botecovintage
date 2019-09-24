@@ -29,7 +29,7 @@ io.on('connection', function(socket){
           return console.error('error fetching client from pool', err);
         }
         
-        client.query('insert into tb_pedido_cozinha values (default,$1,$2,$3) returning ci_pedido_cozinha',[msg.cd_produto,msg.cd_mesa,new Date()], function(err, result) {
+        client.query('insert into tb_pedido_cozinha values (default,$1,$2,$3,null,$4) returning ci_pedido_cozinha',[msg.cd_produto,msg.cd_mesa,new Date(),msg.ds_observacao], function(err, result) {
           done();
           if (err) {
             return console.error('error running query', err);
