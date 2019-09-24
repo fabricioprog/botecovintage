@@ -4,3 +4,4 @@
 <a href="<?= base_url('estoque'); ?>" class="btn btn-primary text-left">  <i class="fa fa-inbox"></i> Estoque </a>
 <a href="<?= base_url('conta/relatorio'); ?>" class="btn btn-primary text-left">  <i class="fa fa-file-o"></i> Relatório </a>
 <a href="<?= base_url('cozinha'); ?>" class="btn btn-primary text-left">  <i class="fa fa-cutlery"></i> Cozinha </a>
+<a href="<?= base_url('login'); ?>" class="btn btn-primary text-left">  <i class="fa fa-sign-out"></i> Sair </a>
