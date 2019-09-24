@@ -189,7 +189,7 @@ class Conta extends MY_Controller
 
     public function relatorio(){
         $inputs   = $this->input->post(); 
-        $data = def_data_main_titulo('fa fa-line-chart','Relatório'); 
+        $data = def_data_main_titulo('fa fa-file-o','Relatório'); 
          
         if(!empty($inputs)){
             $data['input_dt_inicio'] =  $inputs['dt_inicio'];           

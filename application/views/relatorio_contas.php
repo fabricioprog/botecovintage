@@ -8,20 +8,6 @@
 }
 </style>
 <div class="row">
-    <div class="col-md-12">
-        <p class="h4 text-primary">
-            <i class="fa fa-file-o"></i> Relatório de Contas Encerredas
-            <span class="pull-right">
-                <a href="<?= base_url('mesas') ?>" id="btnVoltar">
-                    <button type="button" class="btn btn-md btn-outline-success ">
-                        <i class="fa fa-share fa-flip-horizontal" aria-hidden="true"></i>
-                    </button>
-                </a>
-            </span>
-        </p>
-    </div>
-</div>
-<div class="row">
     <div class="col-md-6">
         <div class="card pn-rel-total">
             <div class="card-body">

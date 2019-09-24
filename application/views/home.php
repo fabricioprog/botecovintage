@@ -6,18 +6,20 @@
 
 <div class='row'>
     <div class='col-6'>
-        <canvas id="rendimentos" width="200" height="100"></canvas>
+        <canvas id="rendimentos" width="200" height="95"></canvas>
     </div>
     <div class='col-6'>
-        <canvas id="consumo_medio" width="200" height="100"></canvas>
+        <canvas id="consumo_medio" width="200" height="95"></canvas>
     </div>
     <div class='col-6'>
-        <canvas id="mesas_encerradas" width="200" height="100"></canvas>
+        <canvas id="mesas_encerradas" width="200" height="95"></canvas>
     </div>
     <div class='col-6'>
-        <canvas id="permanencia_media" width="200" height="100"></canvas>
+        <canvas id="permanencia_media" width="200" height="95"></canvas>
     </div>
-
+    <div class='col-12'>
+        <canvas id="consumo_categoria" width="200" height="95"></canvas>
+    </div>
 </div>
 
 
@@ -29,12 +31,33 @@ $(document).ready(function() {
     var ctx_mesas_encerradas = $('#mesas_encerradas');
     var ctx_permanencia_media = $('#permanencia_media');
     var ctx_consumo_medio = $('#consumo_medio');
-    var consolidado = <?= $consolidado ?>;
+    var ctx_consumo_categoria = $('#consumo_categoria');
+    var consolidado = <?= $consolidado ?> ;
+    var consumo_categoria = <?= $consumo ?> ;
+
     var semanas = [];
     var rendimentos = [];
     var mesas_encerradas = [];
     var permanencia_media = [];
     var consumo_medio = [];
+
+    var consumo_cat = {
+        bebidas: [],
+        petiscos: [],
+        refrigerantes: [],
+        bebidas_naturais: [],
+        cover: []
+    }
+
+    //console.log(consumo_categoria);
+    consumo_categoria.forEach(function(c) {
+        consumo_cat.bebidas.push(c.bebidas);
+        consumo_cat.petiscos.push(c.petiscos);
+        consumo_cat.refrigerantes.push(c.refrigerantes);
+        consumo_cat.bebidas_naturais.push(c.bebidas_naturais);
+        consumo_cat.cover.push(c.cover);
+
+    });
 
     consolidado.forEach(function(i) {
         semanas.push(i.semana + 'ª');
@@ -42,10 +65,7 @@ $(document).ready(function() {
         mesas_encerradas.push(i.mesas_encerradas);
         permanencia_media.push(moment('2019-01-01 ' + i.permanencia_media));
         consumo_medio.push(i.consumo_medio);
-
     });
-
-    console.log(permanencia_media);
 
     var options_geral = {
         scales: {
@@ -155,6 +175,74 @@ $(document).ready(function() {
                 }]
             },
         }
+    });
+
+    var chart_consumo_categoria = new Chart(ctx_consumo_categoria, {
+        type: 'line',
+        data: {
+            labels: semanas,
+            datasets: [{
+                label: 'Bebidas',
+                data: consumo_cat.bebidas,
+                backgroundColor: [
+                    'rgba(255, 255, 0, 0)',
+                ],
+                borderColor: [
+                    'rgba(255, 255, 0, 1)',
+
+                ],
+                borderWidth: 1
+            },
+            {
+                label: 'Petiscos',
+                data: consumo_cat.petiscos,
+                backgroundColor: [
+                    'rgba(0, 0, 255, 0)',
+                ],
+                borderColor: [
+                    'rgba(0, 0, 255, 1)',
+
+                ],
+                borderWidth: 1
+            },
+            {
+                label: 'Bebidas Naturais',
+                data: consumo_cat.bebidas_naturais,
+                backgroundColor: [
+                    'rgba(0,255, 0, 0)',
+                ],
+                borderColor: [
+                    'rgba(0, 255, 0, 1)',
+
+                ],
+                borderWidth: 1
+            },
+            {
+                label: 'Refrigerantes',
+                data: consumo_cat.refrigerantes,
+                backgroundColor: [
+                    'rgba(255,0, 0, 0)',
+                ],
+                borderColor: [
+                    'rgba(255, 0, 0, 1)',
+
+                ],
+                borderWidth: 1
+            },
+            {
+                label: 'Cover',
+                data: consumo_cat.cover,
+                backgroundColor: [
+                    'rgba(255,0, 255, 0)',
+                ],
+                borderColor: [
+                    'rgba(255,0, 255, 1)',
+
+                ],
+                borderWidth: 1
+            }]
+        },
+        options_geral
     });
 
 });

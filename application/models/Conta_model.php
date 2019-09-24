@@ -121,7 +121,22 @@ class Conta_model extends CI_Model
         where to_char(dt_inicio, 'YYYY-MM') = ?
         group by 1 order by 1";
         return $this->db->query($sql,array($ano_mes))->result();
+    }
 
+    public function get_relatorio_consumo($ano_mes){
+        $sql = "
+        select to_char(c.dt_inicio, 'W') semana,        
+        sum(case when prod.cd_categoria = 5 then prod.valor_venda else 0 end) bebidas,
+        sum(case when prod.cd_categoria = 6 then prod.valor_venda else 0 end) refrigerantes,
+        sum(case when prod.cd_categoria = 9 then prod.valor_venda else 0 end) bebidas_naturais,
+        sum(case when prod.cd_categoria = 10 then prod.valor_venda else 0 end) petiscos,
+        sum(case when prod.cd_categoria = 13 then prod.valor_venda else 0 end) cover        
+        from tb_pedido ped
+        inner join tb_conta c on ped.cd_conta = c.ci_conta
+        inner join tb_produto prod on prod.ci_produto = ped.cd_produto
+        where to_char(c.dt_inicio, 'YYYY-MM') = ?
+        group by 1 order by 1";
+        return $this->db->query($sql,array($ano_mes))->result();
     }
 
 
