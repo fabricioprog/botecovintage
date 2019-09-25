@@ -43,58 +43,37 @@ tbody tr {
 </style>
 <?php alert(); ?>
 <div class="row">
-    <div class="col-md-12">
-        <p class="h4 text-primary">
-            <i class="fa fa-th-large"></i> Mesa <?= $mesa_id ?>
-            <a href="<?= base_url('mesas') ?>" id="btnVoltar">
-                <span class="pull-right">
-                    <button type="button" class="btn btn-md btn-outline-success pull-right">
-                        <i class="fa fa-share fa-flip-horizontal" aria-hidden="true"></i></span>
-                </button>
-            </a>
-        </p>
-    </div>
-</div>
-
-<div class="row">
     <div class="col-md-7">
         <div class="card">
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-5">
                         <label> <strong> Código : </strong> <?= $conta_mesa_info->ci_conta ?> </label>
-                        <label style="color:black" class="checkbox-inline">
+                        <label style="color:black" class="checkbox-inline pull-right">
                             <input name="fl_dez_porcento" type="checkbox" checked> 10%
                         </label>
-                        <div class="form-group row">
-                            <label for="obs_cozinha" class="col-sm-12 col-form-label col-form-label-sm">Observação Pedido</label>
-                            <div class="col-sm-12">
-                                <input type="text" name="obs_cozinha" class="form-control form-control-sm" id="obs_cozinha"
-                                    placeholder="Observação do Pedido para Cozinha">
-                            </div>
-                        </div>
-
+                        <label> <strong> Inicio : </strong> <?= $conta_mesa_info->dt_inicio ?> </label> <br />
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-7">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <button id="btn-transferir-mesa" type="button"
-                                    class="btn btn-raised btn-block btn-info pull-right">
+                                    class="btn btn-raised btn-block btn-sm btn-info pull-right">
                                     <i class="fa fa-exchange" aria-hidden="true"></i>
                                     Mudar Mesa
                                 </button>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <a href="<?= base_url('conta/report/'.$conta_mesa_info->ci_conta) ?>" target='_blank'>
-                                    <button type="button" class="btn btn-raised  btn-info btn-block pull-right">
+                                    <button type="button" class="btn btn-raised btn-sm  btn-info btn-block pull-right">
                                         <i class="fa fa-file" aria-hidden="true"></i>
                                         Fechar Conta
                                     </button>
                                 </a>
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-4">
                                 <button id="btn-encerrar-conta" type="button"
-                                    class="btn btn-raised btn-block btn-success pull-right">
+                                    class="btn btn-raised btn-sm btn-success btn-block pull-right">
                                     <i class="fa fa-check" aria-hidden="true"></i>
                                     Encerrar
                                 </button>
@@ -110,7 +89,7 @@ tbody tr {
             <div class="card-body">
                 <div class="row" id="pnCategorias">
                     <?php foreach($categorias as $cat){  ?>
-                    <div class="col-md-4">
+                    <div class="col-md-4 col-sm-6">
                         <div data-id="<?= $cat->ci_categoria ?>" class="card btn btn-primary text-left btn-categoria">
                             <img class="card-img-top img-fluid rounded mx-auto d-block" src="<?= $cat->imagem ?>"
                                 alt="Card image cap" style="padding:10px 10px 0px 10px">
@@ -122,6 +101,14 @@ tbody tr {
                     <?php } ?>
                 </div>
                 <div class="col-12" id="pnProdutos">
+                    <div class="form-group row">
+                        <label for="obs_cozinha" class="col-sm-12 col-form-label col-form-label-sm">Observação
+                            Pedido</label>
+                        <div class="col-sm-12">
+                            <input type="text" name="obs_cozinha" class="form-control form-control-sm" id="obs_cozinha"
+                                placeholder="Observação do Pedido para Cozinha">
+                        </div>
+                    </div>
                     <table id="tbProdutos" class="row-border hover table dt-responsive no-footer">
                         <thead>
                             <tr>
@@ -432,7 +419,7 @@ $(document).ready(function() {
     function montar_conta(dataTableConfig) {
         var generico = JSON.parse(JSON.stringify(dataTableConfig));
         var conta = {
-            "scrollY": "450px",
+            "scrollY": "418px",
             "searching": false,
             "aoColumns": [{
                     "data": 'nm_produto'
@@ -482,7 +469,7 @@ $(document).ready(function() {
             dom: "<'row'<'btn-voltar col-md-4 col-xs-12'><'col-md-8'f>>" +
                 "<'row'<'col-sm-12'tr>>" +
                 "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-            "scrollY": 350,
+            "scrollY": 260,
             "order": [
                 [1, "asc"]
             ],

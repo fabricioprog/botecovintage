@@ -1,28 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php $this->load->view('template/imports_head') ?>
+
 <body>
     <div id="main-menu" class="bmd-layout-container bmd-drawer-f-l bmd-drawer">
         <header class="bmd-layout-header">
             <div class="navbar navbar-light bg-faded">
-                <div class="row">
-                    <div class="col-12">
-                        <button id="btn-main-menu" class="navbar-toggler" type="button" data-toggle="drawer"
-                            data-target="#dw-s1">
-                            <span class="sr-only">Toggle drawer</span>
-                            <i class="fa fa-bars"></i>
-                        </button>
-                        <?php if(isset($main_titulo)) { ?>
-                        <span class="h4  text-primary main-titulo">
-                            <i class="<?= $main_titulo['icone'] ?>"></i> 
-                            <?= $main_titulo['titulo'] ?>
-                        </span>
-                        <?php } ?>
-
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <button id="btn-main-menu" class="navbar-toggler" type="button" data-toggle="drawer"
+                                data-target="#dw-s1">
+                                <span class="sr-only">Toggle drawer</span>
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <?php if(isset($main_titulo)) { ?>
+                            <span class="h4  text-primary main-titulo">
+                                <i class="<?= $main_titulo['icone'] ?>"></i>
+                                <?= $main_titulo['titulo'] ?>
+                            </span>
+                            <?php } ?>
+                        </div>
                     </div>
-                    <ul class="nav navbar-nav">
-                        <li class="nav-item"> </li>
-                    </ul>
+                    <div class="row">
+                        <div class="col-12">
+                            <ul class="nav navbar-nav">
+                                <li class="nav-item">
+                                    <?php if(isset($btn_aux)) { ?>
+                                    <a href="<?= $btn_aux['link'] ?>">
+                                        <span class="pull-right">
+                                            <button type="button" class="btn btn-md btn-outline-success pull-right">
+                                                <i class="<?= $btn_aux['icone'] ?>" aria-hidden="true"></i></span>
+                                        </button>
+                                    </a>
+                                    <?php } ?>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </header>

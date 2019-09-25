@@ -29,7 +29,11 @@ class Conta extends MY_Controller
 
     public function gerenciar($cd_conta)
     {   
-        $data['conta_mesa_info'] = $this->conta_model->get_conta_aberta_by_mesa($cd_conta);
+        $conta_mesa_info = $this->conta_model->get_conta_aberta_by_mesa($cd_conta);
+        $data = def_data_main_titulo('fa fa-th-large','Mesa '.$conta_mesa_info->cd_mesa);  
+        $data = array_merge($data,def_data_btn('fa fa-share fa-flip-horizontal',base_url('mesas')));       
+        
+        $data['conta_mesa_info'] = $conta_mesa_info;
         $data['mesa_id'] = $data['conta_mesa_info']->cd_mesa;
         if(!empty($data['conta_mesa_info']) && $data['conta_mesa_info']->cd_status == self::OCUPADO){                          
             $data['categorias'] = $this->categoria_model->get_categorias();
