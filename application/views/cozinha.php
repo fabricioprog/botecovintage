@@ -19,12 +19,20 @@
 }
 
 .alerta-sucesso {
-    background-color: rgba(0, 255, 0, 0.2) !important;
+    background-color: rgba(0, 255, 0, 0.7) !important;
+}
+
+.div-mesa {
+    background-color: rgba(200, 200, 200, 1);
+}
+
+.nr_mesa {
+    font-size: 50px;
+    font-weight: bold;    
 }
 </style>
 
 <?php alert(); ?>
-
 
 <audio id="audio">
     <source src="<?=base_url('assets/som/sms-alert-1-daniel_simon.mp3')?>" type="audio/mp3" />
@@ -47,8 +55,10 @@
                         <p class="obs"> </p>
                     </strong>
                 </div>
-                <div class='col-2 div-mesa rounded-right text-center row'>
-                    <label class='nr_mesa align-self-center'> </label>
+                <div class='col-2 div-mesa rounded-right row'>
+                    
+                        <label class='nr_mesa align-self-center '> </label>
+                    
                 </div>
             </div>
         </div>
@@ -74,7 +84,7 @@ function add_pedido_cozinha(pedido, mod_pedido, som) {
     $(novo_pedido).find('.img_produto').html(img_pedido);
     $(novo_pedido).find('.img_produto img').removeAttr("width");
     $(novo_pedido).find('.img_produto img').removeAttr("height");
-    $(novo_pedido).find('.nr_mesa').html("MESA " + pedido.cd_mesa);
+    $(novo_pedido).find('.nr_mesa').html(pedido.cd_mesa);
     $(novo_pedido).find('.nm_produto').html(pedido.nm_produto);
     if (pedido.ds_observacao != undefined && pedido.ds_observacao.trim() != '') {
         $(novo_pedido).find('.obs').html(pedido.ds_observacao);
@@ -95,7 +105,7 @@ function add_pedidos_init(pedidos, modelo_pedido) {
 $(document).ready(function() {
 
     var mod_pedido = $("#modelo_pedido").html();
-    add_pedidos_init( <?php echo $pedidos ?> , mod_pedido);
+    add_pedidos_init( <?= $pedidos ?> , mod_pedido);
 
     $("#modelo_pedido").remove();
 

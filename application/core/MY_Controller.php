@@ -3,6 +3,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class My_Controller extends CI_Controller {
 
+    const ADMINISTRADOR = 1;
+    const GERENTE = 2;
+    const COZINHA = 3;
+    const GARCOM = 4;
+
+
     public function __construct(){
         parent::__construct();
         $this->load->helper('log');        
@@ -14,10 +20,33 @@ class My_Controller extends CI_Controller {
         return (float) $input;        
     }
 
-    public function addJS(){}
+    protected function acesso_usuario_logado($perfis = false){
+        $usuario = $this->session->usuario;          
+        if(empty((array)$usuario)){
+            send_alert('Usuário não encontrado',5000,'danger');
+            redirect(base_url('login'));
+        }
 
-    public function addCSS(){}
-        
+        if(!$this->is_perfil_permissao($usuario,$perfis)){
+            send_alert('Usuário sem permissão para acessar essa página',5000,'danger');
+            redirect(base_url('login'));
+        }
+                
+    }
+
+    private function is_perfil_permissao($usuario,$perfis){        
+        if($perfis){
+            foreach($perfis as $perfil){
+                if($usuario->cd_perfil == $perfil){
+                    return true;
+                }                
+            }
+            return false;
+        }else{
+            return true;
+        }
+
+    }
    
 
 

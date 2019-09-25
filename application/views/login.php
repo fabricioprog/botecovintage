@@ -5,10 +5,10 @@
     height: 100px;
 }
 </style>
-<div class="container main-content">
-    <?php alert(); ?>
+<div class="container main-content">    
     <div class="row">
         <div class='mx-auto col-md-6 col-xs-12'>
+        <?php alert(); ?>
             <div class='card'>
                 <div class="card-body">
                     <form method="POST">
