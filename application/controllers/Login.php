@@ -22,8 +22,9 @@ class Login extends MY_Controller
         }
     }
 
-    private function autenticacao($usuario,$senha){
-        $usuario = (Object) $this->usuario_model->get_usuario_senha($usuario,$senha);
+    private function autenticacao($usuario,$senha){        
+        $usuario = $this->usuario_model->get_usuario_senha($usuario,$senha);
+        
         if(empty($usuario)){
             send_alert('Usuário e Senha não conferem, contacte o Adminstrador do Sistema',5000,'danger');
             redirect(base_url('login'));
@@ -33,7 +34,7 @@ class Login extends MY_Controller
         }
     }
 
-    private function redirect_usuario($usuario){
+    private function redirect_usuario($usuario){        
         if($usuario->cd_perfil == self::ADMINISTRADOR || $usuario->cd_perfil == self::GERENTE){
             redirect(base_url('home'));
         }elseif($usuario->cd_perfil == self::COZINHA){

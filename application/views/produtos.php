@@ -78,6 +78,7 @@ $(document).ready(function() {
     var add_prod = $('#md_produto').html();
 
     $(document).on('click', '#btnAdd', function(e) {
+        add_evento_botao()
         $('form[name="md_produto"] input[name="id"]').val("").trigger('change');        
         abrir_modal("Adicionar Produto", add_prod,true);
         aplicar_js();
@@ -86,10 +87,12 @@ $(document).ready(function() {
 
     $(document).on('click', '.prod', function() {
         $('form[name="md_produto"] input[name="id"]').val($(this).data('id')).trigger('change');
+        add_evento_botao()
         abrir_modal("Editar Produto", add_prod,true);
         return false;
     });
 
+    function add_evento_botao(){
     $("#myModal").on('change', 'input[type="file"]', function(e) {
         $form = $("#myModal").find('form')[0];
         var data = new FormData($form);
@@ -110,14 +113,14 @@ $(document).ready(function() {
         });
 
     });
-
-    $("#myModal").on('hide.bs.modal', function() {
+}
+    $("#myModal").on('hide.bs.modal', function() {        
         $("#myModal").find("#modalTitulo").text("");
         $("#modalCorpo").html("");
     });
 
 
-    $("#myModal").on('click', '#btn_confirmar', function() {
+    $("#myModal").on('click', '#btn_confirmar', function() {        
         $form = $("#myModal").find('form')[0];
         let id = $($form).find('input[name="id"]').val();
         var url = "produtos/";
@@ -137,7 +140,7 @@ $(document).ready(function() {
             error: function(res) {
                 console.log(res);
             },
-            success: function(data) {                
+            success: function(data) {
                 location.reload();
             },
         });

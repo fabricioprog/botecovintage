@@ -22,7 +22,7 @@ function change_menu($largura){
     }    
 
 $(document).on('hidden.bs.modal' ,'#myModal' , function (e) {    
-    $(this).off('click','#btn_confirmar');
+    //$(this).off('click','#btn_confirmar');
     modal_set_confirmar('Salvar');    
   });
 

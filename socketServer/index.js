@@ -5,9 +5,9 @@ var pg = require('pg');
 
 
 const config = {
-  user: 'fabricionote',
-  database: 'fabricionote',
-  password: 'qwe123',
+  user: 'postgres',
+  database: 'postgres',
+  password: '123',
   port: 5432
 };
 
