@@ -5,8 +5,12 @@ class Categoria_model extends CI_Model{
         parent::__construct();
 	}
 
-    public function get_categorias(){
-        $sql = "SELECT * FROM public.tb_categoria";
+    public function get_categorias($com_despesas=false){
+        $where ="WHERE fl_apenas_despesa = false";
+        if($com_despesas){
+            $where = "";
+        }
+        $sql = "SELECT * FROM public.tb_categoria $where order by fl_apenas_despesa,nm_categoria";
         return $this->db->query($sql)->result();
     }
 

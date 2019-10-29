@@ -31,7 +31,7 @@ class Conta extends MY_Controller
     {   
         $conta_mesa_info = $this->conta_model->get_conta_aberta_by_mesa($cd_conta);
         $data = def_data_main_titulo('fa fa-th-large','Mesa '.$conta_mesa_info->cd_mesa);  
-        $data = array_merge($data,def_data_btn('fa fa-share fa-flip-horizontal',base_url('mesas')));       
+        $data = array_merge($data,def_data_btn('fa fa-share fa-flip-horizontal',base_url('mesas')));
         
         $data['conta_mesa_info'] = $conta_mesa_info;
         $data['mesa_id'] = $data['conta_mesa_info']->cd_mesa;

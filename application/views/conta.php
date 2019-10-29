@@ -1,4 +1,4 @@
-<script src="http://localhost:3000/socket.io/socket.io.js"></script>
+<script src="http://192.168.0.2:3000/socket.io/socket.io.js"></script>
 <style>
 .tb-body {
     padding: 10px 0px 10px 0px;
@@ -179,7 +179,7 @@ tbody tr {
 
 <script>
 $(document).ready(function() {
-    var socket = io('http://localhost:3000/');
+    var socket = io('http://192.168.0.2:3000/');
     jQuery.datetimepicker.setLocale('pt-BR');
     $modal = $("#myModal");
     var md_encerrar_conta = $("#md_encerrar_conta").html();
@@ -318,7 +318,7 @@ $(document).ready(function() {
                 tb_pedidos.draw();
                 let somatorio = res.pedidos.somatorio;
                 att_info_conta(res.pedidos)
-                anima_confirma('success', 1000, "Pedido Adicionado com Sucesso!!!");
+                anima_confirma('#alert','success', 1000, "Pedido Adicionado com Sucesso!!!");
             },
         });
 
@@ -340,7 +340,7 @@ $(document).ready(function() {
                 tb_produtos.draw(false);
                 att_info_conta(res.pedidos);
 
-                anima_confirma('success', 4000, "Produto Removido com Sucesso!");
+                anima_confirma('#alert','success', 4000, "Produto Removido com Sucesso!");
             },
         });
     }

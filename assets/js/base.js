@@ -27,10 +27,10 @@ $(document).on('hidden.bs.modal' ,'#myModal' , function (e) {
   });
 
 
-function anima_confirma(tp_alert, delay, msg) {
-    $alert = $('#alert');
+function anima_confirma(id_alert,tp_alert, delay, msg) {
+    $alert = $(document).find(id_alert);     
     $alert.find('.alert').removeClass().addClass('alert alert-' + tp_alert);
-    $alert.find('#alert-msg').text(msg);
+    $alert.find('#alert-msg').text(msg);    
     $alert.find("#alert-msg").prepend('<i class="fa fa-check" aria-hidden="true"></i> ');
     $alert.css('display', 'none').finish();
     $alert.css('top', -100).css('opacity', 0).css('display', 'block');

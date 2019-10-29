@@ -19,9 +19,9 @@ if (!function_exists('def_data_main_titulo')) {
 }
 
 if (!function_exists('def_data_btn')) {
-    function def_data_btn($icone, $link)
+    function def_data_btn($icone, $link,$id = false)
     {
-        return array('btn_aux' => array('icone' => $icone, 'link' => $link));
+        return array('btn_aux' => array('icone' => $icone, 'link' => $link,'id'=>$id));
     }
 }
 

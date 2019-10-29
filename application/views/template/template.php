@@ -29,7 +29,7 @@
                                     <?php if(isset($btn_aux)) { ?>
                                     <a href="<?= $btn_aux['link'] ?>">
                                         <span class="pull-right">
-                                            <button type="button" class="btn btn-md btn-outline-success pull-right">
+                                            <button type="button" <?= $btn_aux['id'] ? "id='".$btn_aux['id']."'":""; ?>  class="btn btn-md btn-outline-success pull-right">
                                                 <i class="<?= $btn_aux['icone'] ?>" aria-hidden="true"></i></span>
                                         </button>
                                     </a>
