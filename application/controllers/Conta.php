@@ -208,10 +208,6 @@ class Conta extends MY_Controller
         $this->template->load('template', 'relatorio_contas',$data); 
 
     }
-    
-    private function converte_moeda_to_float($moeda){
-        return str_replace(',','.', str_replace('.','',$moeda));
-    }
 
 
     private function convert_string_timestamp($data){

@@ -34,6 +34,10 @@ class My_Controller extends CI_Controller {
                 
     }
 
+    protected function converte_moeda_to_float($moeda){
+        return str_replace(',','.', str_replace('.','',$moeda));
+    }
+
     private function is_perfil_permissao($usuario,$perfis){        
         if($perfis){
             foreach($perfis as $perfil){

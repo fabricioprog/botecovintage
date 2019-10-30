@@ -1,12 +1,14 @@
 <div id="<?= $id ?>">
-    <form name="<?= $id ?>" method="POST" hidden enctype="multipart/form-data">
+    <form name="<?= $id ?>" method="POST">
         <div class="row">
-            <div id="md-alert">
-                <div class="alert alert-success" role="alert">
-                    <strong id="alert-msg"></strong>
+            <div class="col-md-12">
+                <div id="md-alert" style="display:none">
+                    <div class="" role="alert">
+                        <strong id="alert-msg"></strong>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-7">
+            <div class="col-md-12">
                 <div class="form-group">
                     <label for="cd_categoria" class="bmd-label-floating">Categoria</label>
                     <select class="form-control" name="cd_categoria" required>
@@ -39,37 +41,58 @@
                 <input require autocomplete="off" type="text" class="form-control" name="valor" value="" required>
             </div>
         </div>
+        <button id="btn-confirmar-pagamento" type='submit' hidden>
     </form>
 </div>
 <script>
     $(document).on('click', '#myModal #btn_confirmar', function() {
-        $form = $("#myModal").find('form')[0];
-        var data = new FormData($form);
-        add_despesa(data);
+        $("#btn-confirmar-pagamento").trigger('click');
         return false;
     });
 
     $(document).on('hidden.bs.modal', '#myModal', function(e) {
         $(document).off('click', '#btn_confirmar');
+        $('#myModal').off('submit', 'form[name="<?= $id ?>"]');
         modal_set_confirmar('Salvar');
     });
 
+    $(document).on("submit",'form[name="<?= $id ?>"]', function(e) {
+        e.preventDefault();
+        add_despesa();
+        return false;
+    });
 
-    function add_despesa(despesa) {
 
+    function add_despesa() {
+        $form = $("#myModal").find('form')[0];
+        var data = new FormData($form);        
         $.ajax({
             type: "POST",
             url: "despesa/add_despesa",
-            data: despesa,
+            data: data,
             dataType: "text",
             processData: false,
             contentType: false,
             error: function(res) {
-                anima_confirma("#md-alert", 'danger', 1000, "Erro ao adicionar despesa");
+                mostrar_confirmacao('danger', "Erro");
             },
             success: function(data) {
-                anima_confirma("#md-alert", 'success', 1000, "Despesa adicionada com Sucesso!!");
+                mostrar_confirmacao('success', "Despesa adicionada com Sucesso!!");
             },
         });
+        return false;
+    }
+
+    function mostrar_confirmacao(tipo, mensagem) {
+        $alert = $(document).find('#myModal #md-alert');
+
+        $alert.removeClass();
+        $alert.addClass("alert alert-" + tipo);
+        $alert.find("#alert-msg").text(mensagem);
+        $(document).find('#myModal #md-alert').slideDown("fast").delay(2000).slideUp('fast');
+        let data = $("input[name='dt_despesa']").val();
+        $('form[name="<?= $id ?>"]').trigger("reset");
+        $("input[name='dt_despesa']").val(data);
+
     }
 </script>

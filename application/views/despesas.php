@@ -87,6 +87,7 @@
         $.datetimepicker.setLocale('pt-BR');
 
         var md_add_despesa = $("#md_add_despesa").html();
+        $("#md_add_despesa").remove();
 
         
 

@@ -9,7 +9,7 @@ class Despesa extends MY_Controller
         parent::__construct();
         $this->load->helper('url');        
         $this->load->model('categoria_model');
-        $this->load->model('conta_model');        
+        $this->load->model('despesa_model');        
         //$this->acesso_usuario_logado(array(self::ADMINISTRADOR,self::GERENTE));
     }
 
@@ -25,12 +25,12 @@ class Despesa extends MY_Controller
         $this->template->load('template', 'despesas',$data);
     }
     
-    public function add_despesa($ajax = true){
-        $despesa_input = $this->input->post();
-        echo json_encode($despesa_input);
-
-        
-
+    public function add_despesa(){
+        $in = $this->input->post();
+        $date = str_replace('/', '-', $in['dt_despesa'] );
+        $in['dt_despesa'] = date("Y-m-d", strtotime($date));
+        $in['valor'] = $this->converte_moeda_to_float($in['valor']);
+        $this->despesa_model->add_despesa($in['cd_categoria'],$in['dt_despesa'],$in['ds_despesa'],$in['valor']);        
     }
 
 }
