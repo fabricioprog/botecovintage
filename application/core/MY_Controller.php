@@ -1,7 +1,8 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class My_Controller extends CI_Controller {
+class My_Controller extends CI_Controller
+{
 
     const ADMINISTRADOR = 1;
     const GERENTE = 2;
@@ -9,50 +10,54 @@ class My_Controller extends CI_Controller {
     const GARCOM = 4;
 
 
-    public function __construct(){
+    public function __construct()
+    {
         parent::__construct();
-        $this->load->helper('log');        
+        $this->load->helper('log');
     }
 
-    public function converter_dinheiro_to_number($input){
-        $input = str_replace(".","",$input);
-        $input = str_replace(",",".",$input);
-        return (float) $input;        
+    public function converter_dinheiro_to_number($input)
+    {
+        $input = str_replace(".", "", $input);
+        $input = str_replace(",", ".", $input);
+        return (float) $input;
     }
 
-    protected function acesso_usuario_logado($perfis = false){
-        $usuario = $this->session->usuario;          
-        if(empty((array)$usuario)){
-            send_alert('Usuário não encontrado',5000,'danger');
+    protected function acesso_usuario_logado($perfis = false)
+    {
+        $usuario = $this->session->usuario;
+        if (empty((array) $usuario)) {
+            send_alert('Usuário não encontrado', 5000, 'danger');
             redirect(base_url('login'));
         }
 
-        if(!$this->is_perfil_permissao($usuario,$perfis)){
-            send_alert('Usuário sem permissão para acessar essa página',5000,'danger');
+        if (!$this->is_perfil_permissao($usuario, $perfis)) {
+            send_alert('Usuário sem permissão para acessar essa página', 5000, 'danger');
             redirect(base_url('login'));
         }
-                
     }
 
-    protected function converte_moeda_to_float($moeda){
-        return str_replace(',','.', str_replace('.','',$moeda));
+    protected function format_date($data_hota,$novo_formato)
+    {
+        $date = str_replace('/', '-', $data_hota);
+        return date($novo_formato, strtotime($date));
+    }
+    protected function converte_moeda_to_float($moeda)
+    {
+        return str_replace(',', '.', str_replace('.', '', $moeda));
     }
 
-    private function is_perfil_permissao($usuario,$perfis){        
-        if($perfis){
-            foreach($perfis as $perfil){
-                if($usuario->cd_perfil == $perfil){
+    private function is_perfil_permissao($usuario, $perfis)
+    {
+        if ($perfis) {
+            foreach ($perfis as $perfil) {
+                if ($usuario->cd_perfil == $perfil) {
                     return true;
-                }                
+                }
             }
             return false;
-        }else{
+        } else {
             return true;
         }
-
     }
-   
-
-
-
 }

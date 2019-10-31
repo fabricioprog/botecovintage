@@ -1,5 +1,5 @@
 <div id="<?= $id ?>">
-    <form name="<?= $id ?>" method="POST">
+    <form name="<?= $id ?>" method="POST" hidden>
         <div class="row">
             <div class="col-md-12">
                 <div id="md-alert" style="display:none">
