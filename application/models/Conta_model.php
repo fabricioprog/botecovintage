@@ -60,7 +60,7 @@ class Conta_model extends CI_Model
         $pedidos = $this->db->query($sql,array($cd_conta))->result();
         if(count($pedidos) > 0){
             $total = $pg_credito + $pg_debito + $pg_dinheiro;
-            $sql = "update tb_conta set cd_status = 5 , dt_fim = now(), nr_pagamento_credito =  ?, nr_pagamento_debito =  ?, nr_pagamento_dinheiro =  ?, nr_total = ? , nr_dez_porcento = ? where ci_conta = ?";            
+            $sql = "update tb_conta set cd_status = 5 , dt_fim = (now() - interval '3' hour) , nr_pagamento_credito =  ?, nr_pagamento_debito =  ?, nr_pagamento_dinheiro =  ?, nr_total = ? , nr_dez_porcento = ? where ci_conta = ?";            
             $this->db->query($sql,array($pg_credito,$pg_debito,$pg_dinheiro,$total,$nr_dez_porcento,$cd_conta));                
         }else{
             $sql = "delete from tb_conta where ci_conta = ?";

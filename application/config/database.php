@@ -75,7 +75,7 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'docker_db_1',
+	'hostname' => 'db',
 	'username' => 'postgres',
 	'password' => '123',
 	'database' => 'postgres',
